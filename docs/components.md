@@ -1,0 +1,11 @@
+- App
+  - SearchIndex
+  - PhotosIndex
+    - PhotoIndexItem
+      - PhotoDetail
+        - PhotoDescription
+        - DescriptionEditArea
+      - CommentIndex
+        - CommentIndexItem
+        - CommentForm
+  - PhotoUploadForm
