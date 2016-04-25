@@ -1,5 +1,4 @@
 - App
-  - SearchIndex
   - PhotosIndex
     - PhotoIndexItem
       - PhotoDetail
@@ -9,3 +8,9 @@
         - CommentIndexItem
         - CommentForm
   - PhotoUploadForm
+
+## Bonus
+- App
+  - SearchBar
+  - SearchIndex
+    - SearchIndexItems

@@ -40,7 +40,7 @@
 - `PATCH /api/comments`
 
 
-### Tag (If I were to implement search function)
+### Tag (Optional search function)
 - `GET /api/photos/:id/tags`
   - index of all tags for a photo
   - no GET request for a single tag

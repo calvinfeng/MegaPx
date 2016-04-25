@@ -23,7 +23,5 @@ When user clicks on a photo, a PhotoIndexItem component will pop up.
 
 [user-home-page]: ./wireframes/after-sign-in/user-home-page.png
 [user-home-page-dropdowns]: ./wireframes/after-sign-in/user-home-page-dropdowns.png
-
 [photo-index-item-landscape]: ./wireframes/after-sign-in/photo-index-item-landscape.png
-
 [photo-index-item-portrait]: ./wireframes/after-sign-in/photo-index-item-portrait.png

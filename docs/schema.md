@@ -31,7 +31,7 @@ author_id    | integer    | not null, foreign key
 photo_id     | integer    | not null, foreign key
 content      | text       | not null
 
-# Extra
+# Bonus
 ** Search function **
 ## Tags
 column name  | data type  | details

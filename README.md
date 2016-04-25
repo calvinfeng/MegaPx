@@ -1,7 +1,7 @@
-# MegaPX
+# MegaPx
 
 ## Minimum Viable Product
-MegaPX is an image hosting web application inspired by 500px. In terms of functionality and front-end design, MegaPX closely mimics 500px except for one part; location-based image fetching. MegaPX will exhibit photo-works that were taken in your geological region.
+MegaPx is an image hosting web application inspired by 500px. In terms of functionality and front-end design, MegaPX closely mimics 500px except for one part; location-based image fetching. MegaPX will exhibit photo-works that were taken in your geological area.
 
 ## Product Goals and Priorities
 The following are the key milestone for a functional MVP.
@@ -46,21 +46,36 @@ The following are the key milestone for a functional MVP.
 **objectve:**
 - Set up photo, user, comment models and related query associations
 - Photos can be access/create/delete through submitting API requests
-- Photos fetch based on geographical bounds
+- Create map component and make API call to backend for fetching photos
 
 ### Phase 3: Flux Architecture (1 Day)
 **objectve:**
-- Set up front-end architecture based on the diagram I drew.
+- Fetch photos base on map bounds
+- Create marker store, photo store, comment store
+- Set up appropriate actions for retrieving photos
 
-### Phase 4: Front-end Components (3 Days)
+### Phase 4: Complete CRUD on Photos (3 Days)
 **objectve:**
 - Create React components for front page, index page, index item page
+- Use flexbox to display photos on user front page
+- Users should be able to drag the map and receive new photos
+- Integrate cloudinary
+- Users should be able to upload and browse content by this point
 
-### Phase 5: CSS and Styling (2 Days)
+### Phase 5: CSS and Styling Landing and Home (1 Day)
 **objectve:**
-- Layout and style every component
+- Layout landing page and user home page
 
-### Phase 6: Seed database (1 Day)
+### Phase 6: Profile & Photo Management (2 Days)
+**objectve:**
+- Allow users to visit their own profile page
+- Within the profile page, users can select and edit/delete their photos
+- Enable avatar, users can upload and change their avatar
+
+### Phase 7: More CSS and Styling to Profile/Photo Management Page (1 Day)
+- Make it pretty
+
+### Phase 7: Seed database (1 Day)
 **objective:**
 - Search and find a large quantity of high quality photos for every major
 location in my application
@@ -69,4 +84,4 @@ location in my application
   - Some national parks maybe like Yosemite
 
 ### Bonus Features
-- Tentative
+- Search photos by location and tag

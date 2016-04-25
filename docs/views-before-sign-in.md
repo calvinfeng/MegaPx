@@ -22,3 +22,10 @@ There won't be any facebook/twitter/google integration just yet.
 ![user-authen-page-full]
 
 [user-authen-page-full]: ./wireframes/before-sign-in/user-authen-page-full.png
+
+## User Profile Page
+User profile page should also include user's photos. User can either update their
+first and last name, password, and edit/destroy their photos
+
+## Image Upload
+This should be a drag and drop section.
