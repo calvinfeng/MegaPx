@@ -6,11 +6,13 @@ var IndexRoute = require('react-router').IndexRoute;
 var HashHistory = require('react-router').hashHistory;
 
 var SplashPage = require('./components/splash_page');
+var LoginForm = require('./components/login_form');
 
 var App = React.createClass({
   render: function() {
     return (
       <div>
+        <LoginForm/>
         <SplashPage/>
       </div>
     );
