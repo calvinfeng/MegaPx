@@ -14,4 +14,4 @@
 
 # Ignore node modules
 node_modules
-bundle.js*
+bundle.js
