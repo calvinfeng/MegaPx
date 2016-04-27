@@ -32479,6 +32479,18 @@
 	var SplashPage = React.createClass({
 	  displayName: 'SplashPage',
 	
+	  getInitialState: function () {
+	    return { width: $(document).width(), height: $(document).height() };
+	  },
+	
+	  updateDimensions: function () {
+	    this.setState({ width: $(document).width(), height: $(document).height() });
+	  },
+	
+	  componentDidMount: function () {
+	    window.addEventListener("resize", this.updateDimensions);
+	  },
+	
 	  handleClick: function () {
 	    HashHistory.push({ pathname: "/login" });
 	  },
@@ -32490,24 +32502,65 @@
 	      React.createElement(
 	        'div',
 	        { className: 'nav-bar' },
-	        React.createElement('div', { id: 'logo' }),
 	        React.createElement(
-	          'button',
+	          'div',
+	          { id: 'logo' },
+	          'MegaPx'
+	        ),
+	        React.createElement(
+	          'div',
 	          {
 	            onClick: this.handleClick,
-	            className: 'log-in'
-	          },
+	            className: 'log-in' },
 	          'Log in'
+	        ),
+	        React.createElement(
+	          'div',
+	          {
+	            onClick: this.handleClick,
+	            className: 'log-in' },
+	          'Sign up'
 	        )
 	      ),
-	      React.createElement(ReactPlayer, {
-	        className: 'video',
-	        url: 'https://youtu.be/9d8wWcJLnFI',
-	        width: $(window).width(),
-	        height: $(window).height(),
-	        volume: 0.0,
-	        playing: true
-	      })
+	      React.createElement(
+	        'div',
+	        { className: 'video' },
+	        React.createElement(ReactPlayer, {
+	          url: 'https://youtu.be/9d8wWcJLnFI',
+	          width: this.state.width,
+	          height: this.state.height,
+	          volume: 0.0,
+	          playing: true
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'welcome' },
+	        React.createElement(
+	          'div',
+	          { className: 'center-panel' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Home to everyone\'s megapixel photos'
+	          ),
+	          React.createElement(
+	            'h5',
+	            null,
+	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	          )
+	        )
+	      ),
+	      React.createElement('div', { className: 'bottom-banner' }),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Photo Index'
+	        )
+	      )
 	    );
 	  }
 	});

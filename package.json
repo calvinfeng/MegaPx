@@ -31,5 +31,12 @@
     "react-player": "^0.5.8",
     "react-router": "^2.3.0",
     "webpack": "^1.13.0"
+  },
+  "engines": {
+    "node": "4.1.1",
+    "npm": "2.1.x"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/webpack"
   }
 }
