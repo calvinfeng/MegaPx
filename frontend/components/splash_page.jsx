@@ -2,6 +2,8 @@ var React = require('react');
 var HashHistory = require('react-router').hashHistory;
 var ReactPlayer = require('react-player');
 
+var LoginModal = require('./login_modal');
+
 var SplashPage = React.createClass({
   getInitialState:function() {
     return {width: $(document).width(), height: $(document).height()};
@@ -22,7 +24,6 @@ var SplashPage = React.createClass({
   render: function() {
     return (
       <div className="splash">
-
         <div className="nav-bar">
           <div id="logo">
             MegaPx
@@ -63,7 +64,7 @@ var SplashPage = React.createClass({
         <div>
           <h1>Photo Index</h1>
         </div>
-        
+
       </div>
     );
   }
