@@ -1,13 +1,17 @@
 - App
-  - PhotosIndex
-    - PhotoIndexItem
-      - PhotoDetail
-        - PhotoDescription
-        - DescriptionEditArea
-      - CommentIndex
-        - CommentIndexItem
-        - CommentForm
-  - PhotoUploadForm
+  - Index
+    - SplashPage
+    - HomePage
+      - PhotosIndex
+        - PhotoIndexItem
+          - PhotoDetail
+          - PhotoDescription
+          - DescriptionEditArea
+          - CommentIndex
+            - CommentIndexItem
+            - CommentForm
+    - PhotoUploadForm
+    - LoginForm
 
 ## Bonus
 - App

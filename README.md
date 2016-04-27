@@ -36,20 +36,31 @@ The following are the key milestone for a functional MVP.
 
 ## Implementation Timeline
 
-### Phase 1: Backend Databse Setup and User Authentication (1 Day)
+### Phase 1: Backend & Frontend Auth (1 Day)
 **objective:**
 - Functioning Rails application with authentication
-- Set up session/user models
-- Users can sign up and log in
+- Key components to work on for the day
+  - User models
+  - UsersController, SessionsController, ApplicationController
+  - Render JSON instead of views for backend controllers
+  - UserActions
+  - UserStore
+  - UserApiUtil
+  - LoginForm, SplashPage, HomePage
+- By the end of the day, users should be able to log in and log out
 
-### Phase 2: API Utils, Client/Server Actions (1 Day)
+### Phase 2: Visual Enhancement (1 Day)
+**objectve:**
+- Create appropriate CSS for LoginForm
+- Decorate SplashPage with images and buttons
+- SplashPage needs to be dynamic.
+  - User should be able to scroll down and visit a secondary splash page
+
+### Phase 3: Flux Architecture (1 Day)
 **objectve:**
 - Set up photo, user, comment models and related query associations
 - Photos can be access/create/delete through submitting API requests
 - Create map component and make API call to backend for fetching photos
-
-### Phase 3: Flux Architecture (1 Day)
-**objectve:**
 - Fetch photos base on map bounds
 - Create marker store, photo store, comment store
 - Set up appropriate actions for retrieving photos
