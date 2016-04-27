@@ -30,7 +30,7 @@ var UserActions = {
   fetchCurrentUser: function() {
     UserApiUtil.fetchCurrentUser(
       UserActions.receiveCurrentUser,
-      UserActions.handleError
+      function(){console.log("No user is currently signed in");}
     );
   },
 

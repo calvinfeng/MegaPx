@@ -21,12 +21,14 @@ var UserApiUtil = {
     });
   },
 
-  fetchCurrentUser: function(success, error) {
+  fetchCurrentUser: function(success) {
     $.ajax({
       url: "/api/session",
       method: "GET",
       success: success,
-      error: error
+      error: function() {
+        console.log("No user is currently signed in");
+      }
     });
   }
 };

@@ -5,15 +5,14 @@ var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var HashHistory = require('react-router').hashHistory;
 
-var SplashPage = require('./components/splash_page');
+var Index = require('./components/index');
 var LoginForm = require('./components/login_form');
 
 var App = React.createClass({
   render: function() {
     return (
       <div>
-        <LoginForm/>
-        <SplashPage/>
+        {this.props.children}
       </div>
     );
   }
@@ -22,9 +21,8 @@ var App = React.createClass({
 var routes = (
   <Router history={HashHistory}>
     <Route path="/" component={App}>
-    // How to use front-end authentication to decide path location?
-    // Signed in => IndexRoute = HomePage
-    // Logged out => IndexRoute = SplashPage
+    <IndexRoute component={Index}/>
+      <Route path="/login" component={LoginForm}></Route>
     </Route>
   </Router>
 );

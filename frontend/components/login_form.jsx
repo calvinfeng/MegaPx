@@ -5,7 +5,7 @@ var UserStore = require('../stores/user_store');
 var LoginForm = React.createClass({
 
   getInitialState: function() {
-    return {form: "login"};
+    return {form: "login", username: "", password: ""};
   },
 
   __onChange: function() {
@@ -16,9 +16,12 @@ var LoginForm = React.createClass({
   },
 
   componentDidMount: function() {
-    UserStore.addListener(this.__onChange);
+    this.storeListener = UserStore.addListener(this.__onChange);
   },
 
+  componentWillUnmount: function() {
+    this.storeListener.remove();
+  },
 
   setFormType: function(event) {
     this.setState({form: event.currentTarget.value});
@@ -42,10 +45,6 @@ var LoginForm = React.createClass({
     UserActions[this.state.form]({
       username: this.state.username,
       password: this.state.password
-    });
-    this.setState({
-      username: "",
-      password: ""
     });
   },
 
