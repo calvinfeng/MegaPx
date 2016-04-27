@@ -1,5 +1,5 @@
 # MegaPx
-
+Heroku: https://mega-px.herokuapp.com/
 ## Minimum Viable Product
 MegaPx is an image hosting web application inspired by 500px. In terms of functionality and front-end design, MegaPX closely mimics 500px except for one part; location-based image fetching. MegaPX will exhibit photo-works that were taken in your geological area.
 
@@ -38,23 +38,28 @@ The following are the key milestone for a functional MVP.
 
 ### Phase 1: Backend & Frontend Auth (1 Day)
 **objective:**
-- Functioning Rails application with authentication
-- Key components to work on for the day
-  - User models
-  - UsersController, SessionsController, ApplicationController
-  - Render JSON instead of views for backend controllers
-  - UserActions
-  - UserStore
-  - UserApiUtil
-  - LoginForm, SplashPage, HomePage
-- By the end of the day, users should be able to log in and log out
+- [x] Functioning Rails application with authentication
+- [x] Key components to work on for the day
+  - [x] User models
+  - [x] UsersController, SessionsController, ApplicationController
+  - [x] Render JSON instead of views for backend controllers
+  - [x] UserActions
+  - [x] UserStore
+  - [x] UserApiUtil
+  - [x] LoginForm, SplashPage, HomePage
+- [x] By the end of the day, users should be able to log in and log out
 
 ### Phase 2: Visual Enhancement (1 Day)
 **objectve:**
-- Create appropriate CSS for LoginForm
-- Decorate SplashPage with images and buttons
-- SplashPage needs to be dynamic.
-  - User should be able to scroll down and visit a secondary splash page
+- [ ] Create appropriate CSS for LoginForm
+- [ ] Set up LoginForm with Modal
+- [ ] SplashPage
+  - Navigation Bar with Login buttons
+  - Video plays in the background
+  - Appropriate container for each element
+  - Secondary splash page to display photos uploaded by users
+- [ ] Setup backend support for photos
+- [ ] Create home componenet
 
 ### Phase 3: Flux Architecture (1 Day)
 **objectve:**
