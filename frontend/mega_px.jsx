@@ -4,6 +4,7 @@ var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var HashHistory = require('react-router').hashHistory;
+var Modal = require('react-modal');
 
 var Index = require('./components/index');
 var LoginForm = require('./components/login_form');
@@ -28,6 +29,7 @@ var routes = (
 );
 
 document.addEventListener("DOMContentLoaded", function() {
+  Modal.setAppElement(document.body);
   ReactDOM.render(
     routes,
     document.getElementById("application")

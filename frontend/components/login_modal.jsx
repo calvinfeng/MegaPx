@@ -12,10 +12,6 @@ var customStyles = {
     transform             : 'translate(-50%, -50%)'
   }
 };
-
-var AppElement = document.getElementById('home-page');
-Modal.setAppElement(AppElement);
-
 var LoginModal = React.createClass({
 
   getInitialState: function() {
@@ -27,6 +23,7 @@ var LoginModal = React.createClass({
   },
 
   afterOpenModal: function() {
+    // references are now sync'd and can be accessed.
     this.refs.subtitle.style.color = '#f00';
   },
 
@@ -36,17 +33,27 @@ var LoginModal = React.createClass({
 
   render: function() {
     return (
-      <Modal isOpen={this.state.modalIsOpen}
-        onCancel={this.toggleModal}
-        backdropClosesModal>
-        <ModalHeader text="Lots of text to show scroll behavior"
-          showCloseButton onClose={this.toggleModal} />
-        <ModalBody>[...]</ModalBody>
-        <ModalFooter>
-          <Button type="primary" onClick={this.toggleModal}>Close modal</Button>
-          <Button type="link-cancel" onClick={this.toggleModal}>Also closes modal</Button>
-        </ModalFooter>
-      </Modal>
+      <div>
+        <div className="button" onClick={this.openModal}>Get Started</div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}>
+
+          <h2 ref="subtitle">Hello</h2>
+          <button onClick={this.closeModal}>close</button>
+          <div>I am a modal</div>
+          <form>
+            <label>Username
+              <input type="text"/>
+            </label>
+            <label>Password
+              <input type="password"/>
+            </label>
+          </form>
+        </Modal>
+      </div>
     );
   }
 });

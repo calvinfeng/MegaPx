@@ -50,6 +50,7 @@
 	var Route = __webpack_require__(166).Route;
 	var IndexRoute = __webpack_require__(166).IndexRoute;
 	var HashHistory = __webpack_require__(166).hashHistory;
+	var Modal = __webpack_require__(270);
 	
 	var Index = __webpack_require__(225);
 	var LoginForm = __webpack_require__(290);
@@ -78,6 +79,7 @@
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
+	  Modal.setAppElement(document.body);
 	  ReactDOM.render(routes, document.getElementById("application"));
 	});
 
@@ -32432,20 +32434,6 @@
 
 	var React = __webpack_require__(1);
 	var UserActions = __webpack_require__(248);
-	var Modal = __webpack_require__(270);
-	
-	var customStyles = {
-	  content: {
-	    top: '50%',
-	    left: '50%',
-	    right: 'auto',
-	    bottom: 'auto',
-	    marginRight: '-50%',
-	    transform: 'translate(-50%, -50%)'
-	  }
-	};
-	
-	Modal.setAppElement(document.getElementById("application"));
 	
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
@@ -32453,14 +32441,6 @@
 	
 	  getInitialState: function () {
 	    return { modalIsOpen: false };
-	  },
-	
-	  toggleModal: function () {
-	    if (this.state.modalIsOpen) {
-	      this.setState({ modalIsOpen: false });
-	    } else {
-	      this.setState({ modalIsOpen: true });
-	    }
 	  },
 	
 	  handleClick: function (event) {
@@ -32487,55 +32467,6 @@
 	        'button',
 	        { onClick: this.handleClick },
 	        'Log out'
-	      ),
-	      React.createElement('button', { onClick: this.toggleModal }),
-	      React.createElement(
-	        Modal,
-	        {
-	          isOpen: this.state.modalIsOpen,
-	          onAfterOpen: this.afterOpenModal,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h2',
-	          { ref: 'subtitle' },
-	          'Hello'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.closeModal },
-	          'close'
-	        ),
-	        React.createElement(
-	          'div',
-	          null,
-	          'I am a modal'
-	        ),
-	        React.createElement(
-	          'form',
-	          null,
-	          React.createElement('input', null),
-	          React.createElement(
-	            'button',
-	            null,
-	            'tab navigation'
-	          ),
-	          React.createElement(
-	            'button',
-	            null,
-	            'stays'
-	          ),
-	          React.createElement(
-	            'button',
-	            null,
-	            'inside'
-	          ),
-	          React.createElement(
-	            'button',
-	            null,
-	            'the modal'
-	          )
-	        )
 	      )
 	    );
 	  }
@@ -32555,6 +32486,7 @@
 	
 	var SplashPage = React.createClass({
 	  displayName: 'SplashPage',
+	
 	
 	  getInitialState: function () {
 	    return { width: $(document).width(), height: $(document).height() };
@@ -32588,14 +32520,14 @@
 	          'div',
 	          {
 	            onClick: this.handleClick,
-	            className: 'log-in' },
+	            className: 'link' },
 	          'Log in'
 	        ),
 	        React.createElement(
 	          'div',
 	          {
 	            onClick: this.handleClick,
-	            className: 'log-in' },
+	            className: 'link' },
 	          'Sign up'
 	        )
 	      ),
@@ -32603,11 +32535,12 @@
 	        'div',
 	        { className: 'video' },
 	        React.createElement(ReactPlayer, {
-	          url: 'https://youtu.be/9d8wWcJLnFI',
+	          url: 'https://www.youtube.com/watch?v=9d8wWcJLnFI',
 	          width: this.state.width,
 	          height: this.state.height,
 	          volume: 0.0,
-	          playing: true
+	          playing: true,
+	          onProgress: this.onProgress
 	        })
 	      ),
 	      React.createElement(
@@ -32625,19 +32558,16 @@
 	            'h5',
 	            null,
 	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'button' },
+	            'Get Started'
 	          )
 	        )
 	      ),
 	      React.createElement('div', { className: 'bottom-banner' }),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'h1',
-	          null,
-	          'Photo Index'
-	        )
-	      )
+	      React.createElement('div', { className: 'feature-section' })
 	    );
 	  }
 	});
@@ -32786,7 +32716,7 @@
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -35379,10 +35309,6 @@
 	    transform: 'translate(-50%, -50%)'
 	  }
 	};
-	
-	var AppElement = document.getElementById('home-page');
-	Modal.setAppElement(AppElement);
-	
 	var LoginModal = React.createClass({
 	  displayName: 'LoginModal',
 	
@@ -35396,6 +35322,7 @@
 	  },
 	
 	  afterOpenModal: function () {
+	    // references are now sync'd and can be accessed.
 	    this.refs.subtitle.style.color = '#f00';
 	  },
 	
@@ -35405,29 +35332,50 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      Modal,
-	      { isOpen: this.state.modalIsOpen,
-	        onCancel: this.toggleModal,
-	        backdropClosesModal: true },
-	      React.createElement(ModalHeader, { text: 'Lots of text to show scroll behavior',
-	        showCloseButton: true, onClose: this.toggleModal }),
+	      'div',
+	      null,
 	      React.createElement(
-	        ModalBody,
-	        null,
-	        '[...]'
+	        'div',
+	        { className: 'button', onClick: this.openModal },
+	        'Get Started'
 	      ),
 	      React.createElement(
-	        ModalFooter,
-	        null,
+	        Modal,
+	        {
+	          isOpen: this.state.modalIsOpen,
+	          onAfterOpen: this.afterOpenModal,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
 	        React.createElement(
-	          Button,
-	          { type: 'primary', onClick: this.toggleModal },
-	          'Close modal'
+	          'h2',
+	          { ref: 'subtitle' },
+	          'Hello'
 	        ),
 	        React.createElement(
-	          Button,
-	          { type: 'link-cancel', onClick: this.toggleModal },
-	          'Also closes modal'
+	          'button',
+	          { onClick: this.closeModal },
+	          'close'
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          'I am a modal'
+	        ),
+	        React.createElement(
+	          'form',
+	          null,
+	          React.createElement(
+	            'label',
+	            null,
+	            'Username',
+	            React.createElement('input', { type: 'text' })
+	          ),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Password',
+	            React.createElement('input', { type: 'password' })
+	          )
 	        )
 	      )
 	    );
