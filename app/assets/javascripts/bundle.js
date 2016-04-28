@@ -32516,32 +32516,18 @@
 	          { id: 'logo' },
 	          'MegaPx'
 	        ),
-	        React.createElement(
-	          'div',
-	          {
-	            onClick: this.handleClick,
-	            className: 'link' },
-	          'Log in'
-	        ),
-	        React.createElement(
-	          'div',
-	          {
-	            onClick: this.handleClick,
-	            className: 'link' },
-	          'Sign up'
-	        )
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in' }),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up' })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'video' },
-	        React.createElement(ReactPlayer, {
-	          url: 'https://www.youtube.com/watch?v=9d8wWcJLnFI',
-	          width: this.state.width,
-	          height: this.state.height,
-	          volume: 0.0,
-	          playing: true,
-	          onProgress: this.onProgress
-	        })
+	        { className: 'background-video' },
+	        React.createElement(
+	          'video',
+	          { width: this.state.width, autoPlay: true, loop: true },
+	          React.createElement('source', { src: 'http://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
+	            type: 'video/mp4' })
+	        )
 	      ),
 	      React.createElement(
 	        'div',
@@ -32559,14 +32545,15 @@
 	            null,
 	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
 	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'button' },
-	            'Get Started'
-	          )
+	          React.createElement(LoginModal, { buttonClass: 'button', buttonText: 'Get Started' })
 	        )
 	      ),
-	      React.createElement('div', { className: 'bottom-banner' }),
+	      React.createElement(
+	        'div',
+	        { className: 'bottom-banner' },
+	        React.createElement('div', { className: 'left-box' }),
+	        React.createElement('div', { className: 'right-box' })
+	      ),
 	      React.createElement('div', { className: 'feature-section' })
 	    );
 	  }
@@ -32716,7 +32703,7 @@
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -35301,14 +35288,13 @@
 	
 	var customStyles = {
 	  content: {
-	    top: '50%',
-	    left: '50%',
-	    right: 'auto',
+	    top: '100px',
+	    right: '25%',
 	    bottom: 'auto',
-	    marginRight: '-50%',
-	    transform: 'translate(-50%, -50%)'
+	    left: '25%'
 	  }
 	};
+	
 	var LoginModal = React.createClass({
 	  displayName: 'LoginModal',
 	
@@ -35321,11 +35307,6 @@
 	    this.setState({ modalIsOpen: true });
 	  },
 	
-	  afterOpenModal: function () {
-	    // references are now sync'd and can be accessed.
-	    this.refs.subtitle.style.color = '#f00';
-	  },
-	
 	  closeModal: function () {
 	    this.setState({ modalIsOpen: false });
 	  },
@@ -35336,30 +35317,17 @@
 	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'button', onClick: this.openModal },
-	        'Get Started'
+	        { className: this.props.buttonClass, onClick: this.openModal },
+	        this.props.buttonText
 	      ),
 	      React.createElement(
 	        Modal,
-	        {
-	          isOpen: this.state.modalIsOpen,
-	          onAfterOpen: this.afterOpenModal,
-	          onRequestClose: this.closeModal,
+	        { isOpen: this.state.modalIsOpen, onRequestClose: this.closeModal,
 	          style: customStyles },
 	        React.createElement(
 	          'h2',
-	          { ref: 'subtitle' },
-	          'Hello'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.closeModal },
-	          'close'
-	        ),
-	        React.createElement(
-	          'div',
 	          null,
-	          'I am a modal'
+	          'Under construction...'
 	        ),
 	        React.createElement(
 	          'form',
@@ -35375,6 +35343,12 @@
 	            null,
 	            'Password',
 	            React.createElement('input', { type: 'password' })
+	          ),
+	          React.createElement('input', { type: 'submit' }),
+	          React.createElement(
+	            'button',
+	            { onClick: this.closeModal },
+	            'close'
 	          )
 	        )
 	      )

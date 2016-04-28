@@ -4,30 +4,32 @@
   width: 100px;
   color: white;
   font-weight: 700;
-  margin-top: 30px;
-  margin-left: 30px;
+  margin-top: 10px;
+  margin-left: 10px;
   cursor: normal;
 }
 
 .button {
+  position: relative;
 	-webkit-transition: all 300ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
 	-moz-transition: all 300ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
 	-ms-transition: all 300ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
 	-o-transition: all 300ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
 	transition: all 300ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
 	display: block;
-	margin: 20px auto;
 	max-width: 180px;
 	text-decoration: none;
 	border-radius: 4px;
 	padding: 20px 30px;
   color: white;
   box-shadow: white 0 0px 0px 2px inset;
+  margin: 200px auto;
 }
 
 .button:hover {
 	color: black;
 	box-shadow: white 0 0px 0px 40px inset;
+  cursor: pointer;
 }
 
 .link {
@@ -37,8 +39,9 @@
   float: right;
   display: inline-block;
   margin-top: 30px;
+  margin-right: 20px;
   height: 25px;
-  width: 120px;
+  width: 100px;
   position: relative;
 }
 
@@ -55,25 +58,11 @@
   width: 0;
 }
 
+.link:hover {
+  cursor: pointer;
+}
+
 .link:hover:after {
   width: 100%;
   left: 0;
-  cursor: pointer;
-}
-
-.log-in{
-  text-align: center;
-  height: 25px;
-  width: 120px;
-  float: right;
-  display: inline-block;
-  margin-top: 30px;
-  margin-right: 20px;
-  color: white;
-  border-radius: 5px;
-}
-
-.log-in:hover {
-  background-color: grey;
-  cursor: pointer;
 }

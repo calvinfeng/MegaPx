@@ -25,47 +25,39 @@ var SplashPage = React.createClass({
   render: function() {
     return (
       <div className="splash">
+
         <div className="nav-bar">
           <div id="logo">
             MegaPx
           </div>
-          <div
-            onClick={this.handleClick}
-            className="link">
-            Log in
-          </div>
-          <div
-            onClick={this.handleClick}
-            className="link">
-            Sign up
-          </div>
+          <LoginModal buttonClass="link" buttonText="Log in"/>
+          <LoginModal buttonClass="link" buttonText="Sign up"/>
         </div>
 
-        <div className="video">
-          <ReactPlayer
-            url= "https://www.youtube.com/watch?v=9d8wWcJLnFI"
-            width={this.state.width}
-            height={this.state.height}
-            volume={0.0}
-            playing
-            onProgress={this.onProgress}
-            />
+        <div className="background-video">
+          <video width={this.state.width} autoPlay loop>
+            <source src="http://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4"
+              type="video/mp4"/>
+          </video>
         </div>
 
         <div className="welcome">
           <div className="center-panel">
             <h2>Home to everyone's megapixel photos</h2>
             <h5>Time has passed, tech has changed, you are no longer limited to 500 pixels</h5>
-  		      <div className="button">Get Started</div>
+            <LoginModal buttonClass="button" buttonText="Get Started"/>
           </div>
         </div>
 
         <div className="bottom-banner">
+          <div className="left-box">
+          </div>
+          <div className="right-box">
+          </div>
         </div>
 
         <div className="feature-section">
         </div>
-
       </div>
     );
   }

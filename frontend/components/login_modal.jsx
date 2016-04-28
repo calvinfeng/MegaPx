@@ -4,14 +4,13 @@ var Modal = require('react-modal');
 
 var customStyles = {
   content: {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    top: '100px',
+    right: '25%',
+    bottom: 'auto',
+    left: '25%'
   }
 };
+
 var LoginModal = React.createClass({
 
   getInitialState: function() {
@@ -22,11 +21,6 @@ var LoginModal = React.createClass({
     this.setState({modalIsOpen: true});
   },
 
-  afterOpenModal: function() {
-    // references are now sync'd and can be accessed.
-    this.refs.subtitle.style.color = '#f00';
-  },
-
   closeModal: function() {
     this.setState({modalIsOpen: false});
   },
@@ -34,16 +28,13 @@ var LoginModal = React.createClass({
   render: function() {
     return (
       <div>
-        <div className="button" onClick={this.openModal}>Get Started</div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}>
+        <div className={this.props.buttonClass} onClick={this.openModal}>
+          {this.props.buttonText}
+        </div>
+        <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal}
+               style={customStyles}>
 
-          <h2 ref="subtitle">Hello</h2>
-          <button onClick={this.closeModal}>close</button>
-          <div>I am a modal</div>
+          <h2>Under construction...</h2>
           <form>
             <label>Username
               <input type="text"/>
@@ -51,6 +42,8 @@ var LoginModal = React.createClass({
             <label>Password
               <input type="password"/>
             </label>
+            <input type="submit"/>
+            <button onClick={this.closeModal}>close</button>
           </form>
         </Modal>
       </div>
