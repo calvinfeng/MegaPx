@@ -32514,7 +32514,9 @@
 	        React.createElement(
 	          'div',
 	          { id: 'logo' },
-	          'MegaPx'
+	          React.createElement('img', { src: 'http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	            width: '100'
+	          })
 	        ),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in' }),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up' })
@@ -32551,8 +32553,18 @@
 	      React.createElement(
 	        'div',
 	        { className: 'bottom-banner' },
-	        React.createElement('div', { className: 'left-box' }),
-	        React.createElement('div', { className: 'right-box' })
+	        React.createElement(
+	          'div',
+	          { className: 'left-box' },
+	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
+	            width: '50', height: '50' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'right-box' },
+	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
+	            width: '50', height: '50' })
+	        )
 	      ),
 	      React.createElement('div', { className: 'feature-section' })
 	    );
@@ -32703,7 +32715,7 @@
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license

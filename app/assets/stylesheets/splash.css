@@ -63,14 +63,18 @@
 
 .left-box {
   display: flex;
-  border-right: 1px solid black;
+  justify-content: flex-end;
+  border: 1px solid #e3e3e3;
+  padding: 10px 10px 10px 10px;
   height: 15vh;
-  width: 300px;
+  width: 50%;
 }
 
 .right-box {
   display: flex;
-  border-left: 1px solid black;
+  justify-content: flex-start;
+  border: 1px solid #e3e3e3;
+  padding: 10px 10px 10px 10px;
   height: 15vh;
-  width: 300px;
+  width: 50%;
 }

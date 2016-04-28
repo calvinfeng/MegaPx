@@ -28,7 +28,9 @@ var SplashPage = React.createClass({
 
         <div className="nav-bar">
           <div id="logo">
-            MegaPx
+            <img src="http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
+              width="100"
+              />
           </div>
           <LoginModal buttonClass="link" buttonText="Log in"/>
           <LoginModal buttonClass="link" buttonText="Sign up"/>
@@ -51,8 +53,12 @@ var SplashPage = React.createClass({
 
         <div className="bottom-banner">
           <div className="left-box">
+            <img src="https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png"
+              width="50" height="50"/>
           </div>
           <div className="right-box">
+            <img src="http://www.bartosztomas.eu/upload/templates/img/logo.png"
+              width="50" height="50"/>
           </div>
         </div>
 
