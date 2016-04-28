@@ -32521,7 +32521,7 @@
 	          'div',
 	          { id: 'logo' },
 	          React.createElement('img', { src: 'http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	            width: '100' })
+	            width: '100px' })
 	        ),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
@@ -32531,7 +32531,7 @@
 	        { className: 'background-video' },
 	        React.createElement(
 	          'video',
-	          { width: this.state.width, autoPlay: true, loop: true },
+	          { autoPlay: true, loop: true },
 	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
 	            type: 'video/mp4' })
 	        )
