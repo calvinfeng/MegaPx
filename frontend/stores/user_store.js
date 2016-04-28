@@ -35,6 +35,7 @@ UserStore.logout = function() {
   _errors = null;
 };
 
+// Getter methods
 UserStore.currentUser = function() {
   if (_currentUser) {
     return $.extend({}, _currentUser);

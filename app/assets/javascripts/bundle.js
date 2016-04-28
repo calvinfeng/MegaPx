@@ -25534,6 +25534,7 @@
 	  _errors = null;
 	};
 	
+	// Getter methods
 	UserStore.currentUser = function () {
 	  if (_currentUser) {
 	    return $.extend({}, _currentUser);
@@ -32320,11 +32321,17 @@
 	var UserConstants = __webpack_require__(250);
 	
 	var UserActions = {
-	
+	  // On success handlers
 	  receiveCurrentUser: function (user) {
 	    AppDispatcher.dispatch({
 	      actionType: UserConstants.LOGIN,
 	      user: user
+	    });
+	  },
+	
+	  removeCurrentUser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.LOGOUT
 	    });
 	  },
 	
@@ -32335,12 +32342,11 @@
 	    });
 	  },
 	
-	  removeCurrentUser: function () {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.LOGOUT
-	    });
+	  guestLogin: function () {
+	    UserActions.login({ username: "guest", password: "password" });
 	  },
 	
+	  // API Actions =======================================================
 	  fetchCurrentUser: function () {
 	    UserApiUtil.fetchCurrentUser(UserActions.receiveCurrentUser, function () {
 	      console.log("No user is currently signed in");
@@ -32368,10 +32374,6 @@
 	
 	  logout: function () {
 	    UserApiUtil.logout(UserActions.removeCurrentUser, UserActions.handleError);
-	  },
-	
-	  guestLogin: function () {
-	    UserActions.login({ username: "guest", password: "password" });
 	  }
 	};
 	
@@ -32515,8 +32517,7 @@
 	          'div',
 	          { id: 'logo' },
 	          React.createElement('img', { src: 'http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	            width: '100'
-	          })
+	            width: '100' })
 	        ),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in' }),
 	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up' })
@@ -35312,7 +35313,10 @@
 	
 	
 	  getInitialState: function () {
-	    return { modalIsOpen: false };
+	    return { modalIsOpen: false,
+	      form: "login",
+	      username: "",
+	      password: "" };
 	  },
 	
 	  openModal: function () {
@@ -35322,7 +35326,7 @@
 	  closeModal: function () {
 	    this.setState({ modalIsOpen: false });
 	  },
-	
+	  // Inherit button class and button text from parent
 	  render: function () {
 	    return React.createElement(
 	      'div',

@@ -49,41 +49,72 @@ The following are the key milestone for a functional MVP.
   - [x] LoginForm, SplashPage, HomePage
 - [x] By the end of the day, users should be able to log in and log out
 
-### Phase 2: Visual Enhancement (1 Day)
+### Phase 2: Visual Enhancement (1.5 Day)
 **objectve:**
 - [ ] Create appropriate CSS for LoginForm
-- [ ] Set up LoginForm with Modal
-- [ ] SplashPage
+- [x] Set up LoginForm with Modal
+- [x] SplashPage
   - Navigation Bar with Login buttons
   - Video plays in the background
   - Appropriate container for each element
-  - Secondary splash page to display photos uploaded by users
-- [ ] Setup backend support for photos
-- [ ] Create home componenet
+- [x] Login Modal
+- [ ] Secondary splash page to display photos uploaded by users
+- [x] Users has three different ways to bring up the login modal
+  - Log in
+  - Get Started
+  - Sign up
+- [x] Once logged in, user will get navigated to home page
 
-### Phase 3: Flux Architecture (1 Day)
+
+### Phase 3: CRUD on Photos (2 Days)
 **objectve:**
-- Set up photo, user, comment models and related query associations
-- Photos can be access/create/delete through submitting API requests
-- Create map component and make API call to backend for fetching photos
-- Fetch photos base on map bounds
+- [ ] Create Photos model
+  - user_id
+  - description
+  - title (default: Untitled)
+  - lat
+  - lng
+  - img_url
+
+- [ ] Create PhotosController: photos can be access/create/delete through
+submitting API requests
+  - index
+  - create
+  - update
+  - destroy
+  - show
+
+- [ ] Create Associations
+  - User has many photos
+  - Photo belongs to photograher
+
+- [ ] Create PhotoStore, PhotoActions
+  - test if fetchAllPhotos() works
+
+
 - Create marker store, photo store, comment store
 - Set up appropriate actions for retrieving photos
 
-### Phase 4: Complete CRUD on Photos (3 Days)
+### Phase 4: Integrate CRUD with Homepage (2 Days)
 **objectve:**
-- Create React components for front page, index page, index item page
-- Use flexbox to display photos on user front page
-- Users should be able to drag the map and receive new photos
-- Integrate cloudinary
-- Users should be able to upload and browse content by this point
 
-### Phase 5: CSS and Styling Landing and Home (1 Day)
-**objectve:**
-- Layout landing page and user home page
+- [ ] Create HomePage component
+  - Create PhotoIndex component; its responsibility is to display photo
+  correctly in grid.
+- [ ] Create Map component
+  - Make API call to backend for fetching photos base on map bounds, like what
+  we did in BenchBnB
+  - Add listener to drag event, whenever the map is dragged, call API to fetch
+  new photos
+- [ ] Use cloudinary for image hosting
+
+### Phase 5: Style Homepage (1 Day)
+**objective:**
+
 
 ### Phase 6: Profile & Photo Management (2 Days)
 **objectve:**
+- Allow users to upload photos, using Cloudinary's plugin
 - Allow users to visit their own profile page
 - Within the profile page, users can select and edit/delete their photos
 - Enable avatar, users can upload and change their avatar
@@ -91,7 +122,7 @@ The following are the key milestone for a functional MVP.
 ### Phase 7: More CSS and Styling to Profile/Photo Management Page (1 Day)
 - Make it pretty
 
-### Phase 7: Seed database (1 Day)
+### Phase 8: Seed database (1 Day)
 **objective:**
 - Search and find a large quantity of high quality photos for every major
 location in my application

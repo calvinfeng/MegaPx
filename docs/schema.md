@@ -16,7 +16,7 @@ session_token   | string     | not null
 column name  | data type  | details
 -------------|------------|---------------------
 id           | integer    | not null, primary key
-author_id    | integer    | not null, foreign key
+user_id      | integer    | not null, foreign key
 lat          | float      | not null
 lng          | float      | not null
 url          | string     | not null

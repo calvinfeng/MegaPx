@@ -14,7 +14,10 @@ var customStyles = {
 var LoginModal = React.createClass({
 
   getInitialState: function() {
-    return { modalIsOpen: false };
+    return { modalIsOpen: false,
+             form: "login",
+             username: "",
+             password: "" };
   },
 
   openModal: function() {
@@ -24,7 +27,7 @@ var LoginModal = React.createClass({
   closeModal: function() {
     this.setState({modalIsOpen: false});
   },
-
+  // Inherit button class and button text from parent
   render: function() {
     return (
       <div>
