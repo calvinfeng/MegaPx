@@ -66,3 +66,15 @@
   width: 100%;
   left: 0;
 }
+
+.submit-button{
+  background:#2ecc71;
+  border:0;
+  color:#fff;
+  padding:10px;
+  font-size:20px;
+  width:330px;
+  margin:20px auto;
+  display:block;
+  cursor:pointer;
+}

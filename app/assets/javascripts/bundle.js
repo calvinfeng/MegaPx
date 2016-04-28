@@ -32502,6 +32502,10 @@
 	    window.addEventListener("resize", this.updateDimensions);
 	  },
 	
+	  componentWillUnmount: function () {
+	    window.removeEventListener("resize", this.updateDimensions);
+	  },
+	
 	  handleClick: function () {
 	    HashHistory.push({ pathname: "/login" });
 	  },
@@ -32528,7 +32532,7 @@
 	        React.createElement(
 	          'video',
 	          { width: this.state.width, autoPlay: true, loop: true },
-	          React.createElement('source', { src: 'http://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
+	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
 	            type: 'video/mp4' })
 	        )
 	      ),
@@ -32716,7 +32720,7 @@
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -35299,6 +35303,9 @@
 	var ReactDOM = __webpack_require__(32);
 	var Modal = __webpack_require__(270);
 	
+	var UserActions = __webpack_require__(248);
+	var UserStore = __webpack_require__(226);
+	
 	var customStyles = {
 	  content: {
 	    top: '100px',
@@ -35313,10 +35320,68 @@
 	
 	
 	  getInitialState: function () {
-	    return { modalIsOpen: false,
+	    return {
+	      modalIsOpen: false,
 	      form: "login",
 	      username: "",
-	      password: "" };
+	      password: ""
+	    };
+	  },
+	
+	  __onChange: function () {
+	    // If log in successfully, close the modal
+	    if (UserStore.currentUser()) {
+	      this.closeModal();
+	    } else {
+	      // Report errors to user
+	      this.setState({ userErrors: UserStore.errors() });
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    this.storeListener = UserStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	  },
+	
+	  setFormType: function (event) {
+	    this.setState({ form: event.currentTarget.value });
+	  },
+	
+	  setUsername: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  setPassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    UserActions[this.state.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  errors: function () {
+	    // If no error presents, return nothing
+	    if (!this.state.userErrors) {
+	      return;
+	    }
+	    return React.createElement(
+	      'ul',
+	      null,
+	      this.state.userErrors.errors.map(function (error, idx) {
+	        return React.createElement(
+	          'li',
+	          { key: idx },
+	          error
+	        );
+	      })
+	    );
 	  },
 	
 	  openModal: function () {
@@ -35338,34 +35403,51 @@
 	      ),
 	      React.createElement(
 	        Modal,
-	        { isOpen: this.state.modalIsOpen, onRequestClose: this.closeModal,
+	        { isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
 	          style: customStyles },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Under construction...'
-	        ),
+	        this.errors(),
 	        React.createElement(
 	          'form',
-	          null,
+	          { id: 'login-form', onSubmit: this.handleSubmit },
 	          React.createElement(
-	            'label',
+	            'section',
 	            null,
-	            'Username',
-	            React.createElement('input', { type: 'text' })
+	            React.createElement(
+	              'label',
+	              null,
+	              ' Username:',
+	              React.createElement('input', { type: 'text', value: this.state.username,
+	                onChange: this.setUsername })
+	            ),
+	            React.createElement(
+	              'label',
+	              null,
+	              ' Password:',
+	              React.createElement('input', { type: 'password', value: this.state.password,
+	                onChange: this.setPassword })
+	            )
 	          ),
 	          React.createElement(
-	            'label',
+	            'section',
 	            null,
-	            'Password',
-	            React.createElement('input', { type: 'password' })
+	            React.createElement(
+	              'label',
+	              null,
+	              ' Login',
+	              React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'login',
+	                defaultChecked: true,
+	                onChange: this.setFormType })
+	            ),
+	            React.createElement(
+	              'label',
+	              null,
+	              ' Sign up',
+	              React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'signup',
+	                onChange: this.setFormType })
+	            )
 	          ),
-	          React.createElement('input', { type: 'submit' }),
-	          React.createElement(
-	            'button',
-	            { onClick: this.closeModal },
-	            'close'
-	          )
+	          React.createElement('input', { className: 'submit-button', type: 'Submit' })
 	        )
 	      )
 	    );

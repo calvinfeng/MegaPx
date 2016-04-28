@@ -18,6 +18,10 @@ var SplashPage = React.createClass({
     window.addEventListener("resize", this.updateDimensions);
   },
 
+  componentWillUnmount: function() {
+    window.removeEventListener("resize", this.updateDimensions);
+  },
+
   handleClick: function() {
     HashHistory.push({pathname: "/login"});
   },
@@ -37,7 +41,7 @@ var SplashPage = React.createClass({
 
         <div className="background-video">
           <video width={this.state.width} autoPlay loop>
-            <source src="http://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4"
+            <source src="https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4"
               type="video/mp4"/>
           </video>
         </div>
