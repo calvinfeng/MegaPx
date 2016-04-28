@@ -7,10 +7,15 @@ var UserStore = require('../stores/user_store');
 
 var customStyles = {
   content: {
-    top: '100px',
-    right: '25%',
+    top: '35%',
+    right: '30%',
     bottom: 'auto',
-    left: '25%'
+    left: '30%',
+    background: 'transparent',
+    border: '2px solid white'
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.60)'
   }
 };
 
@@ -30,7 +35,7 @@ var LoginModal = React.createClass({
     if (UserStore.currentUser()) {
       this.closeModal();
     } else {
-    // Report errors to user
+      // Report errors to user
       this.setState({userErrors: UserStore.errors()});
     }
   },
@@ -57,35 +62,40 @@ var LoginModal = React.createClass({
 
   handleSubmit: function(event) {
     event.preventDefault();
-    UserActions[this.state.form]({
+    UserActions[this.props.form]({
       username: this.state.username,
       password: this.state.password
     });
   },
 
   errors: function() {
-    // If no error presents, return nothing
-    if (!this.state.userErrors) {
+    if (this.state.userErrors) {
+      return (
+        <ul>
+          {
+            this.state.userErrors.errors.map(function(error, idx) {
+              return (<li key={idx}>{error}</li>);
+            })
+          }
+        </ul>
+      );
+    } else {
       return;
     }
-    return (
-      <ul>
-        {
-          this.state.userErrors.errors.map(function(error, idx) {
-            return (<li key={idx}>{error}</li>);
-          })
-        }
-      </ul>
-    );
   },
 
   openModal: function() {
+    $('.get-started-button').css('visibility', 'hidden');
     this.setState({modalIsOpen: true});
   },
 
   closeModal: function() {
-    this.setState({modalIsOpen: false});
+    $('.get-started-button').css('visibility', 'visible');
+    this.setState({modalIsOpen: false, userErrors: null});
+    // BUG Report: closing modal does not get rid of all the error messages
+    // because there are three modals with three individual states
   },
+
   // Inherit button class and button text from parent
   render: function() {
     return (
@@ -97,31 +107,20 @@ var LoginModal = React.createClass({
         <Modal isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}>
-          {this.errors()}
-          <form id="login-form" onSubmit={this.handleSubmit}>
-            <section>
-              <label> Username:
-                <input type="text" value={this.state.username}
-                  onChange={this.setUsername}/>
-              </label>
-              <label> Password:
-                <input type="password" value={this.state.password}
-                  onChange={this.setPassword}/>
-              </label>
-            </section>
-
-            <section>
-              <label> Login
-                <input type="Radio" name="action" defaultValue="login"
-                  defaultChecked={true}
-                  onChange={this.setFormType}/>
-              </label>
-              <label> Sign up
-                <input type="Radio" name="action" defaultValue="signup"
-                  onChange={this.setFormType}/>
-              </label>
+          <form onSubmit={this.handleSubmit}>
+            <section className="user-input-section">
+              <h1 className="login-header">{this.props.buttonText}</h1>
+              <input placeholder="Username" type="text"
+                value={this.state.username}
+                onChange={this.setUsername}
+                require=""/>
+              <input placeholder="Password" type="password"
+                value={this.state.password}
+                onChange={this.setPassword}
+                require=""/>
             </section>
             <input className="submit-button" type="Submit"/>
+            <h1 className="login-error">{this.errors()}</h1>
           </form>
         </Modal>
       </div>

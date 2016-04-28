@@ -2,6 +2,12 @@ var React = require('react');
 var UserActions = require('../actions/user_actions');
 var UserStore = require('../stores/user_store');
 
+//======================================================================
+//======================================================================
+// This component has been deprecated
+//======================================================================
+//======================================================================
+
 var LoginForm = React.createClass({
 
   getInitialState: function() {

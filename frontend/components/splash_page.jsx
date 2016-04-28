@@ -35,8 +35,8 @@ var SplashPage = React.createClass({
             <img src="http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
               width="100"/>
           </div>
-          <LoginModal buttonClass="link" buttonText="Log in"/>
-          <LoginModal buttonClass="link" buttonText="Sign up"/>
+          <LoginModal buttonClass="link" buttonText="Log in" form="login"/>
+          <LoginModal buttonClass="link" buttonText="Sign up" form="signup"/>
         </div>
 
         <div className="background-video">
@@ -50,7 +50,9 @@ var SplashPage = React.createClass({
           <div className="center-panel">
             <h2>Home to everyone's megapixel photos</h2>
             <h5>Time has passed, tech has changed, you are no longer limited to 500 pixels</h5>
-            <LoginModal buttonClass="button" buttonText="Get Started"/>
+            <LoginModal buttonClass="get-started-button"
+                        buttonText="Get Started"
+                        form="login"/>
           </div>
         </div>
 

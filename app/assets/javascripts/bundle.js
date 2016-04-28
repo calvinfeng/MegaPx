@@ -32523,8 +32523,8 @@
 	          React.createElement('img', { src: 'http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
 	            width: '100' })
 	        ),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in' }),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up' })
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
 	      ),
 	      React.createElement(
 	        'div',
@@ -32552,7 +32552,9 @@
 	            null,
 	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
 	          ),
-	          React.createElement(LoginModal, { buttonClass: 'button', buttonText: 'Get Started' })
+	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
+	            buttonText: 'Get Started',
+	            form: 'login' })
 	        )
 	      ),
 	      React.createElement(
@@ -32720,7 +32722,7 @@
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -35308,10 +35310,15 @@
 	
 	var customStyles = {
 	  content: {
-	    top: '100px',
-	    right: '25%',
+	    top: '35%',
+	    right: '30%',
 	    bottom: 'auto',
-	    left: '25%'
+	    left: '30%',
+	    background: 'transparent',
+	    border: '2px solid white'
+	  },
+	  overlay: {
+	    backgroundColor: 'rgba(0, 0, 0, 0.60)'
 	  }
 	};
 	
@@ -35360,37 +35367,42 @@
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
-	    UserActions[this.state.form]({
+	    UserActions[this.props.form]({
 	      username: this.state.username,
 	      password: this.state.password
 	    });
 	  },
 	
 	  errors: function () {
-	    // If no error presents, return nothing
-	    if (!this.state.userErrors) {
+	    if (this.state.userErrors) {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.userErrors.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    } else {
 	      return;
 	    }
-	    return React.createElement(
-	      'ul',
-	      null,
-	      this.state.userErrors.errors.map(function (error, idx) {
-	        return React.createElement(
-	          'li',
-	          { key: idx },
-	          error
-	        );
-	      })
-	    );
 	  },
 	
 	  openModal: function () {
+	    $('.get-started-button').css('visibility', 'hidden');
 	    this.setState({ modalIsOpen: true });
 	  },
 	
 	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
+	    $('.get-started-button').css('visibility', 'visible');
+	    this.setState({ modalIsOpen: false, userErrors: null });
+	    // BUG Report: closing modal does not get rid of all the error messages
+	    // because there are three modals with three individual states
 	  },
+	
 	  // Inherit button class and button text from parent
 	  render: function () {
 	    return React.createElement(
@@ -35406,48 +35418,32 @@
 	        { isOpen: this.state.modalIsOpen,
 	          onRequestClose: this.closeModal,
 	          style: customStyles },
-	        this.errors(),
 	        React.createElement(
 	          'form',
-	          { id: 'login-form', onSubmit: this.handleSubmit },
+	          { onSubmit: this.handleSubmit },
 	          React.createElement(
 	            'section',
-	            null,
+	            { className: 'user-input-section' },
 	            React.createElement(
-	              'label',
-	              null,
-	              ' Username:',
-	              React.createElement('input', { type: 'text', value: this.state.username,
-	                onChange: this.setUsername })
+	              'h1',
+	              { className: 'login-header' },
+	              this.props.buttonText
 	            ),
-	            React.createElement(
-	              'label',
-	              null,
-	              ' Password:',
-	              React.createElement('input', { type: 'password', value: this.state.password,
-	                onChange: this.setPassword })
-	            )
+	            React.createElement('input', { placeholder: 'Username', type: 'text',
+	              value: this.state.username,
+	              onChange: this.setUsername,
+	              require: '' }),
+	            React.createElement('input', { placeholder: 'Password', type: 'password',
+	              value: this.state.password,
+	              onChange: this.setPassword,
+	              require: '' })
 	          ),
+	          React.createElement('input', { className: 'submit-button', type: 'Submit' }),
 	          React.createElement(
-	            'section',
-	            null,
-	            React.createElement(
-	              'label',
-	              null,
-	              ' Login',
-	              React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'login',
-	                defaultChecked: true,
-	                onChange: this.setFormType })
-	            ),
-	            React.createElement(
-	              'label',
-	              null,
-	              ' Sign up',
-	              React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'signup',
-	                onChange: this.setFormType })
-	            )
-	          ),
-	          React.createElement('input', { className: 'submit-button', type: 'Submit' })
+	            'h1',
+	            { className: 'login-error' },
+	            this.errors()
+	          )
 	        )
 	      )
 	    );
@@ -37411,6 +37407,12 @@
 	var React = __webpack_require__(1);
 	var UserActions = __webpack_require__(248);
 	var UserStore = __webpack_require__(226);
+	
+	//======================================================================
+	//======================================================================
+	// This component has been deprecated
+	//======================================================================
+	//======================================================================
 	
 	var LoginForm = React.createClass({
 	  displayName: 'LoginForm',
