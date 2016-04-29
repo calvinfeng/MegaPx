@@ -1,7 +1,5 @@
 var React = require('react');
 var HashHistory = require('react-router').hashHistory;
-var ReactPlayer = require('react-player');
-
 var LoginModal = require('./login_modal');
 
 var SplashPage = React.createClass({

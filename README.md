@@ -58,12 +58,12 @@ The following are the key milestone for a functional MVP.
   - Video plays in the background
   - Appropriate container for each element
 - [x] Login Modal
-- [ ] Secondary splash page to display photos uploaded by users
 - [x] Users has three different ways to bring up the login modal
   - Log in
   - Get Started
   - Sign up
 - [x] Once logged in, user will get navigated to home page
+- [ ] Secondary splash page to display photos uploaded by users
 
 
 ### Phase 3: CRUD on Photos (2 Days)
@@ -89,8 +89,13 @@ submitting API requests
   - Photo belongs to photograher
 
 - [ ] Create PhotoStore, PhotoActions
-  - test if fetchAllPhotos() works
-
+  - fetchAllPhotos()
+  - fetchSinglePhoto()
+  - fetchCurrentUserPhotos()
+  - fetchPhotosWithinBounds()
+  - postPhoto
+  - deletePhoto
+  - updatePhoto
 
 - Create marker store, photo store, comment store
 - Set up appropriate actions for retrieving photos

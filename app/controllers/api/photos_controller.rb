@@ -1,7 +1,7 @@
 class Api::PhotosController < ApplicationController
 
   def index
-    @photos = Photo.all
+    @photos = Photo.in_bounds(params[:bounds])
     render :index
   end
 
@@ -43,6 +43,16 @@ class Api::PhotosController < ApplicationController
     else
       @errors = ["Can't find the requested photo"]
       render "api/shared/error", status: 404
+    end
+  end
+
+  def current_user_photos
+    if current_user
+      @photos = current_user.photos
+      render "api/photos/index.json.jbuilder"
+    else
+      @errors = ["Access denied, login is required"]
+      render "api/shared/error", status: 403
     end
   end
 

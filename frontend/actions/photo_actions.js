@@ -7,17 +7,36 @@ var PhotoConstants = require('../constants/photo_constants.js');
 var PhotoActions = {
   // ClientActions: API Request ========================================
   fetchSinglePhoto: function(id) {
-    PhotoApiUtil.fetchSinglePhoto(id, this.receivePhoto, this.handleError);
+    PhotoApiUtil.fetchSinglePhoto(id, this.receiveOnePhoto, this.handleError);
+  },
+
+  fetchPhotosWithinBounds: function(bounds) {
+    PhotoApiUtil.fetchPhotosWithinBounds(bounds, this.receivePhotos, this.handleError);
+  },
+
+  fetchAllPhotos: function() {
+    PhotoApiUtil.fetchAllPhotos(this.receivePhotos, this.handleError);
+  },
+
+  fetchCurrentUserPhotos: function() {
+    PhotoApiUtil.fetchCurrentUserPhotos(this.receivePhotos, this.handleError);
   },
 
   // ServerActions: Success Handlers ===================================
-  receivePhoto: function(photo) {
+  receiveOnePhoto: function(photo) {
     AppDispatcher.dispatch({
-      actionType: PhotoConstants.RECEIVE,
+      actionType: PhotoConstants.RECEIVE_ONE,
       photo: photo
     });
   },
 
+  receivePhotos: function(photos) {
+    AppDispatcher.dispatch({
+      actionType: PhotoConstants.RECEIVE,
+      photos: photos
+    });
+  },
+  // ServerActions: Error Handler ======================================
   handleError: function(response) {
     AppDispatcher.dispatch({
       actionType: PhotoConstants.ERROR,
