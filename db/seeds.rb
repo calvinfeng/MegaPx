@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+User.create!(username: 'albert', password: '123456', first_name: 'Albert', last_name: 'Tester')
+User.create!(username: 'bob', password: '123456', first_name: 'Bob', last_name: 'Tester')
+User.create!(username: 'calvin', password: '123456', first_name: 'Calvin', last_name: 'Tester')
+User.create!(username: 'daniel', password: '123456', first_name: 'Daniel', last_name: 'Tester')
+
+Photo.create!(title: "Overhead Aurora", url: "https://c2.staticflickr.com/2/1548/24885041025_9fc3da7e54_k.jpg",
+  lat: -74.238863, lng: -64.335938, user_id: 3)
+Photo.create!(title: "Spring Thaw", url: "https://c2.staticflickr.com/2/1577/25553954963_73aae906d9_k.jpg",
+  lat: 64.069497, lng: -16.479492, user_id: 3)

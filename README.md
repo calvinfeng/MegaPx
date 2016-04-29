@@ -51,7 +51,7 @@ The following are the key milestone for a functional MVP.
 
 ### Phase 2: Visual Enhancement (1.5 Day)
 **objectve:**
-- [ ] Create appropriate CSS for LoginForm
+- [x] Create appropriate CSS for LoginForm
 - [x] Set up LoginForm with Modal
 - [x] SplashPage
   - Navigation Bar with Login buttons
@@ -68,7 +68,7 @@ The following are the key milestone for a functional MVP.
 
 ### Phase 3: CRUD on Photos (2 Days)
 **objectve:**
-- [ ] Create Photos model
+- [x] Create Photos model
   - user_id
   - description
   - title (default: Untitled)
@@ -76,7 +76,7 @@ The following are the key milestone for a functional MVP.
   - lng
   - img_url
 
-- [ ] Create PhotosController: photos can be access/create/delete through
+- [x] Create PhotosController: photos can be access/create/delete through
 submitting API requests
   - index
   - create
@@ -84,7 +84,7 @@ submitting API requests
   - destroy
   - show
 
-- [ ] Create Associations
+- [x] Create Associations
   - User has many photos
   - Photo belongs to photograher
 

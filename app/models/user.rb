@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6, allow_nil: true }
   validates :session_token, :username, uniqueness: true
 
+  has_many :photos,
+  foreign_key: :user_id,
+  class_name: "Photo"
+
   def self.find_by_credentials(username, unencrypted_password)
     user = User.find_by_username(username)
     if user

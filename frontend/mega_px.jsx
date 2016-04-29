@@ -23,7 +23,6 @@ var routes = (
   <Router history={HashHistory}>
     <Route path="/" component={App}>
     <IndexRoute component={Index}/>
-      <Route path="/login" component={LoginForm}></Route>
     </Route>
   </Router>
 );

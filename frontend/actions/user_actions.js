@@ -6,32 +6,8 @@ var UserApiUtil = require('../util/user_api_util');
 var UserConstants = require('../constants/user_constants');
 
 var UserActions = {
-  // On success handlers
-  receiveCurrentUser: function(user) {
-    AppDispatcher.dispatch({
-      actionType: UserConstants.LOGIN,
-      user: user
-    });
-  },
-
-  removeCurrentUser: function() {
-    AppDispatcher.dispatch({
-      actionType: UserConstants.LOGOUT
-    });
-  },
-
-  handleError: function(response) {
-    AppDispatcher.dispatch({
-      actionType: UserConstants.ERROR,
-      errors: response.error()
-    });
-  },
-
-  guestLogin: function() {
-    UserActions.login({username: "guest", password: "password"});
-  },
-
-  // API Actions =======================================================
+  
+  // ClientActions: API Request ========================================
   fetchCurrentUser: function() {
     UserApiUtil.fetchCurrentUser(
       UserActions.receiveCurrentUser,
@@ -60,7 +36,33 @@ var UserActions = {
 
   logout: function() {
     UserApiUtil.logout(UserActions.removeCurrentUser, UserActions.handleError);
+  },
+
+  // ServerActions: Success Handlers ===================================
+  receiveCurrentUser: function(user) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.LOGIN,
+      user: user
+    });
+  },
+
+  removeCurrentUser: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.LOGOUT
+    });
+  },
+
+  handleError: function(response) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.ERROR,
+      errors: response.error()
+    });
+  },
+
+  guestLogin: function() {
+    UserActions.login({username: "guest", password: "password"});
   }
+
 };
 
 module.exports = UserActions;

@@ -22,17 +22,13 @@ var SplashPage = React.createClass({
     window.removeEventListener("resize", this.updateDimensions);
   },
 
-  handleClick: function() {
-    HashHistory.push({pathname: "/login"});
-  },
-
   render: function() {
     return (
       <div className="splash">
 
         <div className="nav-bar">
           <div id="logo">
-            <img src="http://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
+            <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
               width="100px"/>
           </div>
           <LoginModal buttonClass="link" buttonText="Log in" form="login"/>
