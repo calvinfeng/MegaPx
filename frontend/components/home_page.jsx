@@ -34,9 +34,11 @@ var HomePage = React.createClass({
       <div id="home-page">
         <div className="home-nav">
           <div className="home-nav-left-box">
-            <div onClick={this.toggleMap} className="link">Toggle map</div>
+            <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
+              height="40px" className="home-logo"/>
           </div>
           <div className="home-nav-right-box">
+            <div onClick={this.toggleMap} className="link">Toggle map</div>
             <div onClick={this.handleClick} className="link">Log out</div>
           </div>
         </div>

@@ -1,10 +1,9 @@
 var React = require('react');
-
 var PhotoStore = require('../stores/photo_store');
 
 var MAX_PER_ROW = 4;
 var PhotoGrid = React.createClass({
-  
+
   getInitialState: function() {
     return {photos: []};
   },
@@ -15,9 +14,11 @@ var PhotoGrid = React.createClass({
 
   __onChange: function() {
     this.setState({photos: PhotoStore.inventory()});
+    console.log("photo-grid received photos");
+    this.organizePhotosInGrid();
   },
 
-  componentWillUpdate:function() {
+  organizePhotosInGrid: function() {
     $( "#index-photo-grid" ).empty();
     if (this.state.photos) {
       var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
@@ -55,7 +56,32 @@ var PhotoGrid = React.createClass({
         // Append row to the grid
         $parent.append($row);
       }
+      $(".photo-item").wrap("<div class='ripplelink'></div>");
+      this.ripplelink();
     }
+  },
+
+  ripplelink: function() {
+    $(function(){
+      var ink, d, x, y;
+      $(".ripplelink").click(function(e){
+        if($(this).find(".ink").length === 0){
+          $(this).prepend("<span class='ink'></span>");
+        }
+        ink = $(this).find(".ink");
+        ink.removeClass("animate");
+
+        if(!ink.height() && !ink.width()){
+          d = Math.max($(this).outerWidth(), $(this).outerHeight());
+          ink.css({height: d, width: d});
+        }
+
+        x = e.pageX - $(this).offset().left - ink.width()/2;
+        y = e.pageY - $(this).offset().top - ink.height()/2;
+
+        ink.css({top: y+'px', left: x+'px'}).addClass("animate");
+      });
+    });
   },
 
   render: function() {
@@ -63,5 +89,4 @@ var PhotoGrid = React.createClass({
   }
 
 });
-
 module.exports = PhotoGrid;

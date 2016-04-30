@@ -53,7 +53,7 @@
 	var Modal = __webpack_require__(225);
 	
 	var Index = __webpack_require__(245);
-	var LoginForm = __webpack_require__(290);
+	var LoginForm = __webpack_require__(302);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -27405,7 +27405,7 @@
 	var UserActions = __webpack_require__(268);
 	
 	var HomePage = __webpack_require__(271);
-	var SplashPage = __webpack_require__(272);
+	var SplashPage = __webpack_require__(300);
 	
 	// getInitialState => render() => componentWillMount => componentDidMount
 	// setState => shouldComponentUpdate => render() => same ^
@@ -34386,10 +34386,10 @@
 
 	var React = __webpack_require__(1);
 	var UserActions = __webpack_require__(268);
-	var PhotoActions = __webpack_require__(291);
-	var Map = __webpack_require__(295);
-	var PhotoIndex = __webpack_require__(297);
-	var PhotoGrid = __webpack_require__(319);
+	var PhotoActions = __webpack_require__(272);
+	var Map = __webpack_require__(276);
+	var PhotoIndex = __webpack_require__(278);
+	var PhotoGrid = __webpack_require__(299);
 	
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
@@ -34427,15 +34427,17 @@
 	        React.createElement(
 	          'div',
 	          { className: 'home-nav-left-box' },
-	          React.createElement(
-	            'div',
-	            { onClick: this.toggleMap, className: 'link' },
-	            'Toggle map'
-	          )
+	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	            height: '40px', className: 'home-logo' })
 	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'home-nav-right-box' },
+	          React.createElement(
+	            'div',
+	            { onClick: this.toggleMap, className: 'link' },
+	            'Toggle map'
+	          ),
 	          React.createElement(
 	            'div',
 	            { onClick: this.handleClick, className: 'link' },
@@ -34465,440 +34467,11 @@
 /* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var HashHistory = __webpack_require__(166).hashHistory;
-	var LoginModal = __webpack_require__(289);
-	
-	var SplashPage = React.createClass({
-	  displayName: 'SplashPage',
-	
-	
-	  getInitialState: function () {
-	    return { width: $(document).width(), height: $(document).height() };
-	  },
-	
-	  updateDimensions: function () {
-	    this.setState({ width: $(document).width(), height: $(document).height() });
-	  },
-	
-	  componentDidMount: function () {
-	    window.addEventListener("resize", this.updateDimensions);
-	  },
-	
-	  componentWillUnmount: function () {
-	    window.removeEventListener("resize", this.updateDimensions);
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'splash' },
-	      React.createElement(
-	        'div',
-	        { className: 'nav-bar' },
-	        React.createElement(
-	          'div',
-	          { id: 'logo' },
-	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	            width: '100px' })
-	        ),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'background-video' },
-	        React.createElement(
-	          'video',
-	          { autoPlay: true, loop: true },
-	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
-	            type: 'video/mp4' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'welcome' },
-	        React.createElement(
-	          'div',
-	          { className: 'center-panel' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Home to everyone\'s megapixel photos'
-	          ),
-	          React.createElement(
-	            'h5',
-	            null,
-	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
-	          ),
-	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
-	            buttonText: 'Get Started',
-	            form: 'login' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'bottom-banner' },
-	        React.createElement(
-	          'div',
-	          { className: 'left-box' },
-	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
-	            width: '50', height: '50' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'right-box' },
-	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
-	            width: '50', height: '50' })
-	        )
-	      ),
-	      React.createElement('div', { className: 'feature-section' })
-	    );
-	  }
-	});
-	
-	module.exports = SplashPage;
-
-/***/ },
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Modal = __webpack_require__(225);
-	
-	var UserActions = __webpack_require__(268);
-	var UserStore = __webpack_require__(246);
-	
-	var customStyles = {
-	  content: {
-	    top: '35%',
-	    right: '30%',
-	    bottom: 'auto',
-	    left: '30%',
-	    background: 'transparent',
-	    border: '2px solid white'
-	  },
-	  overlay: {
-	    backgroundColor: 'rgba(0, 0, 0, 0.60)'
-	  }
-	};
-	
-	var LoginModal = React.createClass({
-	  displayName: 'LoginModal',
-	
-	
-	  getInitialState: function () {
-	    return {
-	      modalIsOpen: false,
-	      form: "login",
-	      username: "",
-	      password: ""
-	    };
-	  },
-	
-	  __onChange: function () {
-	    // If log in successfully, close the modal
-	    if (UserStore.currentUser()) {
-	      this.closeModal();
-	    } else {
-	      // Report errors to user
-	      this.setState({ userErrors: UserStore.errors() });
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    this.storeListener = UserStore.addListener(this.__onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	  },
-	
-	  setFormType: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
-	
-	  setUsername: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  setPassword: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    UserActions[this.props.form]({
-	      username: this.state.username,
-	      password: this.state.password
-	    });
-	  },
-	
-	  errors: function () {
-	    if (this.state.userErrors) {
-	      return React.createElement(
-	        'ul',
-	        null,
-	        this.state.userErrors.errors.map(function (error, idx) {
-	          return React.createElement(
-	            'li',
-	            { key: idx },
-	            error
-	          );
-	        })
-	      );
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  openModal: function () {
-	    $('.get-started-button').css('visibility', 'hidden');
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    $('.get-started-button').css('visibility', 'visible');
-	    this.setState({ modalIsOpen: false, userErrors: null });
-	    // BUG Report: closing modal does not get rid of all the error messages
-	    // because there are three modals with three individual states
-	  },
-	
-	  // Inherit button class and button text from parent
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: this.props.buttonClass, onClick: this.openModal },
-	        this.props.buttonText
-	      ),
-	      React.createElement(
-	        Modal,
-	        { isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.handleSubmit },
-	          React.createElement(
-	            'section',
-	            { className: 'user-input-section' },
-	            React.createElement(
-	              'h1',
-	              { className: 'login-header' },
-	              this.props.buttonText
-	            ),
-	            React.createElement('input', { placeholder: 'Username', type: 'text',
-	              value: this.state.username,
-	              onChange: this.setUsername,
-	              require: '' }),
-	            React.createElement('input', { placeholder: 'Password', type: 'password',
-	              value: this.state.password,
-	              onChange: this.setPassword,
-	              require: '' })
-	          ),
-	          React.createElement('input', { className: 'submit-button', type: 'Submit' }),
-	          React.createElement(
-	            'h1',
-	            { className: 'login-error' },
-	            this.errors()
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LoginModal;
-
-/***/ },
-/* 290 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var UserActions = __webpack_require__(268);
-	var UserStore = __webpack_require__(246);
-	
-	//======================================================================
-	//======================================================================
-	// This component has been deprecated
-	//======================================================================
-	//======================================================================
-	
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
-	
-	
-	  getInitialState: function () {
-	    return { form: "login", username: "", password: "" };
-	  },
-	
-	  __onChange: function () {
-	    this.setState({
-	      currentUser: UserStore.currentUser(),
-	      userErrors: UserStore.errors()
-	    });
-	  },
-	
-	  componentDidMount: function () {
-	    this.storeListener = UserStore.addListener(this.__onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	  },
-	
-	  setFormType: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
-	
-	  setUsername: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  setPassword: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  logout: function (event) {
-	    event.preventDefault();
-	    UserActions.logout();
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    UserActions[this.state.form]({
-	      username: this.state.username,
-	      password: this.state.password
-	    });
-	  },
-	
-	  greeting: function () {
-	    // If no one has logged in, return nothing
-	    if (!this.state.currentUser) {
-	      return;
-	    }
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Hi, ',
-	        this.state.currentUser.first_name
-	      ),
-	      React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
-	    );
-	  },
-	
-	  errors: function () {
-	    // If no error presents, return nothing
-	    if (!this.state.userErrors) {
-	      return;
-	    }
-	    return React.createElement(
-	      'ul',
-	      null,
-	      this.state.userErrors.errors.map(function (error, idx) {
-	        return React.createElement(
-	          'li',
-	          { key: idx },
-	          error
-	        );
-	      })
-	    );
-	  },
-	
-	  form: function () {
-	    // If someone has logged in, won't display form
-	    if (this.state.currentUser) {
-	      return;
-	    }
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Username:',
-	          React.createElement('input', { type: 'text', value: this.state.username,
-	            onChange: this.setUsername })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Password:',
-	          React.createElement('input', { type: 'password', value: this.state.password,
-	            onChange: this.setPassword })
-	        )
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Login',
-	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'login',
-	            defaultChecked: true,
-	            onChange: this.setFormType })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Sign up',
-	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'signup',
-	            onChange: this.setFormType })
-	        )
-	      ),
-	      React.createElement('input', { type: 'Submit' })
-	    );
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'login-form' },
-	      this.greeting(),
-	      this.errors(),
-	      this.form()
-	    );
-	  }
-	
-	});
-	
-	module.exports = LoginForm;
-
-/***/ },
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var AppDispatcher = __webpack_require__(265);
-	var PhotoStore = __webpack_require__(292);
-	var PhotoApiUtil = __webpack_require__(293);
+	var PhotoStore = __webpack_require__(273);
+	var PhotoApiUtil = __webpack_require__(274);
 	
-	var PhotoConstants = __webpack_require__(294);
+	var PhotoConstants = __webpack_require__(275);
 	
 	var PhotoActions = {
 	  // ClientActions: API Request ========================================
@@ -34945,7 +34518,7 @@
 	module.exports = PhotoActions;
 
 /***/ },
-/* 292 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(247).Store;
@@ -34997,7 +34570,7 @@
 	module.exports = PhotoStore;
 
 /***/ },
-/* 293 */
+/* 274 */
 /***/ function(module, exports) {
 
 	var PhotoApiUtil = {
@@ -35044,7 +34617,7 @@
 	module.exports = PhotoApiUtil;
 
 /***/ },
-/* 294 */
+/* 275 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -35054,14 +34627,14 @@
 	};
 
 /***/ },
-/* 295 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var PhotoStore = __webpack_require__(292);
-	var MarkerStore = __webpack_require__(296);
-	var PhotoActions = __webpack_require__(291);
+	var PhotoStore = __webpack_require__(273);
+	var MarkerStore = __webpack_require__(277);
+	var PhotoActions = __webpack_require__(272);
 	var hashHistory = __webpack_require__(166).hashHistory;
 	
 	var _markers = [];
@@ -35139,14 +34712,14 @@
 	module.exports = Map;
 
 /***/ },
-/* 296 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(265);
-	var PhotoConstants = __webpack_require__(294);
+	var PhotoConstants = __webpack_require__(275);
 	/* global google */
 	var Store = __webpack_require__(247).Store;
-	var PhotoStore = __webpack_require__(292);
+	var PhotoStore = __webpack_require__(273);
 	
 	var _markers = [];
 	var MarkerStore = new Store(AppDispatcher);
@@ -35203,15 +34776,15 @@
 	module.exports = MarkerStore;
 
 /***/ },
-/* 297 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var PhotoActions = __webpack_require__(291);
-	var PhotoStore = __webpack_require__(292);
-	var Masonry = __webpack_require__(298);
-	var Infinite = __webpack_require__(307);
+	var PhotoActions = __webpack_require__(272);
+	var PhotoStore = __webpack_require__(273);
+	var Masonry = __webpack_require__(279);
+	var Infinite = __webpack_require__(288);
 	
 	var masonryOptions = {
 	  transitionDuration: 10
@@ -35261,12 +34834,12 @@
 	module.exports = PhotoIndex;
 
 /***/ },
-/* 298 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isBrowser = typeof window !== 'undefined';
-	var Masonry = isBrowser ? window.Masonry || __webpack_require__(299) : null;
-	var imagesloaded = isBrowser ? __webpack_require__(306) : null;
+	var Masonry = isBrowser ? window.Masonry || __webpack_require__(280) : null;
+	var imagesloaded = isBrowser ? __webpack_require__(287) : null;
 	var React = __webpack_require__(1);
 	var refName = 'masonryContainer';
 	
@@ -35462,7 +35035,7 @@
 
 
 /***/ },
-/* 299 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35479,8 +35052,8 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(300),
-	        __webpack_require__(302)
+	        __webpack_require__(281),
+	        __webpack_require__(283)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS
@@ -35672,7 +35245,7 @@
 
 
 /***/ },
-/* 300 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35688,10 +35261,10 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(301),
-	        __webpack_require__(302),
-	        __webpack_require__(303),
-	        __webpack_require__(305)
+	        __webpack_require__(282),
+	        __webpack_require__(283),
+	        __webpack_require__(284),
+	        __webpack_require__(286)
 	      ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
 	        return factory( window, EvEmitter, getSize, utils, Item);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -36615,7 +36188,7 @@
 
 
 /***/ },
-/* 301 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36730,7 +36303,7 @@
 
 
 /***/ },
-/* 302 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36945,7 +36518,7 @@
 
 
 /***/ },
-/* 303 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36962,7 +36535,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(304)
+	      __webpack_require__(285)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
 	      return factory( window, matchesSelector );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -37186,7 +36759,7 @@
 
 
 /***/ },
-/* 304 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -37245,7 +36818,7 @@
 
 
 /***/ },
-/* 305 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -37258,8 +36831,8 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(301),
-	        __webpack_require__(302)
+	        __webpack_require__(282),
+	        __webpack_require__(283)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS - Browserify, Webpack
@@ -37802,7 +37375,7 @@
 
 
 /***/ },
-/* 306 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -37819,7 +37392,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(301)
+	      __webpack_require__(282)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter ) {
 	      return factory( window, EvEmitter );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -38178,7 +37751,7 @@
 
 
 /***/ },
-/* 307 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -38188,13 +37761,13 @@
 	var React = global.React || __webpack_require__(1);
 	var ReactDOM = global.ReactDOM || __webpack_require__(32);
 	
-	__webpack_require__(308);
-	var scaleEnum = __webpack_require__(309);
-	var infiniteHelpers = __webpack_require__(310);
-	var _isFinite = __webpack_require__(315);
+	__webpack_require__(289);
+	var scaleEnum = __webpack_require__(290);
+	var infiniteHelpers = __webpack_require__(291);
+	var _isFinite = __webpack_require__(296);
 	
-	var preloadType = __webpack_require__(316).preloadType;
-	var checkProps = checkProps = __webpack_require__(317);
+	var preloadType = __webpack_require__(297).preloadType;
+	var checkProps = checkProps = __webpack_require__(298);
 	
 	var Infinite = React.createClass({
 	  displayName: 'Infinite',
@@ -38632,7 +38205,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 308 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -38653,7 +38226,7 @@
 	}
 
 /***/ },
-/* 309 */
+/* 290 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -38663,13 +38236,13 @@
 	};
 
 /***/ },
-/* 310 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 	
-	var ConstantInfiniteComputer = __webpack_require__(311);
-	var ArrayInfiniteComputer = __webpack_require__(313);
+	var ConstantInfiniteComputer = __webpack_require__(292);
+	var ArrayInfiniteComputer = __webpack_require__(294);
 	var React = global.React || __webpack_require__(1);
 	
 	function createInfiniteComputer(data, children) {
@@ -38715,7 +38288,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 311 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38728,7 +38301,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var InfiniteComputer = __webpack_require__(312);
+	var InfiniteComputer = __webpack_require__(293);
 	
 	var ConstantInfiniteComputer = (function (_InfiniteComputer) {
 	  _inherits(ConstantInfiniteComputer, _InfiniteComputer);
@@ -38777,7 +38350,7 @@
 	module.exports = ConstantInfiniteComputer;
 
 /***/ },
-/* 312 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// An infinite computer must be able to do the following things:
@@ -38857,7 +38430,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 313 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38870,8 +38443,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var InfiniteComputer = __webpack_require__(312),
-	    bs = __webpack_require__(314);
+	var InfiniteComputer = __webpack_require__(293),
+	    bs = __webpack_require__(295);
 	
 	var ArrayInfiniteComputer = (function (_InfiniteComputer) {
 	  _inherits(ArrayInfiniteComputer, _InfiniteComputer);
@@ -38939,7 +38512,7 @@
 	module.exports = ArrayInfiniteComputer;
 
 /***/ },
-/* 314 */
+/* 295 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -38987,7 +38560,7 @@
 	};
 
 /***/ },
-/* 315 */
+/* 296 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -39038,7 +38611,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 316 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -39054,7 +38627,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 317 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// This module provides a centralized place for
@@ -39064,7 +38637,7 @@
 	'use strict';
 	
 	var React = global.React || __webpack_require__(1);
-	var _isFinite = __webpack_require__(315);
+	var _isFinite = __webpack_require__(296);
 	
 	module.exports = function (props) {
 	  var rie = 'Invariant Violation: ';
@@ -39085,13 +38658,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 318 */,
-/* 319 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	
-	var PhotoStore = __webpack_require__(292);
+	var PhotoStore = __webpack_require__(273);
 	
 	var MAX_PER_ROW = 4;
 	var PhotoGrid = React.createClass({
@@ -39108,9 +38679,11 @@
 	
 	  __onChange: function () {
 	    this.setState({ photos: PhotoStore.inventory() });
+	    console.log("photo-grid received photos");
+	    this.organizePhotosInGrid();
 	  },
 	
-	  componentWillUpdate: function () {
+	  organizePhotosInGrid: function () {
 	    $("#index-photo-grid").empty();
 	    if (this.state.photos) {
 	      var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
@@ -39148,7 +38721,32 @@
 	        // Append row to the grid
 	        $parent.append($row);
 	      }
+	      $(".photo-item").wrap("<div class='ripplelink'></div>");
+	      this.ripplelink();
 	    }
+	  },
+	
+	  ripplelink: function () {
+	    $(function () {
+	      var ink, d, x, y;
+	      $(".ripplelink").click(function (e) {
+	        if ($(this).find(".ink").length === 0) {
+	          $(this).prepend("<span class='ink'></span>");
+	        }
+	        ink = $(this).find(".ink");
+	        ink.removeClass("animate");
+	
+	        if (!ink.height() && !ink.width()) {
+	          d = Math.max($(this).outerWidth(), $(this).outerHeight());
+	          ink.css({ height: d, width: d });
+	        }
+	
+	        x = e.pageX - $(this).offset().left - ink.width() / 2;
+	        y = e.pageY - $(this).offset().top - ink.height() / 2;
+	
+	        ink.css({ top: y + 'px', left: x + 'px' }).addClass("animate");
+	      });
+	    });
 	  },
 	
 	  render: function () {
@@ -39156,8 +38754,420 @@
 	  }
 	
 	});
-	
 	module.exports = PhotoGrid;
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var HashHistory = __webpack_require__(166).hashHistory;
+	var LoginModal = __webpack_require__(301);
+	
+	var SplashPage = React.createClass({
+	  displayName: 'SplashPage',
+	
+	
+	  getInitialState: function () {
+	    return { width: $(document).width(), height: $(document).height() };
+	  },
+	
+	  updateDimensions: function () {
+	    this.setState({ width: $(document).width(), height: $(document).height() });
+	  },
+	
+	  componentDidMount: function () {
+	    window.addEventListener("resize", this.updateDimensions);
+	  },
+	
+	  componentWillUnmount: function () {
+	    window.removeEventListener("resize", this.updateDimensions);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'splash' },
+	      React.createElement(
+	        'div',
+	        { className: 'nav-bar' },
+	        React.createElement(
+	          'div',
+	          { id: 'logo' },
+	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	            width: '100px' })
+	        ),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'background-video' },
+	        React.createElement(
+	          'video',
+	          { autoPlay: true, loop: true },
+	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
+	            type: 'video/mp4' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'welcome' },
+	        React.createElement(
+	          'div',
+	          { className: 'center-panel' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Home to everyone\'s megapixel photos'
+	          ),
+	          React.createElement(
+	            'h5',
+	            null,
+	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	          ),
+	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
+	            buttonText: 'Get Started',
+	            form: 'login' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'bottom-banner' },
+	        React.createElement(
+	          'div',
+	          { className: 'left-box' },
+	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
+	            width: '50', height: '50' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'right-box' },
+	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
+	            width: '50', height: '50' })
+	        )
+	      ),
+	      React.createElement('div', { className: 'feature-section' })
+	    );
+	  }
+	});
+	
+	module.exports = SplashPage;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Modal = __webpack_require__(225);
+	
+	var UserActions = __webpack_require__(268);
+	var UserStore = __webpack_require__(246);
+	
+	var customStyles = {
+	  content: {
+	    top: '35%',
+	    right: '30%',
+	    bottom: 'auto',
+	    left: '30%',
+	    background: 'transparent',
+	    border: '2px solid white'
+	  },
+	  overlay: {
+	    backgroundColor: 'rgba(0, 0, 0, 0.60)'
+	  }
+	};
+	
+	var LoginModal = React.createClass({
+	  displayName: 'LoginModal',
+	
+	
+	  getInitialState: function () {
+	    return {
+	      modalIsOpen: false,
+	      form: "login",
+	      username: "",
+	      password: ""
+	    };
+	  },
+	
+	  __onChange: function () {
+	    // If log in successfully, close the modal
+	    if (UserStore.currentUser()) {
+	      this.closeModal();
+	    } else {
+	      // Report errors to user
+	      this.setState({ userErrors: UserStore.errors() });
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    this.storeListener = UserStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	  },
+	
+	  setFormType: function (event) {
+	    this.setState({ form: event.currentTarget.value });
+	  },
+	
+	  setUsername: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  setPassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    UserActions[this.props.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  errors: function () {
+	    if (this.state.userErrors) {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.userErrors.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    } else {
+	      return;
+	    }
+	  },
+	
+	  openModal: function () {
+	    $('.get-started-button').css('visibility', 'hidden');
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    $('.get-started-button').css('visibility', 'visible');
+	    this.setState({ modalIsOpen: false, userErrors: null });
+	    // BUG Report: closing modal does not get rid of all the error messages
+	    // because there are three modals with three individual states
+	  },
+	
+	  // Inherit button class and button text from parent
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: this.props.buttonClass, onClick: this.openModal },
+	        this.props.buttonText
+	      ),
+	      React.createElement(
+	        Modal,
+	        { isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit },
+	          React.createElement(
+	            'section',
+	            { className: 'user-input-section' },
+	            React.createElement(
+	              'h1',
+	              { className: 'login-header' },
+	              this.props.buttonText
+	            ),
+	            React.createElement('input', { placeholder: 'Username', type: 'text',
+	              value: this.state.username,
+	              onChange: this.setUsername,
+	              require: '' }),
+	            React.createElement('input', { placeholder: 'Password', type: 'password',
+	              value: this.state.password,
+	              onChange: this.setPassword,
+	              require: '' })
+	          ),
+	          React.createElement('input', { className: 'submit-button', type: 'Submit' }),
+	          React.createElement(
+	            'h1',
+	            { className: 'login-error' },
+	            this.errors()
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LoginModal;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var UserActions = __webpack_require__(268);
+	var UserStore = __webpack_require__(246);
+	
+	//======================================================================
+	//======================================================================
+	// This component has been deprecated
+	//======================================================================
+	//======================================================================
+	
+	var LoginForm = React.createClass({
+	  displayName: 'LoginForm',
+	
+	
+	  getInitialState: function () {
+	    return { form: "login", username: "", password: "" };
+	  },
+	
+	  __onChange: function () {
+	    this.setState({
+	      currentUser: UserStore.currentUser(),
+	      userErrors: UserStore.errors()
+	    });
+	  },
+	
+	  componentDidMount: function () {
+	    this.storeListener = UserStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	  },
+	
+	  setFormType: function (event) {
+	    this.setState({ form: event.currentTarget.value });
+	  },
+	
+	  setUsername: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  setPassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  logout: function (event) {
+	    event.preventDefault();
+	    UserActions.logout();
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    UserActions[this.state.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  greeting: function () {
+	    // If no one has logged in, return nothing
+	    if (!this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        'Hi, ',
+	        this.state.currentUser.first_name
+	      ),
+	      React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
+	    );
+	  },
+	
+	  errors: function () {
+	    // If no error presents, return nothing
+	    if (!this.state.userErrors) {
+	      return;
+	    }
+	    return React.createElement(
+	      'ul',
+	      null,
+	      this.state.userErrors.errors.map(function (error, idx) {
+	        return React.createElement(
+	          'li',
+	          { key: idx },
+	          error
+	        );
+	      })
+	    );
+	  },
+	
+	  form: function () {
+	    // If someone has logged in, won't display form
+	    if (this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Username:',
+	          React.createElement('input', { type: 'text', value: this.state.username,
+	            onChange: this.setUsername })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Password:',
+	          React.createElement('input', { type: 'password', value: this.state.password,
+	            onChange: this.setPassword })
+	        )
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Login',
+	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'login',
+	            defaultChecked: true,
+	            onChange: this.setFormType })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Sign up',
+	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'signup',
+	            onChange: this.setFormType })
+	        )
+	      ),
+	      React.createElement('input', { type: 'Submit' })
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'login-form' },
+	      this.greeting(),
+	      this.errors(),
+	      this.form()
+	    );
+	  }
+	
+	});
+	
+	module.exports = LoginForm;
 
 /***/ }
 /******/ ]);
