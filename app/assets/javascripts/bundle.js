@@ -34389,6 +34389,7 @@
 	var PhotoActions = __webpack_require__(291);
 	var Map = __webpack_require__(295);
 	var PhotoIndex = __webpack_require__(297);
+	var PhotoGrid = __webpack_require__(319);
 	
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
@@ -34452,7 +34453,7 @@
 	        'div',
 	        { className: 'home-content-container' },
 	        React.createElement(Map, null),
-	        React.createElement(PhotoIndex, null)
+	        React.createElement(PhotoGrid, null)
 	      )
 	    );
 	  }
@@ -35169,8 +35170,10 @@
 	  var locations;
 	  this.deleteMarkers();
 	  locations = PhotoStore.inventory();
-	  for (var i = 0; i < locations.length; i++) {
-	    this.addMarker(locations[i]);
+	  if (locations) {
+	    for (var i = 0; i < locations.length; i++) {
+	      this.addMarker(locations[i]);
+	    }
 	  }
 	};
 	
@@ -35237,7 +35240,7 @@
 	        return React.createElement(
 	          'div',
 	          null,
-	          React.createElement('img', { className: 'photo-item', src: photo.url })
+	          React.createElement('img', { className: 'masonry-photo-item', src: photo.url })
 	        );
 	      });
 	    } else {
@@ -35245,7 +35248,7 @@
 	    }
 	    return React.createElement(
 	      Masonry,
-	      { className: 'photo-grid',
+	      { className: 'masonry-photo-grid',
 	        elementType: 'div',
 	        options: masonryOptions,
 	        disableImagesLoaded: false },
@@ -39080,6 +39083,81 @@
 	  }
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 318 */,
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var PhotoStore = __webpack_require__(292);
+	
+	var MAX_PER_ROW = 4;
+	var PhotoGrid = React.createClass({
+	  displayName: 'PhotoGrid',
+	
+	
+	  getInitialState: function () {
+	    return { photos: [] };
+	  },
+	
+	  componentDidMount: function () {
+	    PhotoStore.addListener(this.__onChange);
+	  },
+	
+	  __onChange: function () {
+	    this.setState({ photos: PhotoStore.inventory() });
+	  },
+	
+	  componentWillUpdate: function () {
+	    $("#index-photo-grid").empty();
+	    if (this.state.photos) {
+	      var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
+	      var $parent = $("#index-photo-grid");
+	      var photos = this.state.photos;
+	      // This is actually O(n) operation even though it seems like a nested
+	      // loop structure, just look at idx and pay close attention to it
+	      idx = 0;
+	      while (idx < photos.length - 1) {
+	        $row = $("<div></div>");
+	        $row.addClass("row");
+	        accumWidth = 0;
+	        rowItems = [];
+	        numRowItems = Math.floor(Math.random() * MAX_PER_ROW) + 1;
+	
+	        // Insert images to row
+	        for (i = 0; i < numRowItems; i++) {
+	          if (idx === photos.length) {
+	            break;
+	          }
+	          $img = $("<img></img>");
+	          $img.addClass("photo-item");
+	          $img.attr("src", photos[idx].url);
+	          accumWidth += photos[idx].width / photos[idx].height;
+	          idx += 1;
+	          rowItems.push($img);
+	        }
+	        console.log("accumWidth: " + accumWidth);
+	
+	        // Modify dimensions of the images before appending to row
+	        for (i = 0; i < rowItems.length; i++) {
+	          $(rowItems[i]).attr('height', $parent.width() / accumWidth);
+	          $row.append(rowItems[i]);
+	        }
+	        // Append row to the grid
+	        $parent.append($row);
+	      }
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement('div', { id: 'index-photo-grid' });
+	  }
+	
+	});
+	
+	module.exports = PhotoGrid;
 
 /***/ }
 /******/ ]);

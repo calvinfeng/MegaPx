@@ -29,7 +29,7 @@ var PhotoIndex = React.createClass({
       photoItems = this.state.photos.map(function(photo) {
         return (
           <div>
-            <img className="photo-item" src={photo.url}/>
+            <img className="masonry-photo-item" src={photo.url}/>
           </div>
         );
       });
@@ -37,7 +37,7 @@ var PhotoIndex = React.createClass({
       photoItems = "Loading";
     }
     return (
-      <Masonry className={'photo-grid'}
+      <Masonry className={'masonry-photo-grid'}
         elementType={'div'}
         options={masonryOptions}
         disableImagesLoaded={false}>

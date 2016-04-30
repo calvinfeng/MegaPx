@@ -3,6 +3,7 @@ var UserActions = require('../actions/user_actions');
 var PhotoActions = require('../actions/photo_actions');
 var Map = require('./map');
 var PhotoIndex = require('./photo_index');
+var PhotoGrid = require('./photo_grid');
 
 var HomePage = React.createClass({
 
@@ -42,7 +43,7 @@ var HomePage = React.createClass({
         <h1>Welcome {this.props.currentUser.first_name}</h1>
         <div className="home-content-container">
           <Map/>
-          <PhotoIndex/>
+          <PhotoGrid/>
         </div>
       </div>
     );

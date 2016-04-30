@@ -26,8 +26,10 @@ MarkerStore.resetMarkers = function() {
   var locations;
   this.deleteMarkers();
   locations = PhotoStore.inventory();
-  for (var i = 0; i < locations.length; i++) {
-    this.addMarker(locations[i]);
+  if (locations) {
+    for (var i = 0; i < locations.length; i++) {
+      this.addMarker(locations[i]);
+    }
   }
 };
 

@@ -6,4 +6,6 @@ json.array! @photos do |photo|
   json.url photo.url
   json.lat photo.lat
   json.lng photo.lng
+  json.width photo.width
+  json.height photo.height
 end
