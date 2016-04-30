@@ -97,7 +97,7 @@ submitting API requests
   - deletePhoto
   - updatePhoto
 
-- Create marker store, photo store, comment store
+- Create marker store, photo store
 - Set up appropriate actions for retrieving photos
 
 ### Phase 4: Integrate CRUD with Homepage (2 Days)

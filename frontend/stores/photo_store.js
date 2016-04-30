@@ -8,14 +8,11 @@ var _errors, _photos;
 PhotoStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "PHOTOS RECEIVED":
-      console.log("photos received!");
-      console.log(payload.photos);
+      console.log("Store has received photos!");
       PhotoStore.setPhotos(payload.photos);
     break;
 
     case "ONE PHOTO RECEIVED":
-      console.log("photo received!");
-      console.log(payload.photo);
       PhotoStore.setPhotos([payload.photo]);
     break;
 

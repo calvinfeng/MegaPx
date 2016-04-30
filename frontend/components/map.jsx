@@ -14,8 +14,8 @@ var Map = React.createClass({
 
   __onChange: function() {
     // var locations;
-    // MarkerStore.resetMarkers();
-    // MarkerStore.setMapOnMarkers(this.map);
+    MarkerStore.resetMarkers();
+    MarkerStore.setMapOnMarkers(this.map);
     console.log(PhotoStore.inventory());
   },
 
@@ -23,7 +23,7 @@ var Map = React.createClass({
     var mapDOMNode = this.refs.map;
     var mapOptions = {
       center: this.state.center,
-      zoom: 13
+      zoom: 12
     };
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);

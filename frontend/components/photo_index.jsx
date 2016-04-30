@@ -3,9 +3,10 @@ var React = require('react');
 var PhotoActions = require('../actions/photo_actions');
 var PhotoStore = require('../stores/photo_store');
 var Masonry = require('react-masonry-component');
+var Infinite = require('react-infinite');
 
 var masonryOptions = {
-    transitionDuration: 4
+    transitionDuration: 10
 };
 
 var PhotoIndex = React.createClass({
@@ -15,7 +16,6 @@ var PhotoIndex = React.createClass({
 
   componentDidMount: function(){
     PhotoStore.addListener(this.__onChange);
-    PhotoActions.fetchAllPhotos();
   },
 
   __onChange: function() {

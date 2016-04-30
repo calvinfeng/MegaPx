@@ -25,7 +25,7 @@ MarkerStore.all = function() {
 MarkerStore.resetMarkers = function() {
   var locations;
   this.deleteMarkers();
-  locations = PhotoStore.all();
+  locations = PhotoStore.inventory();
   for (var i = 0; i < locations.length; i++) {
     this.addMarker(locations[i]);
   }
@@ -40,7 +40,6 @@ MarkerStore.setMapOnMarkers = function(map) {
 MarkerStore.addMarker = function(position) {
   var marker = new google.maps.Marker({
     position: { lat: position.lat, lng: position.lng },
-    map: this.map,
     title: position.description
   });
   _markers.push(marker);
@@ -54,3 +53,5 @@ MarkerStore.deleteMarkers = function() {
 MarkerStore.clearMarkers = function() {
   this.setMapOnMarkers(null);
 };
+
+module.exports = MarkerStore;
