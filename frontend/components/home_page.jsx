@@ -1,4 +1,6 @@
 var React = require('react');
+var HashHistory = require('react-router').hashHistory;
+
 var UserActions = require('../actions/user_actions');
 var PhotoActions = require('../actions/photo_actions');
 var Map = require('./map');
@@ -15,6 +17,10 @@ var HomePage = React.createClass({
     $('.map').css('visibility', 'hidden');
   },
 
+  linkToUpload: function() {
+    HashHistory.push({pathname: "/upload"});
+  },
+
   toggleMap: function() {
     var $map = $('.map');
     if ($map.css('visibility') === 'visible') {
@@ -24,7 +30,7 @@ var HomePage = React.createClass({
     }
   },
 
-  handleClick: function(event) {
+  handleLogout: function(event) {
     event.preventDefault();
     UserActions.logout();
   },
@@ -38,8 +44,9 @@ var HomePage = React.createClass({
               height="40px" className="home-logo"/>
           </div>
           <div className="home-nav-right-box">
+            <div onClick={this.linkToUpload} className="link">Upload</div>
             <div onClick={this.toggleMap} className="link">Toggle map</div>
-            <div onClick={this.handleClick} className="link">Log out</div>
+            <div onClick={this.handleLogout} className="link">Log out</div>
           </div>
         </div>
         <h1>Welcome {this.props.currentUser.first_name}</h1>

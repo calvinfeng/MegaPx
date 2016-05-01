@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: megapx
+  api_key: '256335991452495'
+  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: megapx
+  api_key: '256335991452495'
+  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: megapx
+  api_key: '256335991452495'
+  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  enhance_image_tag: true
+  static_image_support: false

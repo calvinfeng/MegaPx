@@ -1,5 +1,5 @@
-.submit-button{
-  background:#2ecc71;
+.submit-button {
+  background: #00C5FF;
   border:0;
   color:#fff;
   padding:10px;
@@ -8,6 +8,11 @@
   margin:20px auto;
   display:block;
   cursor:pointer;
+}
+
+#guest-login {
+  background: #2ecc71;
+  border-radius: 5px;
 }
 
 .login-header {
@@ -32,7 +37,7 @@
   justify-content: center;
 }
 
-input {
+input, textarea{
 	width: 300px;
   margin: 0 auto;
 	margin-bottom: 10px;

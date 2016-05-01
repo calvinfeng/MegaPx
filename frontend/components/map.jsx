@@ -13,22 +13,21 @@ var Map = React.createClass({
   },
 
   __onChange: function() {
-    // var locations;
     MarkerStore.resetMarkers();
     MarkerStore.setMapOnMarkers(this.map);
-    console.log(PhotoStore.inventory());
+    console.log("Drag event occurs");
   },
 
   componentDidMount: function() {
     var mapDOMNode = this.refs.map;
     var mapOptions = {
       center: this.state.center,
-      zoom: 12
+      zoom: 10
     };
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
-    this.map.addListener('idle', this.refetchWhenDragged);
-    this.map.addListener('click', this.mapClickHandle);
+    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
+    this.clickListener = this.map.addListener('click', this.mapClickHandle);
     PhotoStore.addListener(this.__onChange);
 
     var self = this;
@@ -38,15 +37,10 @@ var Map = React.createClass({
       self.map.panTo({lat: centerLat, lng: centerLng});
     });
   },
-
-  mapClickHandle: function(e) {
-    var lat = e.latLng.lat();
-    var lng = e.latLng.lng();
-    console.log(lat, lng);
-    // hashHistory.push({
-    //   pathname: "photos/new",
-    //   query: {lat: lat, lng: lng}
-    // });
+  
+  componentWillUnmount: function() {
+    this.dragListener.remove();
+    this.clickListener.remove();
   },
 
   refetchWhenDragged: function() {

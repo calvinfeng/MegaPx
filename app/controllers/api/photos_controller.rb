@@ -1,3 +1,4 @@
+require 'cloudinary'
 class Api::PhotosController < ApplicationController
 
   def index
@@ -39,7 +40,10 @@ class Api::PhotosController < ApplicationController
     @photo = Photo.find_by_id(params[:id])
     if @photo
       @photo.destroy
-      render :index
+      if (@photo.public_id)
+        Cloudinary::Uploader.destroy(@photo.public_id)
+      end
+      render :show
     else
       @errors = ["Can't find the requested photo"]
       render "api/shared/error", status: 404
@@ -58,7 +62,8 @@ class Api::PhotosController < ApplicationController
 
   private
   def photo_params
-    params.require(:photo).permit(:title, :description, :lat, :lng, :url)
+    params.require(:photo).permit(:user_id, :public_id,
+    :title, :description, :lat, :lng, :url, :width, :height)
   end
 
 end

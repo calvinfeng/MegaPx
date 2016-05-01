@@ -9,12 +9,18 @@ var PhotoGrid = React.createClass({
   },
 
   componentDidMount: function(){
-    PhotoStore.addListener(this.__onChange);
+    this.storeListener = PhotoStore.addListener(this.__onChange);
+    window.addEventListener("resize", this.__onChange);
+  },
+
+  componentWillUnmount: function() {
+    this.storeListener.remove();
+    window.removeEventListener("resize", this.__onChange);
   },
 
   __onChange: function() {
+    console.log("PhotoGrid component received photos");
     this.setState({photos: PhotoStore.inventory()});
-    console.log("photo-grid received photos");
     this.organizePhotosInGrid();
   },
 
@@ -27,12 +33,12 @@ var PhotoGrid = React.createClass({
       // This is actually O(n) operation even though it seems like a nested
       // loop structure, just look at idx and pay close attention to it
       idx = 0;
-      while(idx < photos.length - 1) {
+      while(idx < photos.length) {
         $row = $("<div></div>");
         $row.addClass("row");
         accumWidth = 0;
         rowItems = [];
-        numRowItems = Math.floor(Math.random()*MAX_PER_ROW) + 1;
+        numRowItems = Math.floor(Math.random()*(MAX_PER_ROW - 1)) + 2;
 
         // Insert images to row
         for (i = 0; i < numRowItems; i++) {

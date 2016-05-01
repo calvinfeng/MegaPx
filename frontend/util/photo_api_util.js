@@ -35,8 +35,17 @@ var PhotoApiUtil = {
       success: successCallback,
       error: errorCallback
     });
-  }
+  },
 
+  postPhoto: function(photo, successCallback, errorCallback) {
+    $.ajax({
+      method: "POST",
+      url: "api/photos",
+      data: photo,
+      success: successCallback,
+      error: errorCallback
+    });
+  }
 };
 
 module.exports = PhotoApiUtil;

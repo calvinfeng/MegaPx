@@ -1,0 +1,15 @@
+.upload {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.text-input-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.geo-tag-map {
+  width: 400px;
+  height: 400px;
+}

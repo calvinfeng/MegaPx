@@ -7,9 +7,9 @@ var UserStore = require('../stores/user_store');
 var customStyles = {
   content: {
     top: '35%',
-    right: '30%',
+    right: '35%',
     bottom: 'auto',
-    left: '30%',
+    left: '35%',
     background: 'transparent',
     border: '2px solid white'
   },
@@ -23,7 +23,6 @@ var LoginModal = React.createClass({
   getInitialState: function() {
     return {
       modalIsOpen: false,
-      form: "login",
       username: "",
       password: ""
     };
@@ -47,10 +46,6 @@ var LoginModal = React.createClass({
     this.storeListener.remove();
   },
 
-  setFormType: function(event) {
-    this.setState({form: event.currentTarget.value});
-  },
-
   setUsername: function(event) {
     this.setState({username: event.target.value});
   },
@@ -65,6 +60,11 @@ var LoginModal = React.createClass({
       username: this.state.username,
       password: this.state.password
     });
+  },
+
+  guestLogin: function(event) {
+    event.preventDefault();
+    UserActions.guestLogin();
   },
 
   errors: function() {
@@ -95,6 +95,18 @@ var LoginModal = React.createClass({
     // because there are three modals with three individual states
   },
 
+  submitButtons: function() {
+    if (this.props.form === "login") {
+      return (
+        <input className="submit-button" type="Submit" value="Login"/>
+      );
+    } else {
+      return (
+        <input className="submit-button" type="Submit" value="Sign up"/>
+      );
+    }
+  },
+
   // Inherit button class and button text from parent
   render: function() {
     return (
@@ -118,7 +130,10 @@ var LoginModal = React.createClass({
                 onChange={this.setPassword}
                 require=""/>
             </section>
-            <input className="submit-button" type="Submit"/>
+            {this.submitButtons()}
+            <button className="submit-button" id="guest-login" onClick={this.guestLogin}>
+              Guest Login
+            </button>
             <h1 className="login-error">{this.errors()}</h1>
           </form>
         </Modal>

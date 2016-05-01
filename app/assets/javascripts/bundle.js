@@ -46,14 +46,15 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
+	var Modal = __webpack_require__(225);
+	
 	var Router = __webpack_require__(166).Router;
 	var Route = __webpack_require__(166).Route;
 	var IndexRoute = __webpack_require__(166).IndexRoute;
 	var HashHistory = __webpack_require__(166).hashHistory;
-	var Modal = __webpack_require__(225);
 	
 	var Index = __webpack_require__(245);
-	var LoginForm = __webpack_require__(302);
+	var UploadForm = __webpack_require__(303);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -73,7 +74,8 @@
 	  React.createElement(
 	    Route,
 	    { path: '/', component: App },
-	    React.createElement(IndexRoute, { component: Index })
+	    React.createElement(IndexRoute, { component: Index }),
+	    React.createElement(Route, { path: '/upload', component: UploadForm })
 	  )
 	);
 	
@@ -34385,6 +34387,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var HashHistory = __webpack_require__(166).hashHistory;
+	
 	var UserActions = __webpack_require__(268);
 	var PhotoActions = __webpack_require__(272);
 	var Map = __webpack_require__(276);
@@ -34403,6 +34407,10 @@
 	    $('.map').css('visibility', 'hidden');
 	  },
 	
+	  linkToUpload: function () {
+	    HashHistory.push({ pathname: "/upload" });
+	  },
+	
 	  toggleMap: function () {
 	    var $map = $('.map');
 	    if ($map.css('visibility') === 'visible') {
@@ -34412,7 +34420,7 @@
 	    }
 	  },
 	
-	  handleClick: function (event) {
+	  handleLogout: function (event) {
 	    event.preventDefault();
 	    UserActions.logout();
 	  },
@@ -34435,12 +34443,17 @@
 	          { className: 'home-nav-right-box' },
 	          React.createElement(
 	            'div',
+	            { onClick: this.linkToUpload, className: 'link' },
+	            'Upload'
+	          ),
+	          React.createElement(
+	            'div',
 	            { onClick: this.toggleMap, className: 'link' },
 	            'Toggle map'
 	          ),
 	          React.createElement(
 	            'div',
-	            { onClick: this.handleClick, className: 'link' },
+	            { onClick: this.handleLogout, className: 'link' },
 	            'Log out'
 	          )
 	        )
@@ -34491,6 +34504,10 @@
 	    PhotoApiUtil.fetchCurrentUserPhotos(this.receivePhotos, this.handleError);
 	  },
 	
+	  postPhoto: function (photo) {
+	    PhotoApiUtil.postPhoto(photo, this.receiveOnePhoto, this.handleError);
+	  },
+	
 	  // ServerActions: Success Handlers ===================================
 	  receiveOnePhoto: function (photo) {
 	    AppDispatcher.dispatch({
@@ -34531,11 +34548,12 @@
 	PhotoStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "PHOTOS RECEIVED":
-	      console.log("Store has received photos!");
+	      console.log("Store has received photos from API!");
 	      PhotoStore.setPhotos(payload.photos);
 	      break;
 	
 	    case "ONE PHOTO RECEIVED":
+	      console.log("Store has received one photo from API; successful POST");
 	      PhotoStore.setPhotos([payload.photo]);
 	      break;
 	
@@ -34610,8 +34628,17 @@
 	      success: successCallback,
 	      error: errorCallback
 	    });
-	  }
+	  },
 	
+	  postPhoto: function (photo, successCallback, errorCallback) {
+	    $.ajax({
+	      method: "POST",
+	      url: "api/photos",
+	      data: photo,
+	      success: successCallback,
+	      error: errorCallback
+	    });
+	  }
 	};
 	
 	module.exports = PhotoApiUtil;
@@ -34647,22 +34674,21 @@
 	  },
 	
 	  __onChange: function () {
-	    // var locations;
 	    MarkerStore.resetMarkers();
 	    MarkerStore.setMapOnMarkers(this.map);
-	    console.log(PhotoStore.inventory());
+	    console.log("Drag event occurs");
 	  },
 	
 	  componentDidMount: function () {
 	    var mapDOMNode = this.refs.map;
 	    var mapOptions = {
 	      center: this.state.center,
-	      zoom: 12
+	      zoom: 10
 	    };
 	
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
-	    this.map.addListener('idle', this.refetchWhenDragged);
-	    this.map.addListener('click', this.mapClickHandle);
+	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
+	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
 	    PhotoStore.addListener(this.__onChange);
 	
 	    var self = this;
@@ -34673,14 +34699,9 @@
 	    });
 	  },
 	
-	  mapClickHandle: function (e) {
-	    var lat = e.latLng.lat();
-	    var lng = e.latLng.lng();
-	    console.log(lat, lng);
-	    // hashHistory.push({
-	    //   pathname: "photos/new",
-	    //   query: {lat: lat, lng: lng}
-	    // });
+	  componentWillUnmount: function () {
+	    this.dragListener.remove();
+	    this.clickListener.remove();
 	  },
 	
 	  refetchWhenDragged: function () {
@@ -38674,12 +38695,18 @@
 	  },
 	
 	  componentDidMount: function () {
-	    PhotoStore.addListener(this.__onChange);
+	    this.storeListener = PhotoStore.addListener(this.__onChange);
+	    window.addEventListener("resize", this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	    window.removeEventListener("resize", this.__onChange);
 	  },
 	
 	  __onChange: function () {
+	    console.log("PhotoGrid component received photos");
 	    this.setState({ photos: PhotoStore.inventory() });
-	    console.log("photo-grid received photos");
 	    this.organizePhotosInGrid();
 	  },
 	
@@ -38692,12 +38719,12 @@
 	      // This is actually O(n) operation even though it seems like a nested
 	      // loop structure, just look at idx and pay close attention to it
 	      idx = 0;
-	      while (idx < photos.length - 1) {
+	      while (idx < photos.length) {
 	        $row = $("<div></div>");
 	        $row.addClass("row");
 	        accumWidth = 0;
 	        rowItems = [];
-	        numRowItems = Math.floor(Math.random() * MAX_PER_ROW) + 1;
+	        numRowItems = Math.floor(Math.random() * (MAX_PER_ROW - 1)) + 2;
 	
 	        // Insert images to row
 	        for (i = 0; i < numRowItems; i++) {
@@ -38867,9 +38894,9 @@
 	var customStyles = {
 	  content: {
 	    top: '35%',
-	    right: '30%',
+	    right: '35%',
 	    bottom: 'auto',
-	    left: '30%',
+	    left: '35%',
 	    background: 'transparent',
 	    border: '2px solid white'
 	  },
@@ -38885,7 +38912,6 @@
 	  getInitialState: function () {
 	    return {
 	      modalIsOpen: false,
-	      form: "login",
 	      username: "",
 	      password: ""
 	    };
@@ -38909,10 +38935,6 @@
 	    this.storeListener.remove();
 	  },
 	
-	  setFormType: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
-	
 	  setUsername: function (event) {
 	    this.setState({ username: event.target.value });
 	  },
@@ -38927,6 +38949,11 @@
 	      username: this.state.username,
 	      password: this.state.password
 	    });
+	  },
+	
+	  guestLogin: function (event) {
+	    event.preventDefault();
+	    UserActions.guestLogin();
 	  },
 	
 	  errors: function () {
@@ -38957,6 +38984,14 @@
 	    this.setState({ modalIsOpen: false, userErrors: null });
 	    // BUG Report: closing modal does not get rid of all the error messages
 	    // because there are three modals with three individual states
+	  },
+	
+	  submitButtons: function () {
+	    if (this.props.form === "login") {
+	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Login' });
+	    } else {
+	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Sign up' });
+	    }
 	  },
 	
 	  // Inherit button class and button text from parent
@@ -38994,7 +39029,12 @@
 	              onChange: this.setPassword,
 	              require: '' })
 	          ),
-	          React.createElement('input', { className: 'submit-button', type: 'Submit' }),
+	          this.submitButtons(),
+	          React.createElement(
+	            'button',
+	            { className: 'submit-button', id: 'guest-login', onClick: this.guestLogin },
+	            'Guest Login'
+	          ),
 	          React.createElement(
 	            'h1',
 	            { className: 'login-error' },
@@ -39009,165 +39049,197 @@
 	module.exports = LoginModal;
 
 /***/ },
-/* 302 */
+/* 302 */,
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var UserActions = __webpack_require__(268);
+	
+	// For authentication
 	var UserStore = __webpack_require__(246);
+	var PhotoActions = __webpack_require__(272);
+	var PhotoStore = __webpack_require__(273);
+	var HashHistory = __webpack_require__(166).hashHistory;
 	
-	//======================================================================
-	//======================================================================
-	// This component has been deprecated
-	//======================================================================
-	//======================================================================
-	
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+	var _isMounted;
+	/* global cloudinary */
+	var UploadForm = React.createClass({
+	  displayName: 'UploadForm',
 	
 	
 	  getInitialState: function () {
-	    return { form: "login", username: "", password: "" };
+	    return {
+	      imgUrl: undefined,
+	      imgLat: undefined,
+	      imgLng: undefined,
+	      imgPublicId: undefined,
+	      imgTitle: undefined,
+	      imgDescription: undefined,
+	      imgWidth: 0,
+	      imgHeight: 0
+	    };
 	  },
 	
-	  __onChange: function () {
-	    this.setState({
-	      currentUser: UserStore.currentUser(),
-	      userErrors: UserStore.errors()
-	    });
+	  setTitle: function (event) {
+	    this.setState({ imgTitle: event.target.value });
+	  },
+	
+	  setDescription: function (event) {
+	    this.setState({ imgDescription: event.target.value });
+	  },
+	
+	  componentWillMount: function () {
+	    if (!UserStore.currentUser()) {
+	      HashHistory.push({ pathname: "/" });
+	    } else {
+	      _isMounted = true;
+	    }
 	  },
 	
 	  componentDidMount: function () {
-	    this.storeListener = UserStore.addListener(this.__onChange);
+	    var mapDOMNode = this.refs.geoTagMap;
+	    var mapOptions = {
+	      center: { lat: 37.774929, lng: -122.419416 },
+	      zoom: 10
+	    };
+	    /* global google */
+	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
+	    navigator.geolocation.getCurrentPosition(this.setCurrentLocation);
+	  },
+	
+	  setCurrentLocation: function (position) {
+	    var currentLat = position.coords.latitude;
+	    var currentLng = position.coords.longitude;
+	    // this is to prevent calling setState on unmounted component
+	    if (_isMounted) {
+	      this.map.panTo({ lat: currentLat, lng: currentLng });
+	    }
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.storeListener.remove();
+	    this.clickListener.remove();
+	    _isMounted = false;
 	  },
 	
-	  setFormType: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
-	
-	  setUsername: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  setPassword: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  logout: function (event) {
+	  uploadToCloud: function (event) {
 	    event.preventDefault();
-	    UserActions.logout();
+	    // currently, it only allows one image upload at a time
+	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
+	      if (!errors) {
+	        this.setState({ imgUrl: images[0].secure_url });
+	        this.setState({ imgWidth: images[0].width });
+	        this.setState({ imgHeight: images[0].height });
+	        this.setState({ imgPublicId: images[0].public_id });
+	      }
+	    }.bind(this));
 	  },
 	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    UserActions[this.state.form]({
-	      username: this.state.username,
-	      password: this.state.password
-	    });
-	  },
-	
-	  greeting: function () {
-	    // If no one has logged in, return nothing
-	    if (!this.state.currentUser) {
+	  showImage: function () {
+	    if (this.state.imgUrl) {
+	      return React.createElement('img', { height: '400', src: this.state.imgUrl });
+	    } else {
 	      return;
 	    }
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Hi, ',
-	        this.state.currentUser.first_name
-	      ),
-	      React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
-	    );
+	  },
+	
+	  mapClickHandle: function (event) {
+	    var lat = event.latLng.lat();
+	    var lng = event.latLng.lng();
+	    this.setState({ imgLat: lat, imgLng: lng });
+	  },
+	
+	  submitHandle: function (event) {
+	    event.preventDefault();
+	    var photo = {
+	      title: this.state.imgTitle,
+	      description: this.state.imgDescription,
+	      url: this.state.imgUrl,
+	      lat: this.state.imgLat,
+	      lng: this.state.imgLng,
+	      height: this.state.imgHeight,
+	      width: this.state.imgWidth,
+	      user_id: UserStore.currentUser().id,
+	      public_id: this.state.imgPublicId
+	    };
+	    PhotoActions.postPhoto({ photo: photo });
+	    HashHistory.push({ pathname: "/" });
+	  },
+	
+	  cancelHandle: function (event) {
+	    event.preventDefault();
+	    HashHistory.push({ pathname: "/" });
 	  },
 	
 	  errors: function () {
-	    // If no error presents, return nothing
-	    if (!this.state.userErrors) {
-	      return;
-	    }
-	    return React.createElement(
-	      'ul',
-	      null,
-	      this.state.userErrors.errors.map(function (error, idx) {
-	        return React.createElement(
-	          'li',
-	          { key: idx },
-	          error
-	        );
-	      })
-	    );
-	  },
-	
-	  form: function () {
-	    // If someone has logged in, won't display form
-	    if (this.state.currentUser) {
-	      return;
-	    }
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Username:',
-	          React.createElement('input', { type: 'text', value: this.state.username,
-	            onChange: this.setUsername })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Password:',
-	          React.createElement('input', { type: 'password', value: this.state.password,
-	            onChange: this.setPassword })
-	        )
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Login',
-	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'login',
-	            defaultChecked: true,
-	            onChange: this.setFormType })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Sign up',
-	          React.createElement('input', { type: 'Radio', name: 'action', defaultValue: 'signup',
-	            onChange: this.setFormType })
-	        )
-	      ),
-	      React.createElement('input', { type: 'Submit' })
-	    );
+	    return PhotoStore.errors();
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'login-form' },
-	      this.greeting(),
-	      this.errors(),
-	      this.form()
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Upload image'
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submitHandle },
+	        React.createElement(
+	          'article',
+	          { className: 'upload' },
+	          React.createElement(
+	            'section',
+	            { className: 'text-input-area' },
+	            React.createElement('input', { type: 'text', placeholder: 'Title',
+	              value: this.state.imgTitle || "",
+	              onChange: this.setTitle }),
+	            React.createElement('textarea', { placeholder: 'Description',
+	              value: this.state.imgDescription || "",
+	              onChange: this.setDescription }),
+	            React.createElement('input', { type: 'text', placeholder: 'Latitude',
+	              value: this.state.imgLat || "",
+	              disabled: true }),
+	            React.createElement('input', { type: 'text', placeholder: 'Longitude',
+	              value: this.state.imgLng || "",
+	              disabled: true }),
+	            React.createElement(
+	              'button',
+	              { onClick: this.uploadToCloud },
+	              'Select files'
+	            )
+	          ),
+	          React.createElement(
+	            'section',
+	            { className: 'geo-input-area' },
+	            React.createElement('div', { className: 'geo-tag-map', ref: 'geoTagMap' })
+	          ),
+	          React.createElement(
+	            'section',
+	            { className: 'image-upload-area' },
+	            this.showImage()
+	          )
+	        ),
+	        React.createElement('input', { type: 'Submit' }),
+	        React.createElement(
+	          'button',
+	          { onClick: this.cancelHandle },
+	          'Back'
+	        ),
+	        React.createElement(
+	          'ul',
+	          null,
+	          this.errors()
+	        )
+	      )
 	    );
 	  }
 	
 	});
 	
-	module.exports = LoginForm;
+	module.exports = UploadForm;
 
 /***/ }
 /******/ ]);

@@ -22,6 +22,10 @@ var PhotoActions = {
     PhotoApiUtil.fetchCurrentUserPhotos(this.receivePhotos, this.handleError);
   },
 
+  postPhoto: function(photo) {
+    PhotoApiUtil.postPhoto(photo, this.receiveOnePhoto, this.handleError);
+  },
+
   // ServerActions: Success Handlers ===================================
   receiveOnePhoto: function(photo) {
     AppDispatcher.dispatch({
