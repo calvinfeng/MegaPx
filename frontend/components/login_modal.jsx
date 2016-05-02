@@ -6,6 +6,8 @@ var UserStore = require('../stores/user_store');
 
 var customStyles = {
   content: {
+    opacity: '0',
+    transition: 'opacity 1s',
     top: '35%',
     right: '35%',
     bottom: 'auto',
@@ -85,11 +87,14 @@ var LoginModal = React.createClass({
 
   openModal: function() {
     $('.get-started-button').css('visibility', 'hidden');
+    customStyles.content.opacity = '100';
     this.setState({modalIsOpen: true});
+
   },
 
   closeModal: function() {
     $('.get-started-button').css('visibility', 'visible');
+    customStyles.content.opacity = '0';
     this.setState({modalIsOpen: false, userErrors: null});
     // BUG Report: closing modal does not get rid of all the error messages
     // because there are three modals with three individual states

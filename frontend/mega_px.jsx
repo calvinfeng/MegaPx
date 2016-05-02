@@ -24,8 +24,7 @@ var routes = (
   <Router history={HashHistory}>
     <Route path="/" component={App}>
     <IndexRoute component={Index}/>
-      <Route path="/upload" component={UploadForm}>
-      </Route>
+      <Route path="/upload" component={UploadForm}/>
     </Route>
   </Router>
 );

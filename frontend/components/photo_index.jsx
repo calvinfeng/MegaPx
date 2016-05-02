@@ -9,6 +9,7 @@ var masonryOptions = {
     transitionDuration: 10
 };
 
+//Deprecated for now
 var PhotoIndex = React.createClass({
   getInitialState: function() {
     return {photos: []};

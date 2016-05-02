@@ -4,17 +4,13 @@ var HashHistory = require('react-router').hashHistory;
 var UserActions = require('../actions/user_actions');
 var PhotoActions = require('../actions/photo_actions');
 var Map = require('./map');
-var PhotoIndex = require('./photo_index');
 var PhotoGrid = require('./photo_grid');
-
+var DiscoverIndex = require('./discover_index');
+var UserPhotoIndex = require('./user_photo_index');
 var HomePage = React.createClass({
 
   getInitialState: function() {
-    return {modalIsOpen: false};
-  },
-
-  componentDidMount: function() {
-    $('.map').css('visibility', 'hidden');
+    return {modalIsOpen: false, selectedTab: "discover"};
   },
 
   linkToUpload: function() {
@@ -30,9 +26,34 @@ var HomePage = React.createClass({
     }
   },
 
+  toggleMyPhotos: function() {
+    this.setState({selectedTab: "my photos"});
+  },
+
+  toggleDiscover: function() {
+    this.setState({selectedTab: "discover"});
+  },
+
   handleLogout: function(event) {
     event.preventDefault();
     UserActions.logout();
+  },
+
+  //Content handlers
+  homeContent: function() {
+    if (this.state.selectedTab === "discover") {
+      return <DiscoverIndex/>;
+    } else {
+      return (
+        <div className="home-content-container">
+          <UserPhotoIndex/>
+        </div>
+      );
+    }
+  },
+
+  logoURL: function() {
+    return "https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png";
   },
 
   render: function() {
@@ -40,20 +61,19 @@ var HomePage = React.createClass({
       <div id="home-page">
         <nav className="home-nav">
           <div className="home-nav-left-box">
-            <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
-              height="40px" className="home-logo"/>
+            <img src={this.logoURL()} height="40px" className="home-logo"/>
           </div>
           <div className="home-nav-right-box">
-            <div onClick={this.linkToUpload} className="link">Upload</div>
             <div onClick={this.toggleMap} className="link">Toggle map</div>
+            <div onClick={this.linkToUpload} className="link">Upload</div>
             <div onClick={this.handleLogout} className="link">Log out</div>
           </div>
         </nav>
-        <h1>Welcome {this.props.currentUser.first_name}</h1>
-        <div className="home-content-container">
-          <Map/>
-          <PhotoGrid/>
-        </div>
+        <nav className="tab-nav">
+          <h1 onClick={this.toggleDiscover} className="tab">Discover</h1>
+          <h1 onClick={this.toggleMyPhotos} className="tab">My Photos</h1>
+        </nav>
+        {this.homeContent()}
       </div>
     );
   }

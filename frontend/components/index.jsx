@@ -27,9 +27,17 @@ var Index = React.createClass({
 
   render: function() {
     if (this.state.currentUser) {
-      return (<HomePage currentUser={this.state.currentUser}/>);
+      return (
+        <div>
+          <HomePage currentUser={this.state.currentUser}/>
+        </div>
+      );
     } else {
-      return (<SplashPage/>);
+      return (
+        <div>
+          <SplashPage/>
+        </div>
+      );
     }
   }
 
