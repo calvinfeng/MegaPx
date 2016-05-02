@@ -5,12 +5,12 @@ MegaPx is an image hosting web application inspired by 500px. In terms of functi
 
 ## Product Goals and Priorities
 The following are the key milestone for a functional MVP.
-- [ ] Users may sign up and log in
-- [ ] Location fetching is only available to signed in users
+- [x] Users may sign up and log in
+- [x] Location fetching is only available to signed in users
 - [ ] Users can comment on photos
-- [ ] Create/Edit/Destroy photos
-- [ ] Google map integration with photos
-- [ ] Beautiful image layout
+- [x] Create/Edit/Destroy photos
+- [x] Google map integration with photos
+- [x] Beautiful image layout
 - Optionals
   - [ ] Users can upvote photos
   - [ ] Sort photos by popularity and recentness
@@ -34,8 +34,9 @@ The following are the key milestone for a functional MVP.
 [schema]: ./docs/schema.md
 [flux-cycle]: ./docs/flux-cycles.md
 
-## Implementation Timeline
+# Implementation Timeline
 
+## Week 1
 ### Phase 1: Backend & Frontend Auth (1 Day)
 **objective:**
 - [x] Functioning Rails application with authentication
@@ -68,6 +69,9 @@ The following are the key milestone for a functional MVP.
 
 ### Phase 3: CRUD on Photos (2 Days)
 **objectve:**
+- Create marker store, photo store
+- Set up appropriate actions for retrieving photos
+
 - [x] Create Photos model
   - user_id
   - description
@@ -88,7 +92,7 @@ submitting API requests
   - User has many photos
   - Photo belongs to photograher
 
-- [ ] Create PhotoStore, PhotoActions
+- [x] Create PhotoStore, PhotoActions
   - fetchAllPhotos()
   - fetchSinglePhoto()
   - fetchCurrentUserPhotos()
@@ -97,25 +101,26 @@ submitting API requests
   - deletePhoto
   - updatePhoto
 
-- Create marker store, photo store
-- Set up appropriate actions for retrieving photos
-
-### Phase 4: Integrate CRUD with Homepage (2 Days)
-**objectve:**
-
-- [ ] Create HomePage component
-  - Create PhotoIndex component; its responsibility is to display photo
-  correctly in grid.
-- [ ] Create Map component
+### Phase 4 HomePage layout (1 Day)
+**objective:**
+- [x] Create HomePage component: its responsibility is to display photo
+correctly in grid.
+- [x] Create Map component
   - Make API call to backend for fetching photos base on map bounds, like what
   we did in BenchBnB
-  - Add listener to drag event, whenever the map is dragged, call API to fetch
-  new photos
-- [ ] Use cloudinary for image hosting
+- Add listener to drag event, whenever the map is dragged, call API to fetch
+new photos
+- [x] Use Cloudinary for image hosting
 
-### Phase 5: Style Homepage (1 Day)
-**objective:**
-
+## Week 2
+### Phase 5: Upload Form & Styling (1 Day)
+**objectve:**
+Users should be able to upload photos to Cloudinary through its upload widget
+- [x] The form has input field: title, description, latitude, longitude (through clicking),
+and selected file.
+- [x] Instead of using modal form, this should be its own route
+- [ ] There are submit, cancel, and home buttons
+- [ ] There is a mini map for location tagging
 
 ### Phase 6: Profile & Photo Management (2 Days)
 **objectve:**
@@ -124,10 +129,8 @@ submitting API requests
 - Within the profile page, users can select and edit/delete their photos
 - Enable avatar, users can upload and change their avatar
 
-### Phase 7: More CSS and Styling to Profile/Photo Management Page (1 Day)
-- Make it pretty
 
-### Phase 8: Seed database (1 Day)
+### Phase 7: Seed database (1 Day)
 **objective:**
 - Search and find a large quantity of high quality photos for every major
 location in my application

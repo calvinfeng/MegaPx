@@ -10,6 +10,7 @@ User.create!(username: 'calvin', password: '123456', first_name: 'Calvin', last_
 User.create!(username: 'tomato', password: '123456', first_name: 'Tomato', last_name: 'Yi')
 User.create!(username: 'guest', password: 'password', first_name: 'Guest', last_name: 'Recruiter')
 
+# Development/Test seed data
 Photo.create!(title: "Spring Thaw", url: "https://c2.staticflickr.com/2/1577/25553954963_73aae906d9_k.jpg",
 lat: 32.866283, lng: -117.252960, user_id: 3, width: 2048, height: 1365)
 

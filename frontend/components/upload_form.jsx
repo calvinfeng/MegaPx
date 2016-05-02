@@ -76,12 +76,16 @@ var UploadForm = React.createClass({
           this.setState({imgHeight: images[0].height});
           this.setState({imgPublicId: images[0].public_id});
         }
-    }.bind(this));
+      }.bind(this)
+    );
   },
 
   showImage: function() {
     if (this.state.imgUrl) {
-      return <img height="400" src={this.state.imgUrl}></img>;
+      return (
+        <img className="image-display"
+          src={this.state.imgUrl}/>
+      );
     } else {
       return ;
     }
@@ -91,6 +95,22 @@ var UploadForm = React.createClass({
     var lat = event.latLng.lat();
     var lng = event.latLng.lng();
     this.setState({imgLat: lat, imgLng: lng});
+  },
+
+  getLat: function() {
+    if (this.state.imgLat) {
+      return Math.ceil(1000000 * this.state.imgLat)/1000000;
+    } else {
+      return "";
+    }
+  },
+
+  getLng: function() {
+    if (this.state.imgLng) {
+      return Math.ceil(1000000* this.state.imgLng)/1000000;
+    } else {
+      return "";
+    }
   },
 
   submitHandle: function(event) {
@@ -110,47 +130,83 @@ var UploadForm = React.createClass({
     HashHistory.push({pathname: "/"});
   },
 
-  cancelHandle: function(event) {
+  redirectRoot: function(event) {
     event.preventDefault();
     HashHistory.push({pathname: "/"});
+  },
+
+  navigation: function() {
+    return (
+      <nav className="home-nav">
+        <div className="home-nav-left-box">
+          <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
+            height="40px" className="home-logo" onClick={this.redirectRoot}/>
+        </div>
+        <div className="home-nav-right-box">
+        </div>
+      </nav>
+    );
   },
 
   errors: function() {
     return PhotoStore.errors();
   },
 
+
   render: function() {
     return (
       <div>
-        <h1>Upload image</h1>
+        {this.navigation()}
         <form onSubmit={this.submitHandle}>
-          <article className="upload">
-            <section className="text-input-area">
-              <input type="text" placeholder="Title"
-                value={this.state.imgTitle || ""}
-                onChange={this.setTitle}/>
-              <textarea placeholder="Description"
-                value={this.state.imgDescription || ""}
-                onChange={this.setDescription}/>
-              <input type="text" placeholder="Latitude"
-                value={this.state.imgLat || ""}
-                disabled={true}/>
-              <input type="text" placeholder="Longitude"
-                value={this.state.imgLng || ""}
-                disabled={true}/>
-              <button onClick={this.uploadToCloud}>Select files</button>
-            </section>
+          <article className="upload-form">
+            <section className="input-column">
 
-            <section className="geo-input-area">
               <div className="geo-tag-map" ref="geoTagMap"></div>
+              <div className="geo-info">
+                <img src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/256/map-marker.png"
+                  height="30px"/>
+                <div className="img-lat">
+                  Latitude: {this.getLat()}
+                </div>
+                <div className="img-lng">
+                  Longitude: {this.getLng()}
+                </div>
+              </div>
+
+              <div className="upload-input-group">
+                <input type="text" required/>
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Title</label>
+              </div>
+
+              <div className="upload-input-group">
+                <input type="text" required/>
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Description</label>
+              </div>
+
+              <div className="upload-input-group">
+                <img src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png"
+                  height="35"
+                  onClick={this.uploadToCloud}
+                  id="cloud-icon"/>
+              </div>
+              <div className="submission">
+                <input type="Submit" className="upload-submit" value="SUBMIT"/>
+              </div>
+              <div className="submission-cancel">
+                <div onClick={this.redirectRoot}>Cancel</div>
+              </div>
             </section>
 
-            <section className="image-upload-area">
-              {this.showImage()}
+            <section className="image-display-column">
+              <div className="image-frame">
+                {this.showImage()}
+              </div>
             </section>
           </article>
-          <input type="Submit"/>
-          <button onClick={this.cancelHandle}>Back</button>
           <ul>{this.errors()}</ul>
         </form>
       </div>

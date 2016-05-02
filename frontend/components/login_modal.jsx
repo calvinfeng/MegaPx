@@ -110,22 +110,21 @@ var LoginModal = React.createClass({
   // Inherit button class and button text from parent
   render: function() {
     return (
-      <div>
+      <div className="modal">
         <div className={this.props.buttonClass} onClick={this.openModal}>
           {this.props.buttonText}
         </div>
-
         <Modal isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}>
           <form onSubmit={this.handleSubmit}>
             <section className="user-input-section">
               <h1 className="login-header">{this.props.buttonText}</h1>
-              <input placeholder="Username" type="text"
+              <input placeholder="Username" type="text" className="login-input"
                 value={this.state.username}
                 onChange={this.setUsername}
                 require=""/>
-              <input placeholder="Password" type="password"
+              <input placeholder="Password" type="password" className="login-input"
                 value={this.state.password}
                 onChange={this.setPassword}
                 require=""/>

@@ -34430,7 +34430,7 @@
 	      'div',
 	      { id: 'home-page' },
 	      React.createElement(
-	        'div',
+	        'nav',
 	        { className: 'home-nav' },
 	        React.createElement(
 	          'div',
@@ -38721,7 +38721,7 @@
 	      idx = 0;
 	      while (idx < photos.length) {
 	        $row = $("<div></div>");
-	        $row.addClass("row");
+	        $row.addClass("photo-row");
 	        accumWidth = 0;
 	        rowItems = [];
 	        numRowItems = Math.floor(Math.random() * (MAX_PER_ROW - 1)) + 2;
@@ -38998,7 +38998,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'modal' },
 	      React.createElement(
 	        'div',
 	        { className: this.props.buttonClass, onClick: this.openModal },
@@ -39020,11 +39020,11 @@
 	              { className: 'login-header' },
 	              this.props.buttonText
 	            ),
-	            React.createElement('input', { placeholder: 'Username', type: 'text',
+	            React.createElement('input', { placeholder: 'Username', type: 'text', className: 'login-input',
 	              value: this.state.username,
 	              onChange: this.setUsername,
 	              require: '' }),
-	            React.createElement('input', { placeholder: 'Password', type: 'password',
+	            React.createElement('input', { placeholder: 'Password', type: 'password', className: 'login-input',
 	              value: this.state.password,
 	              onChange: this.setPassword,
 	              require: '' })
@@ -39137,7 +39137,8 @@
 	
 	  showImage: function () {
 	    if (this.state.imgUrl) {
-	      return React.createElement('img', { height: '400', src: this.state.imgUrl });
+	      return React.createElement('img', { className: 'image-display',
+	        src: this.state.imgUrl });
 	    } else {
 	      return;
 	    }
@@ -39147,6 +39148,22 @@
 	    var lat = event.latLng.lat();
 	    var lng = event.latLng.lng();
 	    this.setState({ imgLat: lat, imgLng: lng });
+	  },
+	
+	  getLat: function () {
+	    if (this.state.imgLat) {
+	      return Math.ceil(1000000 * this.state.imgLat) / 1000000;
+	    } else {
+	      return "";
+	    }
+	  },
+	
+	  getLng: function () {
+	    if (this.state.imgLng) {
+	      return Math.ceil(1000000 * this.state.imgLng) / 1000000;
+	    } else {
+	      return "";
+	    }
 	  },
 	
 	  submitHandle: function (event) {
@@ -39166,9 +39183,23 @@
 	    HashHistory.push({ pathname: "/" });
 	  },
 	
-	  cancelHandle: function (event) {
+	  redirectRoot: function (event) {
 	    event.preventDefault();
 	    HashHistory.push({ pathname: "/" });
+	  },
+	
+	  navigation: function () {
+	    return React.createElement(
+	      'nav',
+	      { className: 'home-nav' },
+	      React.createElement(
+	        'div',
+	        { className: 'home-nav-left-box' },
+	        React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	          height: '40px', className: 'home-logo', onClick: this.redirectRoot })
+	      ),
+	      React.createElement('div', { className: 'home-nav-right-box' })
+	    );
 	  },
 	
 	  errors: function () {
@@ -39179,54 +39210,91 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Upload image'
-	      ),
+	      this.navigation(),
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.submitHandle },
 	        React.createElement(
 	          'article',
-	          { className: 'upload' },
+	          { className: 'upload-form' },
 	          React.createElement(
 	            'section',
-	            { className: 'text-input-area' },
-	            React.createElement('input', { type: 'text', placeholder: 'Title',
-	              value: this.state.imgTitle || "",
-	              onChange: this.setTitle }),
-	            React.createElement('textarea', { placeholder: 'Description',
-	              value: this.state.imgDescription || "",
-	              onChange: this.setDescription }),
-	            React.createElement('input', { type: 'text', placeholder: 'Latitude',
-	              value: this.state.imgLat || "",
-	              disabled: true }),
-	            React.createElement('input', { type: 'text', placeholder: 'Longitude',
-	              value: this.state.imgLng || "",
-	              disabled: true }),
+	            { className: 'input-column' },
+	            React.createElement('div', { className: 'geo-tag-map', ref: 'geoTagMap' }),
 	            React.createElement(
-	              'button',
-	              { onClick: this.uploadToCloud },
-	              'Select files'
+	              'div',
+	              { className: 'geo-info' },
+	              React.createElement('img', { src: 'http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/256/map-marker.png',
+	                height: '30px' }),
+	              React.createElement(
+	                'div',
+	                { className: 'img-lat' },
+	                'Latitude: ',
+	                this.getLat()
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'img-lng' },
+	                'Longitude: ',
+	                this.getLng()
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('span', { className: 'highlight' }),
+	              React.createElement('span', { className: 'bar' }),
+	              React.createElement(
+	                'label',
+	                null,
+	                'Title'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('span', { className: 'highlight' }),
+	              React.createElement('span', { className: 'bar' }),
+	              React.createElement(
+	                'label',
+	                null,
+	                'Description'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png',
+	                height: '35',
+	                onClick: this.uploadToCloud,
+	                id: 'cloud-icon' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'submission' },
+	              React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'submission-cancel' },
+	              React.createElement(
+	                'div',
+	                { onClick: this.redirectRoot },
+	                'Cancel'
+	              )
 	            )
 	          ),
 	          React.createElement(
 	            'section',
-	            { className: 'geo-input-area' },
-	            React.createElement('div', { className: 'geo-tag-map', ref: 'geoTagMap' })
-	          ),
-	          React.createElement(
-	            'section',
-	            { className: 'image-upload-area' },
-	            this.showImage()
+	            { className: 'image-display-column' },
+	            React.createElement(
+	              'div',
+	              { className: 'image-frame' },
+	              this.showImage()
+	            )
 	          )
-	        ),
-	        React.createElement('input', { type: 'Submit' }),
-	        React.createElement(
-	          'button',
-	          { onClick: this.cancelHandle },
-	          'Back'
 	        ),
 	        React.createElement(
 	          'ul',

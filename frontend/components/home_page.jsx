@@ -38,7 +38,7 @@ var HomePage = React.createClass({
   render: function() {
     return (
       <div id="home-page">
-        <div className="home-nav">
+        <nav className="home-nav">
           <div className="home-nav-left-box">
             <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
               height="40px" className="home-logo"/>
@@ -48,7 +48,7 @@ var HomePage = React.createClass({
             <div onClick={this.toggleMap} className="link">Toggle map</div>
             <div onClick={this.handleLogout} className="link">Log out</div>
           </div>
-        </div>
+        </nav>
         <h1>Welcome {this.props.currentUser.first_name}</h1>
         <div className="home-content-container">
           <Map/>

@@ -35,7 +35,7 @@ var PhotoGrid = React.createClass({
       idx = 0;
       while(idx < photos.length) {
         $row = $("<div></div>");
-        $row.addClass("row");
+        $row.addClass("photo-row");
         accumWidth = 0;
         rowItems = [];
         numRowItems = Math.floor(Math.random()*(MAX_PER_ROW - 1)) + 2;
