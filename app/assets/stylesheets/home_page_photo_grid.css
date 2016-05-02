@@ -13,9 +13,10 @@
 
 .ripplelink:hover{
 	z-index: 1;
-  box-shadow:rgba(0, 0, 0, 0.5) 0 15px 15px 0;
-  -webkit-box-shadow:rgba(0, 0, 0, 0.5) 0 15px 15px 0;
-  -moz-box-shadow:rgba(0, 0, 0, 0.5) 0 15px 15px 0;
+  cursor: pointer;
+  box-shadow:rgba(0, 0, 0, 0.55) 0px 0px 35px 0px;
+  -webkit-box-shadow:rgba(0, 0, 0, 0.55) 0px 0px 35px 0px;
+  -moz-box-shadow:rgba(0, 0, 0, 0.55) 0px 0px 35px 0px;
 }
 
 .ink {

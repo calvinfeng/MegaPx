@@ -94,3 +94,23 @@ Photo.create!(user_id: 1, title: "19", url: "https://res.cloudinary.com/megapx/i
 lat: 37.790485, lng: -122.390184, width: 2000, height: 1333)
 Photo.create!(user_id: 1, title: "20", url: "https://res.cloudinary.com/megapx/image/upload/v1462145863/Seeds/20.jpg",
 lat: 37.795640, lng: -122.481508, width: 2000, height: 1335)
+Photo.create!(user_id: 1, title: "21", url:"https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/21.jpg",
+lat: 37.754407, lng: -122.447684, width: 2000, height: 1333)
+Photo.create!(user_id: 1, title: "22", url:"https://res.cloudinary.com/megapx/image/upload/v1462145875/Seeds/22.jpg",
+lat: 37.770638, lng: -122.366581, width: 2000, height: 1333)
+Photo.create!(user_id: 1, title: "23", url:"https://res.cloudinary.com/megapx/image/upload/v1462145894/Seeds/23.jpg",
+lat: 37.789090, lng: -122.418079, width: 2000, height: 1350)
+Photo.create!(user_id: 1, title: "24", url:"https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/24.jpg",
+lat: 37.789090, lng: -122.411556, width: 2000, height: 1328)
+Photo.create!(user_id: 1, title: "25", url:"https://res.cloudinary.com/megapx/image/upload/v1462145884/Seeds/25.jpg",
+lat: 37.797445, lng: -122.401116, width: 2000, height: 1250)
+Photo.create!(user_id: 1, title: "26", url:"https://res.cloudinary.com/megapx/image/upload/v1462145899/Seeds/26.jpg",
+lat: 37.793265, lng: -122.403413, width: 2000, height: 1335)
+Photo.create!(user_id: 1, title: "27", url:"https://res.cloudinary.com/megapx/image/upload/v1462145907/Seeds/27.jpg",
+lat: 37.778648, lng: -122.387635, width: 2000, height: 1265)
+Photo.create!(user_id: 1, title: "28", url:"https://res.cloudinary.com/megapx/image/upload/v1462145907/Seeds/28.jpg",
+lat: 37.787115, lng: -122.385029, width: 2000, height: 1125)
+Photo.create!(user_id: 1, title: "29", url:"https://res.cloudinary.com/megapx/image/upload/v1462145904/Seeds/29.jpg",
+lat: 37.795983, lng: -122.404131, width: 662, height: 1000)
+Photo.create!(user_id: 1, title: "30", url:"https://res.cloudinary.com/megapx/image/upload/v1462145926/Seeds/30.jpg",
+lat: 37.769063, lng: -122.439160, width: 2000, height: 1114)
