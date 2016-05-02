@@ -37,7 +37,7 @@ var Map = React.createClass({
       self.map.panTo({lat: centerLat, lng: centerLng});
     });
   },
-  
+
   componentWillUnmount: function() {
     this.dragListener.remove();
     this.clickListener.remove();

@@ -1,7 +1,7 @@
 var React = require('react');
 var PhotoStore = require('../stores/photo_store');
 
-var MAX_PER_ROW = 4;
+var MAX_PER_ROW = 3;
 var PhotoGrid = React.createClass({
 
   getInitialState: function() {

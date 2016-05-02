@@ -38685,7 +38685,7 @@
 	var React = __webpack_require__(1);
 	var PhotoStore = __webpack_require__(273);
 	
-	var MAX_PER_ROW = 4;
+	var MAX_PER_ROW = 3;
 	var PhotoGrid = React.createClass({
 	  displayName: 'PhotoGrid',
 	
