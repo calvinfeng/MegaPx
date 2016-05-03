@@ -47,7 +47,7 @@ video {
   display: -webkit-flex;
   display: flex;
   justify-content: center;
-  height: 85vh;
+  height: 80vh;
   width: 100%;
 }
 
@@ -61,7 +61,7 @@ video {
 .bottom-banner {
   display: flex;
   justify-content: center;
-  height: 15vh;
+  height: 20vh;
   width: 100%;
   background-color: white;
 }
@@ -71,7 +71,7 @@ video {
   justify-content: flex-end;
   border: 1px solid #e3e3e3;
   padding: 10px 10px 10px 10px;
-  height: 15vh;
+  height: 100%;
   width: 50%;
 }
 
@@ -80,6 +80,6 @@ video {
   justify-content: flex-start;
   border: 1px solid #e3e3e3;
   padding: 10px 10px 10px 10px;
-  height: 15vh;
+  height: 100%;
   width: 50%;
 }

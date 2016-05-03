@@ -35038,7 +35038,7 @@
 	        React.createElement(
 	          'video',
 	          { autoPlay: true, loop: true },
-	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/v1461813226/space-time-lapse.mp4',
+	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4',
 	            type: 'video/mp4' })
 	        )
 	      ),
