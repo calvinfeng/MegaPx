@@ -193,11 +193,14 @@ var UploadForm = React.createClass({
                   onClick={this.uploadToCloud}
                   id="cloud-icon"/>
               </div>
-              <div className="submission">
-                <input type="Submit" className="upload-submit" value="SUBMIT"/>
-              </div>
-              <div className="submission-cancel">
-                <div onClick={this.redirectRoot}>Cancel</div>
+
+              <div className="submission-container">
+                <div className="submission">
+                  <input type="Submit" className="upload-submit" value="SUBMIT"/>
+                </div>
+                <div className="submission-cancel">
+                  <div onClick={this.redirectRoot}>Cancel</div>
+                </div>
               </div>
             </section>
 

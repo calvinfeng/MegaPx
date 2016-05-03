@@ -40,7 +40,7 @@
 
 .tab-nav {
   background: #f0f0f0;
-  padding-left: 30px;
+  padding-left: 35px;
   border: #cecece;
   opacity: 0.8;
   width: 100%;
@@ -62,10 +62,23 @@
 }
 
 .tab:hover {
-  background: #d0d0d0;
+  color: #00abff;
   cursor: pointer;
 }
 
+.tab-highlighted {
+  color: #00abff;
+  border-bottom: 3px solid #00abff;
+}
+
+.map-icon {
+  margin-top: 8px;
+}
+
+.map-icon:hover {
+  background: #d0d0d0;
+  cursor: pointer;
+}
 /* Content ===========================================================*/
 .home-content-container {
   position: relative;
@@ -73,12 +86,12 @@
   justify-content: center;
 }
 
-.map {
+.discover-map {
   position: absolute;
   top: 0;
-  right: 0;
-  height: 400px;
-  width: 600px;
+  left: 35px;
+  height: 270px;
+  width: 480px;
   z-index: 100;
 }
 

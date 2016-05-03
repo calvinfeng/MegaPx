@@ -13,10 +13,14 @@ PhotoStore.__onDispatch = function(payload) {
     break;
 
     case "ONE PHOTO RECEIVED":
-    console.log("Store has received one photo from API; successful POST");
+      console.log("Store has received one photo from API; successful POST");
       PhotoStore.setPhotos([payload.photo]);
     break;
 
+    case "PHOTO DELETED":
+
+    break;
+    
     case "ERROR":
       PhotoStore.setErrors(payload.errors);
       console.log(PhotoStore.errors());

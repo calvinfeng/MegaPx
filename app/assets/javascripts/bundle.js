@@ -34399,24 +34399,23 @@
 	
 	var UserActions = __webpack_require__(268);
 	var PhotoActions = __webpack_require__(272);
-	var Map = __webpack_require__(276);
-	var PhotoGrid = __webpack_require__(278);
 	var DiscoverIndex = __webpack_require__(279);
 	var UserPhotoIndex = __webpack_require__(280);
+	
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
 	
 	
 	  getInitialState: function () {
-	    return { modalIsOpen: false, selectedTab: "discover" };
+	    return { selectedTab: "discover" };
 	  },
 	
-	  linkToUpload: function () {
-	    HashHistory.push({ pathname: "/upload" });
+	  componentDidMount: function () {
+	    this.toggleDiscover();
 	  },
 	
 	  toggleMap: function () {
-	    var $map = $('.map');
+	    var $map = $('.discover-map');
 	    if ($map.css('visibility') === 'visible') {
 	      $map.css('visibility', 'hidden');
 	    } else {
@@ -34426,26 +34425,39 @@
 	
 	  toggleMyPhotos: function () {
 	    this.setState({ selectedTab: "my photos" });
+	    $("#my-photos-tab").addClass("tab-highlighted");
+	    $("#discover-tab").removeClass("tab-highlighted");
 	  },
 	
 	  toggleDiscover: function () {
 	    this.setState({ selectedTab: "discover" });
+	    $("#discover-tab").addClass("tab-highlighted");
+	    $("#my-photos-tab").removeClass("tab-highlighted");
 	  },
 	
-	  handleLogout: function (event) {
-	    event.preventDefault();
+	  linkToUpload: function () {
+	    HashHistory.push({ pathname: "/upload" });
+	  },
+	
+	  handleLogout: function () {
 	    UserActions.logout();
 	  },
 	
-	  //Content handlers
+	  // Content handlers ==================================================
 	  homeContent: function () {
 	    if (this.state.selectedTab === "discover") {
 	      return React.createElement(DiscoverIndex, null);
+	    } else if (this.state.selectedTab === "my photos") {
+	      return React.createElement(UserPhotoIndex, null);
 	    } else {
 	      return React.createElement(
 	        'div',
 	        { className: 'home-content-container' },
-	        React.createElement(UserPhotoIndex, null)
+	        React.createElement(
+	          'h1',
+	          null,
+	          'You shouldn\'t be here'
+	        )
 	      );
 	    }
 	  },
@@ -34471,11 +34483,6 @@
 	          { className: 'home-nav-right-box' },
 	          React.createElement(
 	            'div',
-	            { onClick: this.toggleMap, className: 'link' },
-	            'Toggle map'
-	          ),
-	          React.createElement(
-	            'div',
 	            { onClick: this.linkToUpload, className: 'link' },
 	            'Upload'
 	          ),
@@ -34489,14 +34496,17 @@
 	      React.createElement(
 	        'nav',
 	        { className: 'tab-nav' },
+	        React.createElement('img', { height: '35', className: 'map-icon',
+	          onClick: this.toggleMap,
+	          src: 'http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png' }),
 	        React.createElement(
 	          'h1',
-	          { onClick: this.toggleDiscover, className: 'tab' },
+	          { onClick: this.toggleDiscover, className: 'tab', id: 'discover-tab' },
 	          'Discover'
 	        ),
 	        React.createElement(
 	          'h1',
-	          { onClick: this.toggleMyPhotos, className: 'tab' },
+	          { onClick: this.toggleMyPhotos, className: 'tab', id: 'my-photos-tab' },
 	          'My Photos'
 	        )
 	      ),
@@ -34586,6 +34596,10 @@
 	    case "ONE PHOTO RECEIVED":
 	      console.log("Store has received one photo from API; successful POST");
 	      PhotoStore.setPhotos([payload.photo]);
+	      break;
+	
+	    case "PHOTO DELETED":
+	
 	      break;
 	
 	    case "ERROR":
@@ -34685,85 +34699,7 @@
 	};
 
 /***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var PhotoStore = __webpack_require__(273);
-	var MarkerStore = __webpack_require__(277);
-	var PhotoActions = __webpack_require__(272);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	
-	var _markers = [];
-	/* global google */
-	var Map = React.createClass({
-	  displayName: 'Map',
-	
-	  getInitialState: function () {
-	    return { center: { lat: 37.774929, lng: -122.419416 } };
-	  },
-	
-	  __onChange: function () {
-	    MarkerStore.resetMarkers();
-	    MarkerStore.setMapOnMarkers(this.map);
-	    console.log("Drag event occurs");
-	  },
-	
-	  componentDidMount: function () {
-	    var mapDOMNode = this.refs.map;
-	    var mapOptions = {
-	      center: this.state.center,
-	      zoom: 10
-	    };
-	
-	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
-	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
-	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
-	    PhotoStore.addListener(this.__onChange);
-	
-	    var self = this;
-	    navigator.geolocation.getCurrentPosition(function (position) {
-	      var centerLat = position.coords.latitude;
-	      var centerLng = position.coords.longitude;
-	      self.map.panTo({ lat: centerLat, lng: centerLng });
-	    });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.dragListener.remove();
-	    this.clickListener.remove();
-	  },
-	
-	  refetchWhenDragged: function () {
-	    var LatLngBounds = this.map.getBounds();
-	
-	    var northEastBounds = {
-	      lat: LatLngBounds.getNorthEast().lat(),
-	      lng: LatLngBounds.getNorthEast().lng()
-	    };
-	
-	    var southWestBounds = {
-	      lat: LatLngBounds.getSouthWest().lat(),
-	      lng: LatLngBounds.getSouthWest().lng()
-	    };
-	
-	    var bounds = {
-	      "northEast": northEastBounds,
-	      "southWest": southWestBounds
-	    };
-	
-	    PhotoActions.fetchPhotosWithinBounds({ bounds: bounds });
-	  },
-	
-	  render: function () {
-	    return React.createElement('div', { className: 'map', ref: 'map' });
-	  }
-	});
-	
-	module.exports = Map;
-
-/***/ },
+/* 276 */,
 /* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -34937,7 +34873,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Map = __webpack_require__(276);
+	var DiscoverMap = __webpack_require__(295);
 	var PhotoGrid = __webpack_require__(278);
 	
 	var DiscoverIndex = React.createClass({
@@ -34953,14 +34889,14 @@
 	  },
 	
 	  componentDidMount: function () {
-	    $('.map').css('visibility', 'hidden');
+	    $('.discover-map').css('visibility', 'hidden');
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
-	      React.createElement(Map, null),
+	      React.createElement(DiscoverMap, null),
 	      React.createElement(PhotoGrid, null)
 	    );
 	  }
@@ -34973,15 +34909,21 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var PhotoGrid = __webpack_require__(278);
+	var PhotoActions = __webpack_require__(272);
 	
 	var UserPhotoIndex = React.createClass({
 	  displayName: 'UserPhotoIndex',
 	
+	  componentWillMount: function () {
+	    PhotoActions.fetchCurrentUserPhotos();
+	  },
+	
 	  render: function () {
 	    return React.createElement(
-	      'h1',
-	      null,
-	      'My Photos'
+	      'div',
+	      { className: 'home-content-container' },
+	      React.createElement(PhotoGrid, null)
 	    );
 	  }
 	});
@@ -35483,16 +35425,20 @@
 	            ),
 	            React.createElement(
 	              'div',
-	              { className: 'submission' },
-	              React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'submission-cancel' },
+	              { className: 'submission-container' },
 	              React.createElement(
 	                'div',
-	                { onClick: this.redirectRoot },
-	                'Cancel'
+	                { className: 'submission' },
+	                React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'submission-cancel' },
+	                React.createElement(
+	                  'div',
+	                  { onClick: this.redirectRoot },
+	                  'Cancel'
+	                )
 	              )
 	            )
 	          ),
@@ -36079,6 +36025,85 @@
 	    }
 	});
 
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var PhotoStore = __webpack_require__(273);
+	var MarkerStore = __webpack_require__(277);
+	var PhotoActions = __webpack_require__(272);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	
+	var _markers = [];
+	/* global google */
+	var DiscoverMap = React.createClass({
+	  displayName: 'DiscoverMap',
+	
+	  getInitialState: function () {
+	    return { center: { lat: 37.774929, lng: -122.419416 } };
+	  },
+	
+	  __onChange: function () {
+	    MarkerStore.resetMarkers();
+	    MarkerStore.setMapOnMarkers(this.map);
+	    console.log("Drag event occurs");
+	  },
+	
+	  componentDidMount: function () {
+	    var mapDOMNode = this.refs.map;
+	    var mapOptions = {
+	      center: this.state.center,
+	      zoom: 10
+	    };
+	
+	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
+	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
+	    PhotoStore.addListener(this.__onChange);
+	
+	    var self = this;
+	    navigator.geolocation.getCurrentPosition(function (position) {
+	      var centerLat = position.coords.latitude;
+	      var centerLng = position.coords.longitude;
+	      self.map.panTo({ lat: centerLat, lng: centerLng });
+	    });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.dragListener.remove();
+	    this.clickListener.remove();
+	  },
+	
+	  refetchWhenDragged: function () {
+	    var LatLngBounds = this.map.getBounds();
+	
+	    var northEastBounds = {
+	      lat: LatLngBounds.getNorthEast().lat(),
+	      lng: LatLngBounds.getNorthEast().lng()
+	    };
+	
+	    var southWestBounds = {
+	      lat: LatLngBounds.getSouthWest().lat(),
+	      lng: LatLngBounds.getSouthWest().lng()
+	    };
+	
+	    var bounds = {
+	      "northEast": northEastBounds,
+	      "southWest": southWestBounds
+	    };
+	
+	    PhotoActions.fetchPhotosWithinBounds({ bounds: bounds });
+	  },
+	
+	  render: function () {
+	    return React.createElement('div', { className: 'discover-map', ref: 'map' });
+	  }
+	});
+	
+	module.exports = DiscoverMap;
 
 /***/ }
 /******/ ]);

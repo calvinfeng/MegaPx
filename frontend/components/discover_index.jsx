@@ -1,5 +1,5 @@
 var React = require('react');
-var Map = require('./map');
+var DiscoverMap = require('./discover_map');
 var PhotoGrid = require('./photo_grid');
 
 var DiscoverIndex = React.createClass({
@@ -13,13 +13,13 @@ var DiscoverIndex = React.createClass({
   },
 
   componentDidMount: function() {
-    $('.map').css('visibility', 'hidden');
+    $('.discover-map').css('visibility', 'hidden');
   },
 
   render: function() {
     return (
       <div className="home-content-container">
-        <Map/>
+        <DiscoverMap/>
         <PhotoGrid/>
       </div>
     );

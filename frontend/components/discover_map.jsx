@@ -7,7 +7,7 @@ var hashHistory = require('react-router').hashHistory;
 
 var _markers = [];
 /* global google */
-var Map = React.createClass({
+var DiscoverMap = React.createClass({
   getInitialState: function() {
     return {center: {lat: 37.774929, lng: -122.419416}};
   },
@@ -66,9 +66,9 @@ var Map = React.createClass({
 
   render: function() {
     return (
-      <div className="map" ref="map"></div>
+      <div className="discover-map" ref="map"></div>
     );
   }
 });
 
-module.exports = Map;
+module.exports = DiscoverMap;
