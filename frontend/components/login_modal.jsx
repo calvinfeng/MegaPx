@@ -1,23 +1,21 @@
 var React = require('react');
-var Modal = require('react-modal');
+var Modal = require('boron/ScaleModal');
 
 var UserActions = require('../actions/user_actions');
 var UserStore = require('../stores/user_store');
 
-var customStyles = {
-  content: {
-    opacity: '0',
-    transition: 'opacity 1s',
-    top: '35%',
-    right: '35%',
-    bottom: 'auto',
-    left: '35%',
-    background: 'transparent',
-    border: '2px solid white'
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.60)'
-  }
+//Custom styles for boron modal
+var backdropStyle = {
+  backgroundColor: 'rgba(0,0,0,0.5)'
+};
+
+var modalStyle = {
+  width: '35%',
+  top: '55%',
+};
+
+var contentStyle = {
+  backgroundColor: 'transparent',
 };
 
 var LoginModal = React.createClass({
@@ -85,19 +83,20 @@ var LoginModal = React.createClass({
     }
   },
 
-  openModal: function() {
+  showModal: function(){
     $('.get-started-button').css('visibility', 'hidden');
-    customStyles.content.opacity = '100';
-    this.setState({modalIsOpen: true});
-
+    this.refs.modal.show();
   },
 
-  closeModal: function() {
+  hideModal: function(){
+    this.refs.modal.hide();
     $('.get-started-button').css('visibility', 'visible');
-    customStyles.content.opacity = '0';
-    this.setState({modalIsOpen: false, userErrors: null});
-    // BUG Report: closing modal does not get rid of all the error messages
-    // because there are three modals with three individual states
+    this.setState({userErrors: null});
+  },
+
+  toggleGetStartedButton: function() {
+    $('.get-started-button').css('visibility', 'visible');
+    this.setState({userErrors: null});
   },
 
   submitButtons: function() {
@@ -111,18 +110,21 @@ var LoginModal = React.createClass({
       );
     }
   },
-
+  
   // Inherit button class and button text from parent
   render: function() {
     return (
-      <div className="modal">
-        <div className={this.props.buttonClass} onClick={this.openModal}>
+      <div>
+        <div className={this.props.buttonClass} onClick={this.showModal}>
           {this.props.buttonText}
         </div>
-        <Modal isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles}>
-          <form onSubmit={this.handleSubmit}>
+        <Modal ref="modal"
+          modalStyle={modalStyle}
+          backdropStyle={backdropStyle}
+          contentStyle={contentStyle}
+          onHide={this.toggleGetStartedButton}>
+
+          <form onSubmit={this.handleSubmit} className="login-form">
             <section className="user-input-section">
               <h1 className="login-header">{this.props.buttonText}</h1>
               <input placeholder="Username" type="text" className="login-input"
