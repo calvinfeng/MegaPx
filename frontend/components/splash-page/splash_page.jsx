@@ -54,10 +54,21 @@ var SplashPage = React.createClass({
           <div className="left-box">
             <img src="https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png"
               width="50" height="50"/>
+            <div className="text-box">
+              <h1>Location-based Content</h1>
+              <p>Discover photography around you</p>
+  		        <a className="button">Start uploading</a>
+
+            </div>
           </div>
           <div className="right-box">
             <img src="http://www.bartosztomas.eu/upload/templates/img/logo.png"
               width="50" height="50"/>
+            <div className="text-box">
+              <h1>Photography Enthusiasts</h1>
+              <p>Upload and share your megapixel images</p>
+              <a className="button">Start browsing</a>
+            </div>
           </div>
         </div>
 

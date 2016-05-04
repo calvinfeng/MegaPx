@@ -36126,13 +36126,51 @@
 	          'div',
 	          { className: 'left-box' },
 	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
-	            width: '50', height: '50' })
+	            width: '50', height: '50' }),
+	          React.createElement(
+	            'div',
+	            { className: 'text-box' },
+	            React.createElement(
+	              'h1',
+	              null,
+	              'Location-based Content'
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              'Discover photography around you'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'button' },
+	              'Start uploading'
+	            )
+	          )
 	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'right-box' },
 	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
-	            width: '50', height: '50' })
+	            width: '50', height: '50' }),
+	          React.createElement(
+	            'div',
+	            { className: 'text-box' },
+	            React.createElement(
+	              'h1',
+	              null,
+	              'Photography Enthusiasts'
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              'Upload and share your megapixel images'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'button' },
+	              'Start browsing'
+	            )
+	          )
 	        )
 	      ),
 	      React.createElement('div', { className: 'feature-section' })
