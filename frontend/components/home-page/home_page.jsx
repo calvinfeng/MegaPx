@@ -1,8 +1,9 @@
 var React = require('react');
 var HashHistory = require('react-router').hashHistory;
 
-var UserActions = require('../actions/user_actions');
-var PhotoActions = require('../actions/photo_actions');
+var UserActions = require('../../actions/user_actions');
+var PhotoActions = require('../../actions/photo_actions');
+
 var DiscoverIndex = require('./discover_index');
 var UserPhotoIndex = require('./user_photo_index');
 

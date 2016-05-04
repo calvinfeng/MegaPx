@@ -54,7 +54,7 @@
 	var HashHistory = __webpack_require__(186).hashHistory;
 	
 	var Index = __webpack_require__(245);
-	var UploadForm = __webpack_require__(283);
+	var UploadForm = __webpack_require__(296);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -27406,11 +27406,9 @@
 	var UserStore = __webpack_require__(246);
 	var UserActions = __webpack_require__(268);
 	
-	var HomePage = __webpack_require__(271);
-	var SplashPage = __webpack_require__(281);
+	var HomePage = __webpack_require__(297);
+	var SplashPage = __webpack_require__(302);
 	
-	// getInitialState => render() => componentWillMount => componentDidMount
-	// setState => shouldComponentUpdate => render() => same ^
 	var Index = React.createClass({
 	  displayName: 'Index',
 	
@@ -34391,133 +34389,7 @@
 	};
 
 /***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var HashHistory = __webpack_require__(186).hashHistory;
-	
-	var UserActions = __webpack_require__(268);
-	var PhotoActions = __webpack_require__(272);
-	var DiscoverIndex = __webpack_require__(279);
-	var UserPhotoIndex = __webpack_require__(280);
-	
-	var HomePage = React.createClass({
-	  displayName: 'HomePage',
-	
-	
-	  getInitialState: function () {
-	    return { selectedTab: "discover" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.toggleDiscover();
-	  },
-	
-	  toggleMap: function () {
-	    var $map = $('.discover-map');
-	    if ($map.css('visibility') === 'visible') {
-	      $map.css('visibility', 'hidden');
-	    } else {
-	      $map.css('visibility', 'visible');
-	    }
-	  },
-	
-	  toggleMyPhotos: function () {
-	    this.setState({ selectedTab: "my photos" });
-	    $("#my-photos-tab").addClass("tab-highlighted");
-	    $("#discover-tab").removeClass("tab-highlighted");
-	  },
-	
-	  toggleDiscover: function () {
-	    this.setState({ selectedTab: "discover" });
-	    $("#discover-tab").addClass("tab-highlighted");
-	    $("#my-photos-tab").removeClass("tab-highlighted");
-	  },
-	
-	  linkToUpload: function () {
-	    HashHistory.push({ pathname: "/upload" });
-	  },
-	
-	  handleLogout: function () {
-	    UserActions.logout();
-	  },
-	
-	  // Content handlers ==================================================
-	  homeContent: function () {
-	    if (this.state.selectedTab === "discover") {
-	      return React.createElement(DiscoverIndex, null);
-	    } else if (this.state.selectedTab === "my photos") {
-	      return React.createElement(UserPhotoIndex, null);
-	    } else {
-	      return React.createElement(
-	        'div',
-	        { className: 'home-content-container' },
-	        React.createElement(
-	          'h1',
-	          null,
-	          'You shouldn\'t be here'
-	        )
-	      );
-	    }
-	  },
-	
-	  logoURL: function () {
-	    return "https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png";
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'home-page' },
-	      React.createElement(
-	        'nav',
-	        { className: 'home-nav' },
-	        React.createElement(
-	          'div',
-	          { className: 'home-nav-left-box' },
-	          React.createElement('img', { src: this.logoURL(), height: '40px', className: 'home-logo' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'home-nav-right-box' },
-	          React.createElement(
-	            'div',
-	            { onClick: this.linkToUpload, className: 'link' },
-	            'Upload'
-	          ),
-	          React.createElement(
-	            'div',
-	            { onClick: this.handleLogout, className: 'link' },
-	            'Log out'
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'nav',
-	        { className: 'tab-nav' },
-	        React.createElement('img', { height: '35', className: 'map-icon',
-	          onClick: this.toggleMap,
-	          src: 'http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png' }),
-	        React.createElement(
-	          'h1',
-	          { onClick: this.toggleDiscover, className: 'tab', id: 'discover-tab' },
-	          'Discover'
-	        ),
-	        React.createElement(
-	          'h1',
-	          { onClick: this.toggleMyPhotos, className: 'tab', id: 'my-photos-tab' },
-	          'My Photos'
-	        )
-	      ),
-	      this.homeContent()
-	    );
-	  }
-	});
-	
-	module.exports = HomePage;
-
-/***/ },
+/* 271 */,
 /* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -34764,708 +34636,12 @@
 	module.exports = MarkerStore;
 
 /***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var PhotoStore = __webpack_require__(273);
-	
-	var MAX_PER_ROW = 3;
-	var PhotoGrid = React.createClass({
-	  displayName: 'PhotoGrid',
-	
-	
-	  getInitialState: function () {
-	    return { photos: [] };
-	  },
-	
-	  componentDidMount: function () {
-	    this.storeListener = PhotoStore.addListener(this.__onChange);
-	    window.addEventListener("resize", this.__onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	    window.removeEventListener("resize", this.__onChange);
-	  },
-	
-	  __onChange: function () {
-	    console.log("PhotoGrid component received photos");
-	    this.setState({ photos: PhotoStore.inventory() });
-	    this.organizePhotosInGrid();
-	  },
-	
-	  organizePhotosInGrid: function () {
-	    $("#index-photo-grid").empty();
-	    if (this.state.photos) {
-	      var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
-	      var $parent = $("#index-photo-grid");
-	      var photos = this.state.photos;
-	      // This is actually O(n) operation even though it seems like a nested
-	      // loop structure, just look at idx and pay close attention to it
-	      idx = 0;
-	      while (idx < photos.length) {
-	        $row = $("<div></div>");
-	        $row.addClass("photo-row");
-	        accumWidth = 0;
-	        rowItems = [];
-	        numRowItems = Math.floor(Math.random() * (MAX_PER_ROW - 1)) + 2;
-	
-	        // Insert images to row
-	        for (i = 0; i < numRowItems; i++) {
-	          if (idx === photos.length) {
-	            break;
-	          }
-	          $img = $("<img></img>");
-	          $img.addClass("photo-item");
-	          $img.attr("src", photos[idx].url);
-	          accumWidth += photos[idx].width / photos[idx].height;
-	          idx += 1;
-	          rowItems.push($img);
-	        }
-	        console.log("accumWidth: " + accumWidth);
-	
-	        // Modify dimensions of the images before appending to row
-	        for (i = 0; i < rowItems.length; i++) {
-	          $(rowItems[i]).attr('height', $parent.width() / accumWidth);
-	          $row.append(rowItems[i]);
-	        }
-	        // Append row to the grid
-	        $parent.append($row);
-	      }
-	      $(".photo-item").wrap("<div class='ripplelink'></div>");
-	      this.ripplelink();
-	    }
-	  },
-	
-	  ripplelink: function () {
-	    $(function () {
-	      var ink, d, x, y;
-	      $(".ripplelink").click(function (e) {
-	        if ($(this).find(".ink").length === 0) {
-	          $(this).prepend("<span class='ink'></span>");
-	        }
-	        ink = $(this).find(".ink");
-	        ink.removeClass("animate");
-	
-	        if (!ink.height() && !ink.width()) {
-	          d = Math.max($(this).outerWidth(), $(this).outerHeight());
-	          ink.css({ height: d, width: d });
-	        }
-	
-	        x = e.pageX - $(this).offset().left - ink.width() / 2;
-	        y = e.pageY - $(this).offset().top - ink.height() / 2;
-	
-	        ink.css({ top: y + 'px', left: x + 'px' }).addClass("animate");
-	      });
-	    });
-	  },
-	
-	  render: function () {
-	    return React.createElement('div', { id: 'index-photo-grid' });
-	  }
-	
-	});
-	module.exports = PhotoGrid;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var DiscoverMap = __webpack_require__(295);
-	var PhotoGrid = __webpack_require__(278);
-	
-	var DiscoverIndex = React.createClass({
-	  displayName: 'DiscoverIndex',
-	
-	  toggleMap: function () {
-	    var $map = $('.map');
-	    if ($map.css('visibility') === 'visible') {
-	      $map.css('visibility', 'hidden');
-	    } else {
-	      $map.css('visibility', 'visible');
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    $('.discover-map').css('visibility', 'hidden');
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'home-content-container' },
-	      React.createElement(DiscoverMap, null),
-	      React.createElement(PhotoGrid, null)
-	    );
-	  }
-	});
-	
-	module.exports = DiscoverIndex;
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var PhotoGrid = __webpack_require__(278);
-	var PhotoActions = __webpack_require__(272);
-	
-	var UserPhotoIndex = React.createClass({
-	  displayName: 'UserPhotoIndex',
-	
-	  componentWillMount: function () {
-	    PhotoActions.fetchCurrentUserPhotos();
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'home-content-container' },
-	      React.createElement(PhotoGrid, null)
-	    );
-	  }
-	});
-	
-	module.exports = UserPhotoIndex;
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var HashHistory = __webpack_require__(186).hashHistory;
-	var LoginModal = __webpack_require__(282);
-	
-	var SplashPage = React.createClass({
-	  displayName: 'SplashPage',
-	
-	
-	  getInitialState: function () {
-	    return { width: $(document).width(), height: $(document).height() };
-	  },
-	
-	  updateDimensions: function () {
-	    this.setState({ width: $(document).width(), height: $(document).height() });
-	  },
-	
-	  componentDidMount: function () {
-	    window.addEventListener("resize", this.updateDimensions);
-	  },
-	
-	  componentWillUnmount: function () {
-	    window.removeEventListener("resize", this.updateDimensions);
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'splash' },
-	      React.createElement(
-	        'div',
-	        { className: 'nav-bar' },
-	        React.createElement(
-	          'div',
-	          { id: 'logo' },
-	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	            width: '100px' })
-	        ),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'background-video' },
-	        React.createElement(
-	          'video',
-	          { autoPlay: true, loop: true },
-	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4',
-	            type: 'video/mp4' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'welcome' },
-	        React.createElement(
-	          'div',
-	          { className: 'center-panel' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Home to everyone\'s megapixel photos'
-	          ),
-	          React.createElement(
-	            'h5',
-	            null,
-	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
-	          ),
-	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
-	            buttonText: 'Get Started',
-	            form: 'login' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'bottom-banner' },
-	        React.createElement(
-	          'div',
-	          { className: 'left-box' },
-	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
-	            width: '50', height: '50' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'right-box' },
-	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
-	            width: '50', height: '50' })
-	        )
-	      ),
-	      React.createElement('div', { className: 'feature-section' })
-	    );
-	  }
-	});
-	
-	module.exports = SplashPage;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Modal = __webpack_require__(294);
-	
-	var UserActions = __webpack_require__(268);
-	var UserStore = __webpack_require__(246);
-	
-	//Custom styles for boron modal
-	var backdropStyle = {
-	  backgroundColor: 'rgba(0,0,0,0.5)'
-	};
-	
-	var modalStyle = {
-	  width: '35%',
-	  top: '55%'
-	};
-	
-	var contentStyle = {
-	  backgroundColor: 'transparent'
-	};
-	
-	var LoginModal = React.createClass({
-	  displayName: 'LoginModal',
-	
-	
-	  getInitialState: function () {
-	    return {
-	      modalIsOpen: false,
-	      username: "",
-	      password: ""
-	    };
-	  },
-	
-	  __onChange: function () {
-	    // If log in successfully, close the modal
-	    if (UserStore.currentUser()) {
-	      this.closeModal();
-	    } else {
-	      // Report errors to user
-	      this.setState({ userErrors: UserStore.errors() });
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    this.storeListener = UserStore.addListener(this.__onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	  },
-	
-	  setUsername: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  setPassword: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    UserActions[this.props.form]({
-	      username: this.state.username,
-	      password: this.state.password
-	    });
-	  },
-	
-	  guestLogin: function (event) {
-	    event.preventDefault();
-	    UserActions.guestLogin();
-	  },
-	
-	  errors: function () {
-	    if (this.state.userErrors) {
-	      return React.createElement(
-	        'ul',
-	        null,
-	        this.state.userErrors.errors.map(function (error, idx) {
-	          return React.createElement(
-	            'li',
-	            { key: idx },
-	            error
-	          );
-	        })
-	      );
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  showModal: function () {
-	    $('.get-started-button').css('visibility', 'hidden');
-	    this.refs.modal.show();
-	  },
-	
-	  hideModal: function () {
-	    this.refs.modal.hide();
-	    $('.get-started-button').css('visibility', 'visible');
-	    this.setState({ userErrors: null });
-	  },
-	
-	  toggleGetStartedButton: function () {
-	    $('.get-started-button').css('visibility', 'visible');
-	    this.setState({ userErrors: null });
-	  },
-	
-	  submitButtons: function () {
-	    if (this.props.form === "login") {
-	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Login' });
-	    } else {
-	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Sign up' });
-	    }
-	  },
-	
-	  // Inherit button class and button text from parent
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: this.props.buttonClass, onClick: this.showModal },
-	        this.props.buttonText
-	      ),
-	      React.createElement(
-	        Modal,
-	        { ref: 'modal',
-	          modalStyle: modalStyle,
-	          backdropStyle: backdropStyle,
-	          contentStyle: contentStyle,
-	          onHide: this.toggleGetStartedButton },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.handleSubmit, className: 'login-form' },
-	          React.createElement(
-	            'section',
-	            { className: 'user-input-section' },
-	            React.createElement(
-	              'h1',
-	              { className: 'login-header' },
-	              this.props.buttonText
-	            ),
-	            React.createElement('input', { placeholder: 'Username', type: 'text', className: 'login-input',
-	              value: this.state.username,
-	              onChange: this.setUsername,
-	              require: '' }),
-	            React.createElement('input', { placeholder: 'Password', type: 'password', className: 'login-input',
-	              value: this.state.password,
-	              onChange: this.setPassword,
-	              require: '' })
-	          ),
-	          this.submitButtons(),
-	          React.createElement(
-	            'button',
-	            { className: 'submit-button', id: 'guest-login', onClick: this.guestLogin },
-	            'Guest Login'
-	          ),
-	          React.createElement(
-	            'h1',
-	            { className: 'login-error' },
-	            this.errors()
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LoginModal;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// For authentication
-	var UserStore = __webpack_require__(246);
-	var PhotoActions = __webpack_require__(272);
-	var PhotoStore = __webpack_require__(273);
-	var HashHistory = __webpack_require__(186).hashHistory;
-	
-	var _isMounted;
-	/* global cloudinary */
-	var UploadForm = React.createClass({
-	  displayName: 'UploadForm',
-	
-	
-	  getInitialState: function () {
-	    return {
-	      imgUrl: undefined,
-	      imgLat: undefined,
-	      imgLng: undefined,
-	      imgPublicId: undefined,
-	      imgTitle: undefined,
-	      imgDescription: undefined,
-	      imgWidth: 0,
-	      imgHeight: 0
-	    };
-	  },
-	
-	  setTitle: function (event) {
-	    this.setState({ imgTitle: event.target.value });
-	  },
-	
-	  setDescription: function (event) {
-	    this.setState({ imgDescription: event.target.value });
-	  },
-	
-	  componentWillMount: function () {
-	    if (!UserStore.currentUser()) {
-	      HashHistory.push({ pathname: "/" });
-	    } else {
-	      _isMounted = true;
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    var mapDOMNode = this.refs.geoTagMap;
-	    var mapOptions = {
-	      center: { lat: 37.774929, lng: -122.419416 },
-	      zoom: 10
-	    };
-	    /* global google */
-	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
-	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
-	    navigator.geolocation.getCurrentPosition(this.setCurrentLocation);
-	  },
-	
-	  setCurrentLocation: function (position) {
-	    var currentLat = position.coords.latitude;
-	    var currentLng = position.coords.longitude;
-	    // this is to prevent calling setState on unmounted component
-	    if (_isMounted) {
-	      this.map.panTo({ lat: currentLat, lng: currentLng });
-	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.clickListener.remove();
-	    _isMounted = false;
-	  },
-	
-	  uploadToCloud: function (event) {
-	    event.preventDefault();
-	    // currently, it only allows one image upload at a time
-	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
-	      if (!errors) {
-	        this.setState({ imgUrl: images[0].secure_url });
-	        this.setState({ imgWidth: images[0].width });
-	        this.setState({ imgHeight: images[0].height });
-	        this.setState({ imgPublicId: images[0].public_id });
-	      }
-	    }.bind(this));
-	  },
-	
-	  showImage: function () {
-	    if (this.state.imgUrl) {
-	      return React.createElement('img', { className: 'image-display',
-	        src: this.state.imgUrl });
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  mapClickHandle: function (event) {
-	    var lat = event.latLng.lat();
-	    var lng = event.latLng.lng();
-	    this.setState({ imgLat: lat, imgLng: lng });
-	  },
-	
-	  getLat: function () {
-	    if (this.state.imgLat) {
-	      return Math.ceil(1000000 * this.state.imgLat) / 1000000;
-	    } else {
-	      return "";
-	    }
-	  },
-	
-	  getLng: function () {
-	    if (this.state.imgLng) {
-	      return Math.ceil(1000000 * this.state.imgLng) / 1000000;
-	    } else {
-	      return "";
-	    }
-	  },
-	
-	  submitHandle: function (event) {
-	    event.preventDefault();
-	    var photo = {
-	      title: this.state.imgTitle,
-	      description: this.state.imgDescription,
-	      url: this.state.imgUrl,
-	      lat: this.state.imgLat,
-	      lng: this.state.imgLng,
-	      height: this.state.imgHeight,
-	      width: this.state.imgWidth,
-	      user_id: UserStore.currentUser().id,
-	      public_id: this.state.imgPublicId
-	    };
-	    PhotoActions.postPhoto({ photo: photo });
-	    HashHistory.push({ pathname: "/" });
-	  },
-	
-	  redirectRoot: function (event) {
-	    event.preventDefault();
-	    HashHistory.push({ pathname: "/" });
-	  },
-	
-	  navigation: function () {
-	    return React.createElement(
-	      'nav',
-	      { className: 'home-nav' },
-	      React.createElement(
-	        'div',
-	        { className: 'home-nav-left-box' },
-	        React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	          height: '40px', className: 'home-logo', onClick: this.redirectRoot })
-	      ),
-	      React.createElement('div', { className: 'home-nav-right-box' })
-	    );
-	  },
-	
-	  errors: function () {
-	    return PhotoStore.errors();
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      this.navigation(),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submitHandle },
-	        React.createElement(
-	          'article',
-	          { className: 'upload-form' },
-	          React.createElement(
-	            'section',
-	            { className: 'input-column' },
-	            React.createElement('div', { className: 'geo-tag-map', ref: 'geoTagMap' }),
-	            React.createElement(
-	              'div',
-	              { className: 'geo-info' },
-	              React.createElement('img', { src: 'http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/256/map-marker.png',
-	                height: '30px' }),
-	              React.createElement(
-	                'div',
-	                { className: 'img-lat' },
-	                'Latitude: ',
-	                this.getLat()
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'img-lng' },
-	                'Longitude: ',
-	                this.getLng()
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'upload-input-group' },
-	              React.createElement('input', { type: 'text', required: true }),
-	              React.createElement('span', { className: 'highlight' }),
-	              React.createElement('span', { className: 'bar' }),
-	              React.createElement(
-	                'label',
-	                null,
-	                'Title'
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'upload-input-group' },
-	              React.createElement('input', { type: 'text', required: true }),
-	              React.createElement('span', { className: 'highlight' }),
-	              React.createElement('span', { className: 'bar' }),
-	              React.createElement(
-	                'label',
-	                null,
-	                'Description'
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'upload-input-group' },
-	              React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png',
-	                height: '35',
-	                onClick: this.uploadToCloud,
-	                id: 'cloud-icon' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'submission-container' },
-	              React.createElement(
-	                'div',
-	                { className: 'submission' },
-	                React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'submission-cancel' },
-	                React.createElement(
-	                  'div',
-	                  { onClick: this.redirectRoot },
-	                  'Cancel'
-	                )
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'section',
-	            { className: 'image-display-column' },
-	            React.createElement(
-	              'div',
-	              { className: 'image-frame' },
-	              this.showImage()
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'ul',
-	          null,
-	          this.errors()
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = UploadForm;
-
-/***/ },
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
 /* 284 */,
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
@@ -35920,7 +35096,158 @@
 
 
 /***/ },
-/* 293 */,
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var modalFactory = __webpack_require__(285);
+	var insertKeyframesRule = __webpack_require__(290);
+	var appendVendorPrefix = __webpack_require__(287);
+	
+	var animation = {
+	    show: {
+	        animationDuration: '0.8s',
+	        animationTimingFunction: 'cubic-bezier(0.6,0,0.4,1)'
+	    },
+	    hide: {
+	        animationDuration: '0.4s',
+	        animationTimingFunction: 'ease-out'
+	    },
+	    showContentAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0,
+	        },
+	        '40%':{
+	            opacity: 0
+	        },
+	        '100%': {
+	            opacity: 1,
+	        }
+	    }),
+	
+	    hideContentAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 1
+	        },
+	        '100%': {
+	            opacity: 0,
+	        }
+	    }),
+	
+	    showBackdropAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0
+	        },
+	        '100%': {
+	            opacity: 0.9
+	        },
+	    }),
+	
+	    hideBackdropAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0.9
+	        },
+	        '100%': {
+	            opacity: 0
+	        }
+	    })
+	};
+	
+	var showAnimation = animation.show;
+	var hideAnimation = animation.hide;
+	var showContentAnimation = animation.showContentAnimation;
+	var hideContentAnimation = animation.hideContentAnimation;
+	var showBackdropAnimation = animation.showBackdropAnimation;
+	var hideBackdropAnimation = animation.hideBackdropAnimation;
+	
+	module.exports = modalFactory({
+	    getRef: function(willHidden) {
+	        return 'content';
+	    },
+	    getSharp: function(willHidden) {
+	        var strokeDashLength = 1680;
+	
+	        var showSharpAnimation = insertKeyframesRule({
+	            '0%': {
+	                'stroke-dashoffset': strokeDashLength
+	            },
+	            '100%': {
+	                'stroke-dashoffset': 0
+	            },
+	        });
+	
+	
+	        var sharpStyle = {
+	            position: 'absolute',
+	            width: 'calc(100%)',
+	            height: 'calc(100%)',
+	            zIndex: '-1'
+	        };
+	
+	        var rectStyle = appendVendorPrefix({
+	            animationDuration: willHidden? '0.4s' :'0.8s',
+	            animationFillMode: 'forwards',
+	            animationName: willHidden? hideContentAnimation: showSharpAnimation,
+	            stroke: '#ffffff',
+	            strokeWidth: '2px',
+	            strokeDasharray: strokeDashLength
+	        });
+	
+	        return React.createElement("div", {style: sharpStyle}, 
+	            React.createElement("svg", {
+	                xmlns: "http://www.w3.org/2000/svg", 
+	                width: "100%", 
+	                height: "100%", 
+	                viewBox: "0 0 496 136", 
+	                preserveAspectRatio: "none"}, 
+	                React.createElement("rect", {style: rectStyle, 
+	                    x: "2", 
+	                    y: "2", 
+	                    fill: "none", 
+	                    width: "492", 
+	                    height: "132"})
+	            )
+	        )
+	    },
+	    getModalStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            zIndex: 1050,
+	            position: "fixed",
+	            width: "500px",
+	            transform: "translate3d(-50%, -50%, 0)",
+	            top: "50%",
+	            left: "50%"
+	        })
+	    },
+	    getBackdropStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            position: "fixed",
+	            top: 0,
+	            right: 0,
+	            bottom: 0,
+	            left: 0,
+	            zIndex: 1040,
+	            backgroundColor: "#373A47",
+	            animationFillMode: 'forwards',
+	            animationDuration: '0.4s',
+	            animationName: willHidden ? hideBackdropAnimation : showBackdropAnimation,
+	            animationTimingFunction: (willHidden ? hideAnimation : showAnimation).animationTimingFunction
+	        });
+	    },
+	    getContentStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            margin: 0,
+	            backgroundColor: "white",
+	            animationDuration: (willHidden ? hideAnimation : showAnimation).animationDuration,
+	            animationFillMode: 'forwards',
+	            animationName: willHidden ? hideContentAnimation : showContentAnimation,
+	            animationTimingFunction: (willHidden ? hideAnimation : showAnimation).animationTimingFunction
+	        })
+	    }
+	});
+
+
+/***/ },
 /* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -36027,7 +35354,436 @@
 
 
 /***/ },
-/* 295 */
+/* 295 */,
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// For authentication
+	var UserStore = __webpack_require__(246);
+	var PhotoActions = __webpack_require__(272);
+	var PhotoStore = __webpack_require__(273);
+	var HashHistory = __webpack_require__(186).hashHistory;
+	
+	var _isMounted;
+	/* global cloudinary */
+	var UploadForm = React.createClass({
+	  displayName: 'UploadForm',
+	
+	
+	  getInitialState: function () {
+	    return {
+	      imgUrl: undefined,
+	      imgLat: undefined,
+	      imgLng: undefined,
+	      imgPublicId: undefined,
+	      imgTitle: undefined,
+	      imgDescription: undefined,
+	      imgWidth: 0,
+	      imgHeight: 0
+	    };
+	  },
+	
+	  setTitle: function (event) {
+	    this.setState({ imgTitle: event.target.value });
+	  },
+	
+	  setDescription: function (event) {
+	    this.setState({ imgDescription: event.target.value });
+	  },
+	
+	  componentWillMount: function () {
+	    if (!UserStore.currentUser()) {
+	      HashHistory.push({ pathname: "/" });
+	    } else {
+	      _isMounted = true;
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    var mapDOMNode = this.refs.geoTagMap;
+	    var mapOptions = {
+	      center: { lat: 37.774929, lng: -122.419416 },
+	      zoom: 10
+	    };
+	    /* global google */
+	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
+	    navigator.geolocation.getCurrentPosition(this.setCurrentLocation);
+	  },
+	
+	  setCurrentLocation: function (position) {
+	    var currentLat = position.coords.latitude;
+	    var currentLng = position.coords.longitude;
+	    // this is to prevent calling setState on unmounted component
+	    if (_isMounted) {
+	      this.map.panTo({ lat: currentLat, lng: currentLng });
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.clickListener.remove();
+	    _isMounted = false;
+	  },
+	
+	  uploadToCloud: function (event) {
+	    event.preventDefault();
+	    // currently, it only allows one image upload at a time
+	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
+	      if (!errors) {
+	        this.setState({ imgUrl: images[0].secure_url });
+	        this.setState({ imgWidth: images[0].width });
+	        this.setState({ imgHeight: images[0].height });
+	        this.setState({ imgPublicId: images[0].public_id });
+	      }
+	    }.bind(this));
+	  },
+	
+	  showImage: function () {
+	    if (this.state.imgUrl) {
+	      return React.createElement('img', { className: 'image-display',
+	        src: this.state.imgUrl });
+	    } else {
+	      return;
+	    }
+	  },
+	
+	  mapClickHandle: function (event) {
+	    var lat = event.latLng.lat();
+	    var lng = event.latLng.lng();
+	    this.setState({ imgLat: lat, imgLng: lng });
+	  },
+	
+	  getLat: function () {
+	    if (this.state.imgLat) {
+	      return Math.ceil(1000000 * this.state.imgLat) / 1000000;
+	    } else {
+	      return "";
+	    }
+	  },
+	
+	  getLng: function () {
+	    if (this.state.imgLng) {
+	      return Math.ceil(1000000 * this.state.imgLng) / 1000000;
+	    } else {
+	      return "";
+	    }
+	  },
+	
+	  submitHandle: function (event) {
+	    event.preventDefault();
+	    var photo = {
+	      title: this.state.imgTitle,
+	      description: this.state.imgDescription,
+	      url: this.state.imgUrl,
+	      lat: this.state.imgLat,
+	      lng: this.state.imgLng,
+	      height: this.state.imgHeight,
+	      width: this.state.imgWidth,
+	      user_id: UserStore.currentUser().id,
+	      public_id: this.state.imgPublicId
+	    };
+	    PhotoActions.postPhoto({ photo: photo });
+	    HashHistory.push({ pathname: "/" });
+	  },
+	
+	  redirectRoot: function (event) {
+	    event.preventDefault();
+	    HashHistory.push({ pathname: "/" });
+	  },
+	
+	  navigation: function () {
+	    return React.createElement(
+	      'nav',
+	      { className: 'home-nav' },
+	      React.createElement(
+	        'div',
+	        { className: 'home-nav-left-box' },
+	        React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	          height: '40px', className: 'home-logo', onClick: this.redirectRoot })
+	      ),
+	      React.createElement('div', { className: 'home-nav-right-box' })
+	    );
+	  },
+	
+	  errors: function () {
+	    return PhotoStore.errors();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      this.navigation(),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submitHandle },
+	        React.createElement(
+	          'article',
+	          { className: 'upload-form' },
+	          React.createElement(
+	            'section',
+	            { className: 'input-column' },
+	            React.createElement('div', { className: 'geo-tag-map', ref: 'geoTagMap' }),
+	            React.createElement(
+	              'div',
+	              { className: 'geo-info' },
+	              React.createElement('img', { src: 'http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/256/map-marker.png',
+	                height: '30px' }),
+	              React.createElement(
+	                'div',
+	                { className: 'img-lat' },
+	                'Latitude: ',
+	                this.getLat()
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'img-lng' },
+	                'Longitude: ',
+	                this.getLng()
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('span', { className: 'highlight' }),
+	              React.createElement('span', { className: 'bar' }),
+	              React.createElement(
+	                'label',
+	                null,
+	                'Title'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('span', { className: 'highlight' }),
+	              React.createElement('span', { className: 'bar' }),
+	              React.createElement(
+	                'label',
+	                null,
+	                'Description'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'upload-input-group' },
+	              React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png',
+	                height: '35',
+	                onClick: this.uploadToCloud,
+	                id: 'cloud-icon' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'submission-container' },
+	              React.createElement(
+	                'div',
+	                { className: 'submission' },
+	                React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'submission-cancel' },
+	                React.createElement(
+	                  'div',
+	                  { onClick: this.redirectRoot },
+	                  'Cancel'
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'section',
+	            { className: 'image-display-column' },
+	            React.createElement(
+	              'div',
+	              { className: 'image-frame' },
+	              this.showImage()
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'ul',
+	          null,
+	          this.errors()
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = UploadForm;
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var HashHistory = __webpack_require__(186).hashHistory;
+	
+	var UserActions = __webpack_require__(268);
+	var PhotoActions = __webpack_require__(272);
+	
+	var DiscoverIndex = __webpack_require__(298);
+	var UserPhotoIndex = __webpack_require__(301);
+	
+	var HomePage = React.createClass({
+	  displayName: 'HomePage',
+	
+	
+	  getInitialState: function () {
+	    return { selectedTab: "discover" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.toggleDiscover();
+	  },
+	
+	  toggleMap: function () {
+	    var $map = $('.discover-map');
+	    if ($map.css('visibility') === 'visible') {
+	      $map.css('visibility', 'hidden');
+	    } else {
+	      $map.css('visibility', 'visible');
+	    }
+	  },
+	
+	  toggleMyPhotos: function () {
+	    this.setState({ selectedTab: "my photos" });
+	    $("#my-photos-tab").addClass("tab-highlighted");
+	    $("#discover-tab").removeClass("tab-highlighted");
+	  },
+	
+	  toggleDiscover: function () {
+	    this.setState({ selectedTab: "discover" });
+	    $("#discover-tab").addClass("tab-highlighted");
+	    $("#my-photos-tab").removeClass("tab-highlighted");
+	  },
+	
+	  linkToUpload: function () {
+	    HashHistory.push({ pathname: "/upload" });
+	  },
+	
+	  handleLogout: function () {
+	    UserActions.logout();
+	  },
+	
+	  // Content handlers ==================================================
+	  homeContent: function () {
+	    if (this.state.selectedTab === "discover") {
+	      return React.createElement(DiscoverIndex, null);
+	    } else if (this.state.selectedTab === "my photos") {
+	      return React.createElement(UserPhotoIndex, null);
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'home-content-container' },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'You shouldn\'t be here'
+	        )
+	      );
+	    }
+	  },
+	
+	  logoURL: function () {
+	    return "https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png";
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'home-page' },
+	      React.createElement(
+	        'nav',
+	        { className: 'home-nav' },
+	        React.createElement(
+	          'div',
+	          { className: 'home-nav-left-box' },
+	          React.createElement('img', { src: this.logoURL(), height: '40px', className: 'home-logo' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'home-nav-right-box' },
+	          React.createElement(
+	            'div',
+	            { onClick: this.linkToUpload, className: 'link' },
+	            'Upload'
+	          ),
+	          React.createElement(
+	            'div',
+	            { onClick: this.handleLogout, className: 'link' },
+	            'Log out'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'nav',
+	        { className: 'tab-nav' },
+	        React.createElement('img', { height: '35', className: 'map-icon',
+	          onClick: this.toggleMap,
+	          src: 'http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png' }),
+	        React.createElement(
+	          'h1',
+	          { onClick: this.toggleDiscover, className: 'tab', id: 'discover-tab' },
+	          'Discover'
+	        ),
+	        React.createElement(
+	          'h1',
+	          { onClick: this.toggleMyPhotos, className: 'tab', id: 'my-photos-tab' },
+	          'My Photos'
+	        )
+	      ),
+	      this.homeContent()
+	    );
+	  }
+	});
+	
+	module.exports = HomePage;
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var DiscoverMap = __webpack_require__(299);
+	var PhotoGrid = __webpack_require__(300);
+	
+	var DiscoverIndex = React.createClass({
+	  displayName: 'DiscoverIndex',
+	
+	  toggleMap: function () {
+	    var $map = $('.map');
+	    if ($map.css('visibility') === 'visible') {
+	      $map.css('visibility', 'hidden');
+	    } else {
+	      $map.css('visibility', 'visible');
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    $('.discover-map').css('visibility', 'hidden');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'home-content-container' },
+	      React.createElement(DiscoverMap, null),
+	      React.createElement(PhotoGrid, null)
+	    );
+	  }
+	});
+	
+	module.exports = DiscoverIndex;
+
+/***/ },
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -36104,6 +35860,532 @@
 	});
 	
 	module.exports = DiscoverMap;
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PhotoStore = __webpack_require__(273);
+	var PhotoModal = __webpack_require__(304);
+	
+	var MAX_PER_ROW = 3;
+	var PhotoGrid = React.createClass({
+	  displayName: 'PhotoGrid',
+	
+	
+	  getInitialState: function () {
+	    return { photos: [], currentPhotoId: undefined, currentPhotoUrl: undefined };
+	  },
+	
+	  componentDidMount: function () {
+	    this.storeListener = PhotoStore.addListener(this.__onChange);
+	    window.addEventListener("resize", this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	    window.removeEventListener("resize", this.__onChange);
+	  },
+	
+	  __onChange: function () {
+	    console.log("PhotoGrid component received photos");
+	    this.setState({ photos: PhotoStore.inventory() });
+	    this.organizePhotosInGrid();
+	  },
+	
+	  openModal: function (event) {
+	    event.preventDefault();
+	    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
+	    var url = event.currentTarget.src;
+	    // setState will cause new props being pass into its child
+	    this.setState({ currentPhotoId: photoId, currentPhotoUrl: url });
+	  },
+	
+	  organizePhotosInGrid: function () {
+	    $("#index-photo-grid").empty();
+	    if (this.state.photos) {
+	      var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
+	      var $parent = $("#index-photo-grid");
+	      var photos = this.state.photos;
+	      // This is actually O(n) operation even though it seems like a nested
+	      // loop structure
+	      idx = 0;
+	      while (idx < photos.length) {
+	        $row = $("<div></div>");
+	        $row.addClass("photo-row");
+	        accumWidth = 0;
+	        rowItems = [];
+	        numRowItems = Math.floor(Math.random() * (MAX_PER_ROW - 1)) + 2;
+	
+	        // Insert images to row
+	        for (i = 0; i < numRowItems; i++) {
+	          if (idx === photos.length) {
+	            break;
+	          }
+	          $img = $("<img></img>");
+	          $img.addClass("photo-item");
+	          $img.attr("src", photos[idx].url);
+	          $img.attr("photo-id", photos[idx].id);
+	          $img.click(this.openModal);
+	          accumWidth += photos[idx].width / photos[idx].height;
+	          idx += 1;
+	          rowItems.push($img);
+	        }
+	        // Modify dimensions of the images before appending to row
+	        for (i = 0; i < rowItems.length; i++) {
+	          $(rowItems[i]).attr('height', $parent.width() / accumWidth);
+	          $row.append(rowItems[i]);
+	        }
+	        // Append row to the grid
+	        $parent.append($row);
+	      }
+	      $(".photo-item").wrap("<div class='ripplelink'></div>");
+	      this.ripplelink();
+	    }
+	  },
+	
+	  ripplelink: function () {
+	    $(function () {
+	      var ink, d, x, y;
+	      $(".ripplelink").click(function (e) {
+	        if ($(this).find(".ink").length === 0) {
+	          $(this).prepend("<span class='ink'></span>");
+	        }
+	        ink = $(this).find(".ink");
+	        ink.removeClass("animate");
+	
+	        if (!ink.height() && !ink.width()) {
+	          d = Math.max($(this).outerWidth(), $(this).outerHeight());
+	          ink.css({ height: d, width: d });
+	        }
+	
+	        x = e.pageX - $(this).offset().left - ink.width() / 2;
+	        y = e.pageY - $(this).offset().top - ink.height() / 2;
+	
+	        ink.css({ top: y + 'px', left: x + 'px' }).addClass("animate");
+	      });
+	    });
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'photo-content-container' },
+	      React.createElement('div', { id: 'index-photo-grid' }),
+	      React.createElement(PhotoModal, {
+	        photoId: this.state.currentPhotoId,
+	        photoUrl: this.state.currentPhotoUrl
+	      })
+	    );
+	  }
+	
+	});
+	module.exports = PhotoGrid;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PhotoGrid = __webpack_require__(300);
+	var PhotoActions = __webpack_require__(272);
+	
+	var UserPhotoIndex = React.createClass({
+	  displayName: 'UserPhotoIndex',
+	
+	
+	  componentWillMount: function () {
+	    PhotoActions.fetchCurrentUserPhotos();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'home-content-container' },
+	      React.createElement(PhotoGrid, null)
+	    );
+	  }
+	
+	});
+	
+	module.exports = UserPhotoIndex;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var HashHistory = __webpack_require__(186).hashHistory;
+	var LoginModal = __webpack_require__(303);
+	
+	var SplashPage = React.createClass({
+	  displayName: 'SplashPage',
+	
+	
+	  getInitialState: function () {
+	    return { width: $(document).width(), height: $(document).height() };
+	  },
+	
+	  updateDimensions: function () {
+	    this.setState({ width: $(document).width(), height: $(document).height() });
+	  },
+	
+	  componentDidMount: function () {
+	    window.addEventListener("resize", this.updateDimensions);
+	  },
+	
+	  componentWillUnmount: function () {
+	    window.removeEventListener("resize", this.updateDimensions);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'splash' },
+	      React.createElement(
+	        'div',
+	        { className: 'nav-bar' },
+	        React.createElement(
+	          'div',
+	          { id: 'logo' },
+	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
+	            width: '100px' })
+	        ),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'background-video' },
+	        React.createElement(
+	          'video',
+	          { autoPlay: true, loop: true },
+	          React.createElement('source', { src: 'https://res.cloudinary.com/megapx/video/upload/br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4',
+	            type: 'video/mp4' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'welcome' },
+	        React.createElement(
+	          'div',
+	          { className: 'center-panel' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Home to everyone\'s megapixel photos'
+	          ),
+	          React.createElement(
+	            'h5',
+	            null,
+	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	          ),
+	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
+	            buttonText: 'Get Started',
+	            form: 'login' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'bottom-banner' },
+	        React.createElement(
+	          'div',
+	          { className: 'left-box' },
+	          React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png',
+	            width: '50', height: '50' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'right-box' },
+	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
+	            width: '50', height: '50' })
+	        )
+	      ),
+	      React.createElement('div', { className: 'feature-section' })
+	    );
+	  }
+	});
+	
+	module.exports = SplashPage;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Modal = __webpack_require__(294);
+	
+	var UserActions = __webpack_require__(268);
+	var UserStore = __webpack_require__(246);
+	
+	//Custom styles for boron modal
+	var backdropStyle = {
+	  backgroundColor: 'rgba(0,0,0,0.8)'
+	};
+	
+	var modalStyle = {
+	  width: '35%',
+	  top: '55%'
+	};
+	
+	var contentStyle = {
+	  backgroundColor: 'transparent'
+	};
+	
+	var LoginModal = React.createClass({
+	  displayName: 'LoginModal',
+	
+	
+	  getInitialState: function () {
+	    return {
+	      modalIsOpen: false,
+	      username: "",
+	      password: ""
+	    };
+	  },
+	
+	  __onChange: function () {
+	    // If log in successfully, close the modal
+	    if (UserStore.currentUser()) {
+	      this.closeModal();
+	    } else {
+	      // Report errors to user
+	      this.setState({ userErrors: UserStore.errors() });
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    this.storeListener = UserStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
+	  },
+	
+	  setUsername: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  setPassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    UserActions[this.props.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  guestLogin: function (event) {
+	    event.preventDefault();
+	    UserActions.guestLogin();
+	  },
+	
+	  errors: function () {
+	    if (this.state.userErrors) {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.userErrors.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    } else {
+	      return;
+	    }
+	  },
+	
+	  showModal: function () {
+	    $('.get-started-button').css('visibility', 'hidden');
+	    this.refs.modal.show();
+	  },
+	
+	  hideModal: function () {
+	    this.refs.modal.hide();
+	    $('.get-started-button').css('visibility', 'visible');
+	    this.setState({ userErrors: null });
+	  },
+	
+	  toggleGetStartedButton: function () {
+	    $('.get-started-button').css('visibility', 'visible');
+	    this.setState({ userErrors: null });
+	  },
+	
+	  submitButtons: function () {
+	    if (this.props.form === "login") {
+	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Login' });
+	    } else {
+	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Sign up' });
+	    }
+	  },
+	
+	  // Inherit button class and button text from parent
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: this.props.buttonClass, onClick: this.showModal },
+	        this.props.buttonText
+	      ),
+	      React.createElement(
+	        Modal,
+	        { ref: 'modal',
+	          modalStyle: modalStyle,
+	          backdropStyle: backdropStyle,
+	          contentStyle: contentStyle,
+	          onHide: this.toggleGetStartedButton },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit, className: 'login-form' },
+	          React.createElement(
+	            'section',
+	            { className: 'user-input-section' },
+	            React.createElement(
+	              'h1',
+	              { className: 'login-header' },
+	              this.props.buttonText
+	            ),
+	            React.createElement('input', { placeholder: 'Username', type: 'text', className: 'login-input',
+	              value: this.state.username,
+	              onChange: this.setUsername,
+	              require: '' }),
+	            React.createElement('input', { placeholder: 'Password', type: 'password', className: 'login-input',
+	              value: this.state.password,
+	              onChange: this.setPassword,
+	              require: '' })
+	          ),
+	          this.submitButtons(),
+	          React.createElement(
+	            'button',
+	            { className: 'submit-button', id: 'guest-login', onClick: this.guestLogin },
+	            'Guest Login'
+	          ),
+	          React.createElement(
+	            'h1',
+	            { className: 'login-error' },
+	            this.errors()
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LoginModal;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Modal = __webpack_require__(293);
+	
+	//Custom styles for boron modal
+	var backdropStyle = {
+	  backgroundColor: 'rgba(0,0,0,0.8)'
+	};
+	
+	var modalStyle = {
+	  height: '90%',
+	  width: '90%',
+	  top: '50%'
+	};
+	
+	var contentStyle = {
+	  height: '100%',
+	  width: '100%',
+	  backgroundColor: 'black'
+	};
+	
+	var PhotoModal = React.createClass({
+	  displayName: 'PhotoModal',
+	
+	  getInitialState: function () {
+	    return { url: undefined };
+	  },
+	
+	  componentWillReceiveProps: function (nextProps) {
+	    if (nextProps.photoId) {
+	      this.showModal();
+	      this.setState({ url: nextProps.photoUrl });
+	    } else {
+	      this.hideModal();
+	    }
+	  },
+	
+	  componentDidUpdate: function () {
+	    $("#image-on-display").width($(".photo-modal-left-box").width());
+	
+	    var imageWidth = $("#image-on-display").width();
+	    var imageHeight = $("#image-on-display").height();
+	    var boxHeight = $(".photo-modal-left-box").height();
+	    var aspectRatio = imageWidth / imageHeight;
+	    if (imageHeight > boxHeight) {
+	      $("#image-on-display").height($(".photo-modal-left-box").height());
+	      $("#image-on-display").width(boxHeight * aspectRatio);
+	    }
+	  },
+	
+	  showModal: function () {
+	    this.refs.modal.show();
+	  },
+	
+	  hideModal: function () {
+	    this.refs.modal.hide();
+	  },
+	
+	  getPhotoId: function () {
+	    if (this.state.id) {
+	      return this.state.id;
+	    } else {
+	      return "no id";
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      Modal,
+	      { ref: 'modal', className: 'photo-modal',
+	        modalStyle: modalStyle,
+	        backdropStyle: backdropStyle,
+	        contentStyle: contentStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'photo-modal-content' },
+	        React.createElement(
+	          'div',
+	          { className: 'photo-modal-left-box' },
+	          React.createElement('img', { id: 'image-on-display', src: this.state.url })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'photo-modal-comment-section' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Here are some comments'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu molestie tortor, eget lobortis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel laoreet nibh. Maecenas eget gravida ante. Suspendisse potenti. Aliquam erat volutpat. Nulla dignissim congue condimentum.'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = PhotoModal;
 
 /***/ }
 /******/ ]);

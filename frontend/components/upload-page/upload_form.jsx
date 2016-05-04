@@ -1,9 +1,9 @@
 var React = require('react');
 
 // For authentication
-var UserStore = require('../stores/user_store');
-var PhotoActions = require('../actions/photo_actions');
-var PhotoStore = require('../stores/photo_store');
+var UserStore = require('../../stores/user_store');
+var PhotoActions = require('../../actions/photo_actions');
+var PhotoStore = require('../../stores/photo_store');
 var HashHistory = require('react-router').hashHistory;
 
 var _isMounted;

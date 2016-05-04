@@ -1,0 +1,29 @@
+.photo-modal-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.photo-modal-left-box {
+  width: 80%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.black-space {
+  background-color: black;
+  width: 100%;
+  height: 20px;
+}
+
+.photo-modal-comment-section {
+  box-sizing:border-box;
+  font-size: 14px;
+  width: 20%;
+  height: 100%;
+  background-color: white;
+  padding: 10px 10px 10px 10px;
+}

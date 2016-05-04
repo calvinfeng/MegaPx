@@ -9,7 +9,12 @@ var masonryOptions = {
     transitionDuration: 10
 };
 
-//Deprecated for now
+//======================================================================
+//======================================================================
+// This component has been deprecated
+//======================================================================
+//======================================================================
+
 var PhotoIndex = React.createClass({
   getInitialState: function() {
     return {photos: []};

@@ -1,8 +1,8 @@
 var React = require('react');
 
-var PhotoStore = require('../stores/photo_store');
-var MarkerStore = require('../stores/marker_store');
-var PhotoActions = require('../actions/photo_actions');
+var PhotoStore = require('../../stores/photo_store');
+var MarkerStore = require('../../stores/marker_store');
+var PhotoActions = require('../../actions/photo_actions');
 var hashHistory = require('react-router').hashHistory;
 
 var _markers = [];

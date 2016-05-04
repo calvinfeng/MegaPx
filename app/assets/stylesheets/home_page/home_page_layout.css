@@ -95,7 +95,12 @@
   z-index: 100;
 }
 
-/*Experimental*/
+.photo-content-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 #index-photo-grid {
   margin: 10px 10px 10px 10px;
   width: 95%;

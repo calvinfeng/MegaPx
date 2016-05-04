@@ -2,11 +2,9 @@ var React = require('react');
 var UserStore = require('../stores/user_store');
 var UserActions = require('../actions/user_actions');
 
-var HomePage = require('./home_page');
-var SplashPage = require('./splash_page');
+var HomePage = require('./home-page/home_page');
+var SplashPage = require('./splash-page/splash_page');
 
-// getInitialState => render() => componentWillMount => componentDidMount
-// setState => shouldComponentUpdate => render() => same ^
 var Index = React.createClass({
   getInitialState: function() {
     return {currentUser: null};

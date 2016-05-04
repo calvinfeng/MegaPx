@@ -1,11 +1,12 @@
 var React = require('react');
-var PhotoStore = require('../stores/photo_store');
+var PhotoStore = require('../../stores/photo_store');
+var PhotoModal = require('./photo_modal');
 
 var MAX_PER_ROW = 3;
 var PhotoGrid = React.createClass({
 
   getInitialState: function() {
-    return {photos: []};
+    return {photos: [], currentPhotoId: undefined, currentPhotoUrl: undefined};
   },
 
   componentDidMount: function(){
@@ -24,6 +25,14 @@ var PhotoGrid = React.createClass({
     this.organizePhotosInGrid();
   },
 
+  openModal: function(event) {
+    event.preventDefault();
+    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
+    var url = event.currentTarget.src;
+    // setState will cause new props being pass into its child
+    this.setState({currentPhotoId: photoId, currentPhotoUrl: url});
+  },
+
   organizePhotosInGrid: function() {
     $( "#index-photo-grid" ).empty();
     if (this.state.photos) {
@@ -31,7 +40,7 @@ var PhotoGrid = React.createClass({
       var $parent = $("#index-photo-grid");
       var photos = this.state.photos;
       // This is actually O(n) operation even though it seems like a nested
-      // loop structure, just look at idx and pay close attention to it
+      // loop structure
       idx = 0;
       while(idx < photos.length) {
         $row = $("<div></div>");
@@ -48,12 +57,12 @@ var PhotoGrid = React.createClass({
           $img = $("<img></img>");
           $img.addClass("photo-item");
           $img.attr("src", photos[idx].url);
+          $img.attr("photo-id", photos[idx].id);
+          $img.click(this.openModal);
           accumWidth += photos[idx].width/photos[idx].height;
           idx += 1;
           rowItems.push($img);
         }
-        console.log("accumWidth: " + accumWidth);
-
         // Modify dimensions of the images before appending to row
         for (i = 0; i < rowItems.length; i++) {
           ($(rowItems[i])).attr('height', ($parent.width()/accumWidth));
@@ -91,7 +100,16 @@ var PhotoGrid = React.createClass({
   },
 
   render: function() {
-    return <div id="index-photo-grid"></div>;
+    return (
+      <div className="photo-content-container">
+        <div id="index-photo-grid"></div>
+        <PhotoModal
+          photoId = {this.state.currentPhotoId}
+          photoUrl = {this.state.currentPhotoUrl}
+        />
+
+      </div>
+    );
   }
 
 });

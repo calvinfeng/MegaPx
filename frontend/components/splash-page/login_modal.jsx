@@ -1,12 +1,12 @@
 var React = require('react');
 var Modal = require('boron/ScaleModal');
 
-var UserActions = require('../actions/user_actions');
-var UserStore = require('../stores/user_store');
+var UserActions = require('../../actions/user_actions');
+var UserStore = require('../../stores/user_store');
 
 //Custom styles for boron modal
 var backdropStyle = {
-  backgroundColor: 'rgba(0,0,0,0.5)'
+  backgroundColor: 'rgba(0,0,0,0.8)'
 };
 
 var modalStyle = {
@@ -110,7 +110,7 @@ var LoginModal = React.createClass({
       );
     }
   },
-  
+
   // Inherit button class and button text from parent
   render: function() {
     return (

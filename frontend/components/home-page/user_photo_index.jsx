@@ -1,8 +1,9 @@
 var React = require('react');
 var PhotoGrid = require('./photo_grid');
-var PhotoActions = require('../actions/photo_actions');
+var PhotoActions = require('../../actions/photo_actions');
 
 var UserPhotoIndex = React.createClass({
+
   componentWillMount: function() {
     PhotoActions.fetchCurrentUserPhotos();
   },
@@ -14,6 +15,7 @@ var UserPhotoIndex = React.createClass({
     </div>
     );
   }
+  
 });
 
 module.exports = UserPhotoIndex;
