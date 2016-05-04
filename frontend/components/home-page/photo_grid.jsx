@@ -55,6 +55,7 @@ var PhotoGrid = React.createClass({
   },
 
   resizeHandler: function() {
+    _idx = 0;
     this.organizePhotosInGrid();
   },
 
