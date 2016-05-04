@@ -35880,17 +35880,27 @@
 	
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
-	    window.addEventListener("resize", this.__onChange);
+	    window.addEventListener("resize", this.resizeHandler);
+	    document.addEventListener("scroll", this.scrollHandler);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.storeListener.remove();
-	    window.removeEventListener("resize", this.__onChange);
+	    window.removeEventListener("resize", this.resizeHandler);
+	    document.removeEventListener("scroll", this.scrollHandler);
 	  },
 	
 	  __onChange: function () {
 	    console.log("PhotoGrid component received photos");
 	    this.setState({ photos: PhotoStore.inventory() });
+	    this.organizePhotosInGrid();
+	  },
+	
+	  scrollHandler: function () {
+	    console.log($(document).scrollTop());
+	  },
+	
+	  resizeHandler: function () {
 	    this.organizePhotosInGrid();
 	  },
 	
