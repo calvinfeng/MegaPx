@@ -35870,18 +35870,24 @@
 	var PhotoModal = __webpack_require__(304);
 	
 	var MAX_PER_ROW = 3;
+	var _scrollCheckpoint = 0;
 	var PhotoGrid = React.createClass({
 	  displayName: 'PhotoGrid',
 	
 	
 	  getInitialState: function () {
-	    return { photos: [], currentPhotoId: undefined, currentPhotoUrl: undefined };
+	    return {
+	      photos: [],
+	      currentPhotoId: undefined,
+	      currentPhotoUrl: undefined
+	    };
 	  },
 	
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	    window.addEventListener("resize", this.resizeHandler);
 	    document.addEventListener("scroll", this.scrollHandler);
+	    _scrollCheckpoint += $(window).height();
 	  },
 	
 	  componentWillUnmount: function () {
@@ -35892,12 +35898,20 @@
 	
 	  __onChange: function () {
 	    console.log("PhotoGrid component received photos");
-	    this.setState({ photos: PhotoStore.inventory() });
+	    this.setState({
+	      photos: PhotoStore.inventory(),
+	      currentPhotoId: undefined,
+	      currentPhotoUrl: undefined
+	    });
 	    this.organizePhotosInGrid();
+	    _scrollCheckpoint = $(window).height();
 	  },
 	
 	  scrollHandler: function () {
-	    console.log($(document).scrollTop());
+	    if ($(document).scrollTop() > _scrollCheckpoint) {
+	      console.log($(document).scrollTop());
+	      _scrollCheckpoint += $(window).height();
+	    }
 	  },
 	
 	  resizeHandler: function () {
