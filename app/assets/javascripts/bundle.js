@@ -35646,8 +35646,10 @@
 	  toggleMap: function () {
 	    var $map = $('.discover-map');
 	    if ($map.css('visibility') === 'visible') {
+	      $('#map-icon').removeClass("map-toggled");
 	      $map.css('visibility', 'hidden');
 	    } else {
+	      $('#map-icon').addClass("map-toggled");
 	      $map.css('visibility', 'visible');
 	    }
 	  },
@@ -35725,7 +35727,7 @@
 	      React.createElement(
 	        'nav',
 	        { className: 'tab-nav' },
-	        React.createElement('img', { height: '35', className: 'map-icon',
+	        React.createElement('img', { height: '35', id: 'map-icon',
 	          onClick: this.toggleMap,
 	          src: 'http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png' }),
 	        React.createElement(
@@ -35878,36 +35880,37 @@
 	    return {
 	      photos: [],
 	      currentPhotoId: undefined,
-	      currentPhotoUrl: undefined
+	      currentPhotoUrl: undefined,
+	      curentPhotoAspectRatio: undefined
 	    };
 	  },
 	
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	    window.addEventListener("resize", this.resizeHandler);
-	    document.addEventListener("scroll", this.scrollHandler);
+	    // document.addEventListener("scroll", this.scrollHandler);
 	    _scrollCheckpoint += $(window).height() / 2;
-	    _idx = 0;
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.storeListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
-	    document.removeEventListener("scroll", this.scrollHandler);
+	    // document.removeEventListener("scroll", this.scrollHandler);
 	  },
 	
 	  __onChange: function () {
 	    console.log("PhotoGrid component received photos");
-	    _idx = 0;
 	    _scrollCheckpoint = $(window).height() / 2;
 	    this.setState({
 	      photos: PhotoStore.inventory(),
 	      currentPhotoId: undefined,
-	      currentPhotoUrl: undefined
+	      currentPhotoUrl: undefined,
+	      currentPhotoAspectRatio: undefined
 	    });
 	    this.organizePhotosInGrid();
 	  },
 	
+	  //================= Deprecated feature ===============================
 	  scrollHandler: function () {
 	    if ($(document).scrollTop() > _scrollCheckpoint) {
 	      console.log("Scroll coordinate: ", $(document).scrollTop());
@@ -35916,33 +35919,34 @@
 	      this.organizePhotosInGrid();
 	    }
 	  },
-	
+	  //====================================================================
 	  resizeHandler: function () {
-	    _idx = 0;
 	    this.organizePhotosInGrid();
 	  },
 	
 	  openModal: function (event) {
 	    event.preventDefault();
 	    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
-	    var url = event.currentTarget.src;
+	    var url = $(event.currentTarget).attr("url");
+	    var aspectRatio = $(event.currentTarget).attr("aspect-ratio");
+	    this.setState({
+	      currentPhotoId: photoId,
+	      currentPhotoUrl: url,
+	      currentPhotoAspectRatio: aspectRatio
+	    });
 	    // setState will cause new props being pass into its child
-	    this.setState({ currentPhotoId: photoId, currentPhotoUrl: url });
 	  },
 	
 	  organizePhotosInGrid: function () {
-	    if (_idx === 0) {
-	      $("#index-photo-grid").empty();
-	    }
+	    _idx = 0;
+	    $("#index-photo-grid").empty();
 	    if (this.state.photos) {
 	      var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
 	      var $parent = $("#index-photo-grid");
 	      var photos = this.state.photos;
-	      // This is actually O(n) operation even though it seems like a nested
-	      // loop structure
-	      photoLimit = _idx + 10;
-	      //while(_idx < photos.length && _idx < photoLimit)
-	      //This is the throttle limit
+	      // photoLimit = _idx + 10;
+	      // while(_idx < photos.length && _idx < photoLimit)
+	      // This is the throttle limit
 	      while (_idx < photos.length) {
 	        $row = $("<div></div>");
 	        $row.addClass("photo-row");
@@ -35957,24 +35961,26 @@
 	          }
 	          $img = $("<img></img>");
 	          $img.addClass("photo-item");
-	          $img.attr("src", photos[_idx].url);
+	          $img.attr("url", photos[_idx].url);
 	          $img.attr("photo-id", photos[_idx].id);
+	          $img.attr("aspect-ratio", photos[_idx].width / photos[_idx].height);
 	          $img.click(this.openModal);
 	          accumWidth += photos[_idx].width / photos[_idx].height;
 	          _idx += 1;
 	          rowItems.push($img);
-	          console.log("_idx: ", _idx);
 	        }
 	        // Modify dimensions of the images before appending to row
 	        for (i = 0; i < rowItems.length; i++) {
-	          $(rowItems[i]).attr('height', $parent.width() / accumWidth);
+	          var scaledHeight = $parent.width() / accumWidth;
+	          var highResUrl = $(rowItems[i]).attr("url");
+	          // fetch scaled images instead of full res for index page
+	          $(rowItems[i]).attr("src", highResUrl.slice(0, 47) + "c_scale,h_" + "500" + highResUrl.slice(46));
+	          $(rowItems[i]).attr('height', scaledHeight);
 	          $row.append(rowItems[i]);
 	        }
 	        // Append row to the grid
 	        $parent.append($row);
 	      }
-	      $(".photo-item").wrap("<div class='ripplelink'></div>");
-	      this.ripplelink();
 	    }
 	  },
 	
@@ -36008,7 +36014,8 @@
 	      React.createElement('div', { id: 'index-photo-grid' }),
 	      React.createElement(PhotoModal, {
 	        photoId: this.state.currentPhotoId,
-	        photoUrl: this.state.currentPhotoUrl
+	        photoUrl: this.state.currentPhotoUrl,
+	        photoAspectRatio: this.state.currentPhotoAspectRatio
 	      })
 	    );
 	  }
@@ -36085,8 +36092,8 @@
 	          React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
 	            width: '100px' })
 	        ),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' }),
-	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' })
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Sign up', form: 'signup' }),
+	        React.createElement(LoginModal, { buttonClass: 'link', buttonText: 'Log in', form: 'login' })
 	      ),
 	      React.createElement(
 	        'div',
@@ -36250,9 +36257,32 @@
 	    });
 	  },
 	
+	  animateTyping: function (callback) {
+	    $(function () {
+	      $("#username").typed({
+	        strings: ["guest"],
+	        typeSpeed: 30,
+	        backDelay: 500,
+	        loop: false,
+	        loopCount: false,
+	        contentType: 'text',
+	        callback: function () {
+	          $("#password").typed({
+	            strings: ["password"],
+	            typeSpeed: 20,
+	            backDelay: 500,
+	            loop: false,
+	            loopCount: false,
+	            contentType: 'text',
+	            callback: callback });
+	        }
+	      });
+	    });
+	  },
+	
 	  guestLogin: function (event) {
 	    event.preventDefault();
-	    UserActions.guestLogin();
+	    this.animateTyping(UserActions.guestLogin);
 	  },
 	
 	  errors: function () {
@@ -36325,11 +36355,11 @@
 	              { className: 'login-header' },
 	              this.props.buttonText
 	            ),
-	            React.createElement('input', { placeholder: 'Username', type: 'text', className: 'login-input',
+	            React.createElement('input', { placeholder: 'Username', type: 'text', className: 'login-input', id: 'username',
 	              value: this.state.username,
 	              onChange: this.setUsername,
 	              require: '' }),
-	            React.createElement('input', { placeholder: 'Password', type: 'password', className: 'login-input',
+	            React.createElement('input', { placeholder: 'Password', type: 'password', className: 'login-input', id: 'password',
 	              value: this.state.password,
 	              onChange: this.setPassword,
 	              require: '' })
@@ -36380,29 +36410,34 @@
 	var PhotoModal = React.createClass({
 	  displayName: 'PhotoModal',
 	
+	
 	  getInitialState: function () {
 	    return { url: undefined };
 	  },
 	
 	  componentWillReceiveProps: function (nextProps) {
+	    //If a photo gets pass in, show the modal
 	    if (nextProps.photoId) {
+	      this.setState({ url: nextProps.photoUrl, aspectRatio: nextProps.photoAspectRatio });
 	      this.showModal();
-	      this.setState({ url: nextProps.photoUrl });
 	    } else {
 	      this.hideModal();
 	    }
 	  },
 	
 	  componentDidUpdate: function () {
-	    $("#image-on-display").width($(".photo-modal-left-box").width());
+	    this.scaleImageToFit();
+	  },
 	
+	  scaleImageToFit: function () {
+	    $("#image-on-display").width($(".photo-modal-left-box").width());
 	    var imageWidth = $("#image-on-display").width();
-	    var imageHeight = $("#image-on-display").height();
 	    var boxHeight = $(".photo-modal-left-box").height();
-	    var aspectRatio = imageWidth / imageHeight;
+	    var imageHeight = imageWidth / this.state.aspectRatio;
+	    console.log("height: ", imageHeight);
 	    if (imageHeight > boxHeight) {
-	      $("#image-on-display").height($(".photo-modal-left-box").height());
-	      $("#image-on-display").width(boxHeight * aspectRatio);
+	      $("#image-on-display").height(boxHeight);
+	      $("#image-on-display").width(boxHeight * this.state.aspectRatio);
 	    }
 	  },
 	
@@ -36414,18 +36449,11 @@
 	    this.refs.modal.hide();
 	  },
 	
-	  getPhotoId: function () {
-	    if (this.state.id) {
-	      return this.state.id;
-	    } else {
-	      return "no id";
-	    }
-	  },
-	
 	  render: function () {
 	    return React.createElement(
 	      Modal,
-	      { ref: 'modal', className: 'photo-modal',
+	      { ref: 'modal',
+	        className: 'photo-modal',
 	        modalStyle: modalStyle,
 	        backdropStyle: backdropStyle,
 	        contentStyle: contentStyle },

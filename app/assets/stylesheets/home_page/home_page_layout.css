@@ -72,14 +72,19 @@
   border-bottom: 3px solid #00abff;
 }
 
-.map-icon {
+#map-icon {
   margin-top: 8px;
 }
 
-.map-icon:hover {
+#map-icon:hover {
   background: #d0d0d0;
   cursor: pointer;
 }
+
+.map-toggled {
+  opacity: 0.5;
+}
+
 /* Content ===========================================================*/
 .home-content-container {
   position: relative;
@@ -100,25 +105,6 @@
   display: flex;
   width: 100%;
   justify-content: center;
-}
-
-#index-photo-grid {
-  margin: 10px 10px 10px 10px;
-  width: 95%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.photo-row {
-  /* 100% of its parent which is index-photo-grid */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.photo-item {
-  margin: 2px 6px 2px 6px;
 }
 
 /*Deprecate*/

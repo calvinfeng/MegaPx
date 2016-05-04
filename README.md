@@ -11,7 +11,7 @@ The following are the key milestone for a functional MVP.
 - [x] Create/Edit/Destroy photos
 - [x] Google map integration with photos
 - [x] Beautiful image layout
-- Optionals
+- Bonus
   - [ ] Users can upvote photos
   - [ ] Sort photos by popularity and recentness
 
@@ -119,16 +119,17 @@ Users should be able to upload photos to Cloudinary through its upload widget
 - [x] The form has input field: title, description, latitude, longitude (through clicking),
 and selected file.
 - [x] Instead of using modal form, this should be its own route
-- [ ] There are submit, cancel, and home buttons
-- [ ] There is a mini map for location tagging
+- [x] There are submit, cancel, and home buttons
+- [x] There is a mini map for location tagging
 
 ### Phase 6: Profile & Photo Management (2 Days)
 **objectve:**
-- Allow users to upload photos, using Cloudinary's plugin
-- Allow users to visit their own profile page
-- Within the profile page, users can select and edit/delete their photos
-- Enable avatar, users can upload and change their avatar
-
+- [x] Allow users to visit their "My Photos" page which will enable them to edit/delete
+their own photos
+- [ ] Add extra column in Users table (backend) for avatar URL
+- [ ] Display user avatar in the upper right hand corner of the app
+- [ ] Clicking the icon should create a dropdown menu
+- [ ] Photographer icon should be shown in the index item page
 
 ### Phase 7: Seed database (1 Day)
 **objective:**
@@ -140,3 +141,4 @@ location in my application
 
 ### Bonus Features
 - Search photos by location and tag
+- Users can upvote photos

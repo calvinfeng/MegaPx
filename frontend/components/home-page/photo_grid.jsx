@@ -12,7 +12,8 @@ var PhotoGrid = React.createClass({
       {
         photos: [],
         currentPhotoId: undefined,
-        currentPhotoUrl: undefined
+        currentPhotoUrl: undefined,
+        curentPhotoAspectRatio: undefined
       }
     );
   },
@@ -20,31 +21,31 @@ var PhotoGrid = React.createClass({
   componentDidMount: function(){
     this.storeListener = PhotoStore.addListener(this.__onChange);
     window.addEventListener("resize", this.resizeHandler);
-    document.addEventListener("scroll", this.scrollHandler);
+    // document.addEventListener("scroll", this.scrollHandler);
     _scrollCheckpoint += $(window).height()/2;
-    _idx = 0;
   },
 
   componentWillUnmount: function() {
     this.storeListener.remove();
     window.removeEventListener("resize", this.resizeHandler);
-    document.removeEventListener("scroll", this.scrollHandler);
+    // document.removeEventListener("scroll", this.scrollHandler);
   },
 
   __onChange: function() {
     console.log("PhotoGrid component received photos");
-    _idx = 0;
     _scrollCheckpoint = $(window).height()/2;
     this.setState(
       {
         photos: PhotoStore.inventory(),
         currentPhotoId: undefined,
-        currentPhotoUrl: undefined
+        currentPhotoUrl: undefined,
+        currentPhotoAspectRatio: undefined
       }
     );
     this.organizePhotosInGrid();
   },
 
+  //================= Deprecated feature ===============================
   scrollHandler: function() {
     if ($(document).scrollTop() > _scrollCheckpoint) {
       console.log("Scroll coordinate: ",$(document).scrollTop());
@@ -53,33 +54,34 @@ var PhotoGrid = React.createClass({
       this.organizePhotosInGrid();
     }
   },
-
+  //====================================================================
   resizeHandler: function() {
-    _idx = 0;
     this.organizePhotosInGrid();
   },
 
   openModal: function(event) {
     event.preventDefault();
     var photoId = parseInt($(event.currentTarget).attr("photo-id"));
-    var url = event.currentTarget.src;
+    var url = $(event.currentTarget).attr("url");
+    var aspectRatio = $(event.currentTarget).attr("aspect-ratio");
+    this.setState({
+      currentPhotoId: photoId,
+      currentPhotoUrl: url,
+      currentPhotoAspectRatio: aspectRatio
+    });
     // setState will cause new props being pass into its child
-    this.setState({currentPhotoId: photoId, currentPhotoUrl: url});
   },
 
   organizePhotosInGrid: function() {
-    if (_idx === 0) {
-      $( "#index-photo-grid" ).empty();
-    }
+    _idx = 0;
+    $( "#index-photo-grid" ).empty();
     if (this.state.photos) {
       var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
       var $parent = $("#index-photo-grid");
       var photos = this.state.photos;
-      // This is actually O(n) operation even though it seems like a nested
-      // loop structure
-      photoLimit = _idx + 10;
-      //while(_idx < photos.length && _idx < photoLimit)
-      //This is the throttle limit
+      // photoLimit = _idx + 10;
+      // while(_idx < photos.length && _idx < photoLimit)
+      // This is the throttle limit
       while(_idx < photos.length) {
         $row = $("<div></div>");
         $row.addClass("photo-row");
@@ -94,24 +96,27 @@ var PhotoGrid = React.createClass({
           }
           $img = $("<img></img>");
           $img.addClass("photo-item");
-          $img.attr("src", photos[_idx].url);
+          $img.attr("url", photos[_idx].url);
           $img.attr("photo-id", photos[_idx].id);
+          $img.attr("aspect-ratio", photos[_idx].width/photos[_idx].height);
           $img.click(this.openModal);
           accumWidth += photos[_idx].width/photos[_idx].height;
           _idx += 1;
           rowItems.push($img);
-          console.log("_idx: ", _idx);
         }
         // Modify dimensions of the images before appending to row
         for (i = 0; i < rowItems.length; i++) {
-          ($(rowItems[i])).attr('height', ($parent.width()/accumWidth));
+          var scaledHeight = $parent.width()/accumWidth;
+          var highResUrl = $(rowItems[i]).attr("url");
+          // fetch scaled images instead of full res for index page
+          ($(rowItems[i])).attr("src", highResUrl.slice(0,47) +
+          "c_scale,h_" + "500" + highResUrl.slice(46));
+          ($(rowItems[i])).attr('height', scaledHeight);
           $row.append(rowItems[i]);
         }
         // Append row to the grid
         $parent.append($row);
       }
-      $(".photo-item").wrap("<div class='ripplelink'></div>");
-      this.ripplelink();
     }
   },
 
@@ -145,8 +150,8 @@ var PhotoGrid = React.createClass({
         <PhotoModal
           photoId = {this.state.currentPhotoId}
           photoUrl = {this.state.currentPhotoUrl}
+          photoAspectRatio = {this.state.currentPhotoAspectRatio}
         />
-
       </div>
     );
   }

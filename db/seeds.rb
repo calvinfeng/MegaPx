@@ -55,25 +55,25 @@ lat: 32.846383, lng: -117.276993, user_id: 3, width: 683, height: 1024)
 
 
 # Production seed data
-Photo.create!(user_id: 1, title: "1", url: "https://res.cloudinary.com/megapx/image/upload/v1462145861/Seeds/1.jpg",
+Photo.create!(user_id: 2, title: "1", url: "https://res.cloudinary.com/megapx/image/upload/v1462145861/Seeds/1.jpg",
 lat: 37.808409, lng: -122.470737, width: 2000, height: 1337)
-Photo.create!(user_id: 1, title: "2", url: "https://res.cloudinary.com/megapx/image/upload/v1462145872/Seeds/2.jpg",
+Photo.create!(user_id: 2, title: "2", url: "https://res.cloudinary.com/megapx/image/upload/v1462145872/Seeds/2.jpg",
 lat: 37.767284, lng: -122.427950, width: 2000, height: 1335)
-Photo.create!(user_id: 1, title: "3", url: "https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/3.jpg",
+Photo.create!(user_id: 2, title: "3", url: "https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/3.jpg",
 lat: 37.806762, lng: -122.471380, width: 2000, height: 1335)
-Photo.create!(user_id: 1, title: "4", url: "https://res.cloudinary.com/megapx/image/upload/v1462145882/Seeds/4.jpg",
+Photo.create!(user_id: 2, title: "4", url: "https://res.cloudinary.com/megapx/image/upload/v1462145882/Seeds/4.jpg",
 lat: 37.823306, lng: -122.375937, width: 2000, height: 949)
-Photo.create!(user_id: 1, title: "5", url: "https://res.cloudinary.com/megapx/image/upload/v1462145894/Seeds/5.jpg",
+Photo.create!(user_id: 2, title: "5", url: "https://res.cloudinary.com/megapx/image/upload/v1462145894/Seeds/5.jpg",
 lat: 37.795504, lng: -122.391214, width: 2000, height: 1335)
-Photo.create!(user_id: 1, title: "6", url: "https://res.cloudinary.com/megapx/image/upload/v1462145889/Seeds/6.jpg",
+Photo.create!(user_id: 3, title: "6", url: "https://res.cloudinary.com/megapx/image/upload/v1462145889/Seeds/6.jpg",
 lat: 37.805406, lng: -122.453356, width: 2000, height: 1335)
-Photo.create!(user_id: 1, title: "7", url: "https://res.cloudinary.com/megapx/image/upload/v1462145898/Seeds/7.jpg",
+Photo.create!(user_id: 3, title: "7", url: "https://res.cloudinary.com/megapx/image/upload/v1462145898/Seeds/7.jpg",
 lat: 37.826832, lng: -122.491980, width: 2000, height: 859)
-Photo.create!(user_id: 1, title: "8", url: "https://res.cloudinary.com/megapx/image/upload/v1462145917/Seeds/8.jpg",
+Photo.create!(user_id: 3, title: "8", url: "https://res.cloudinary.com/megapx/image/upload/v1462145917/Seeds/8.jpg",
 lat: 37.741633, lng: -122.440310, width: 2000, height: 1090)
-Photo.create!(user_id: 1, title: "9", url: "https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/9.jpg",
+Photo.create!(user_id: 3, title: "9", url: "https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/9.jpg",
 lat: 37.807576, lng: -122.474127, width: 1024, height: 768)
-Photo.create!(user_id: 1, title: "10", url: "https://res.cloudinary.com/megapx/image/upload/v1462145907/Seeds/10.jpg",
+Photo.create!(user_id: 3, title: "10", url: "https://res.cloudinary.com/megapx/image/upload/v1462145907/Seeds/10.jpg",
 lat: 37.829951, lng: -122.488203, width: 2000, height: 839)
 Photo.create!(user_id: 1, title: "11", url: "https://res.cloudinary.com/megapx/image/upload/v1462145913/Seeds/11.jpg",
 lat: 37.801744, lng: -122.478590, width: 688, height: 1000)

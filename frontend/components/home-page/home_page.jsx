@@ -20,8 +20,10 @@ var HomePage = React.createClass({
   toggleMap: function() {
     var $map = $('.discover-map');
     if ($map.css('visibility') === 'visible') {
+      $('#map-icon').removeClass("map-toggled");
       $map.css('visibility', 'hidden');
     } else {
+      $('#map-icon').addClass("map-toggled");
       $map.css('visibility', 'visible');
     }
   },
@@ -78,7 +80,7 @@ var HomePage = React.createClass({
           </div>
         </nav>
         <nav className="tab-nav">
-          <img height="35" className="map-icon"
+          <img height="35" id="map-icon"
                onClick={this.toggleMap}
                src="http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png"/>
              <h1 onClick={this.toggleDiscover} className="tab" id="discover-tab">Discover</h1>

@@ -1,6 +1,7 @@
 var React = require('react');
 var Modal = require('boron/ScaleModal');
 
+
 var UserActions = require('../../actions/user_actions');
 var UserStore = require('../../stores/user_store');
 
@@ -62,9 +63,32 @@ var LoginModal = React.createClass({
     });
   },
 
+  animateTyping: function(callback) {
+    $(function(){
+      $("#username").typed({
+        strings:["guest"],
+        typeSpeed: 30,
+        backDelay: 500,
+        loop: false,
+        loopCount: false,
+        contentType: 'text',
+        callback: function() {
+          $("#password").typed({
+            strings:["password"],
+            typeSpeed: 20,
+            backDelay: 500,
+            loop: false,
+            loopCount: false,
+            contentType: 'text',
+            callback: callback });
+        }
+      });
+    });
+  },
+
   guestLogin: function(event) {
     event.preventDefault();
-    UserActions.guestLogin();
+    this.animateTyping(UserActions.guestLogin);
   },
 
   errors: function() {
@@ -127,11 +151,11 @@ var LoginModal = React.createClass({
           <form onSubmit={this.handleSubmit} className="login-form">
             <section className="user-input-section">
               <h1 className="login-header">{this.props.buttonText}</h1>
-              <input placeholder="Username" type="text" className="login-input"
+              <input placeholder="Username" type="text" className="login-input" id="username"
                 value={this.state.username}
                 onChange={this.setUsername}
                 require=""/>
-              <input placeholder="Password" type="password" className="login-input"
+              <input placeholder="Password" type="password" className="login-input" id="password"
                 value={this.state.password}
                 onChange={this.setPassword}
                 require=""/>

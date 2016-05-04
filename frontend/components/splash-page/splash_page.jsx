@@ -29,8 +29,8 @@ var SplashPage = React.createClass({
             <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
               width="100px"/>
           </div>
-          <LoginModal buttonClass="link" buttonText="Log in" form="login"/>
           <LoginModal buttonClass="link" buttonText="Sign up" form="signup"/>
+          <LoginModal buttonClass="link" buttonText="Log in" form="login"/>
         </div>
 
         <div className="background-video">

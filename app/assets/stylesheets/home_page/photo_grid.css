@@ -1,3 +1,30 @@
+#index-photo-grid {
+  margin: 10px 10px 10px 10px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.photo-row {
+  /* 100% of its parent which is index-photo-grid */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.photo-item {
+  margin: 3px 3px 3px 3px;
+}
+
+.photo-item:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 5px 5px 25px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 5px 5px 25px 0px rgba(0,0,0,0.75);
+  box-shadow: 5px 5px 25px 0px rgba(0,0,0,0.75);
+  opacity: 0.7;
+}
+
 .ripplelink {
   display: inline-block;
   color: #fff;
@@ -12,7 +39,7 @@
 }
 
 .ripplelink:hover{
-	z-index: 1;
+  z-index: 1;
   cursor: pointer;
   box-shadow:rgba(0, 0, 0, 0.55) 0px 0px 35px 0px;
   -webkit-box-shadow:rgba(0, 0, 0, 0.55) 0px 0px 35px 0px;
@@ -24,28 +51,28 @@
   background:rgba(255, 255, 255, 0.3);
   border-radius: 100%;
   -webkit-transform:scale(0);
-     -moz-transform:scale(0);
-       -o-transform:scale(0);
-          transform:scale(0);
+  -moz-transform:scale(0);
+  -o-transform:scale(0);
+  transform:scale(0);
 }
 
 .animate {
-	-webkit-animation:ripple 0.65s linear;
-   -moz-animation:ripple 0.65s linear;
-    -ms-animation:ripple 0.65s linear;
-     -o-animation:ripple 0.65s linear;
-        animation:ripple 0.65s linear;
+  -webkit-animation:ripple 0.65s linear;
+  -moz-animation:ripple 0.65s linear;
+  -ms-animation:ripple 0.65s linear;
+  -o-animation:ripple 0.65s linear;
+  animation:ripple 0.65s linear;
 }
 
 @-webkit-keyframes ripple {
-    100% {opacity: 0; -webkit-transform: scale(2.5);}
+  100% {opacity: 0; -webkit-transform: scale(2.5);}
 }
 @-moz-keyframes ripple {
-    100% {opacity: 0; -moz-transform: scale(2.5);}
+  100% {opacity: 0; -moz-transform: scale(2.5);}
 }
 @-o-keyframes ripple {
-    100% {opacity: 0; -o-transform: scale(2.5);}
+  100% {opacity: 0; -o-transform: scale(2.5);}
 }
 @keyframes ripple {
-    100% {opacity: 0; transform: scale(2.5);}
+  100% {opacity: 0; transform: scale(2.5);}
 }

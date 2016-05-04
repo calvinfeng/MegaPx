@@ -90,6 +90,7 @@ video {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  color: rgba(0,0,0,0.6);
 }
 
 .text-box > h1 {
