@@ -27,7 +27,6 @@ var DiscoverMap = React.createClass({
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
-    this.clickListener = this.map.addListener('click', this.mapClickHandle);
     PhotoStore.addListener(this.__onChange);
 
     var self = this;
@@ -40,7 +39,6 @@ var DiscoverMap = React.createClass({
 
   componentWillUnmount: function() {
     this.dragListener.remove();
-    this.clickListener.remove();
   },
 
   refetchWhenDragged: function() {

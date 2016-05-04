@@ -4,6 +4,7 @@ var PhotoModal = require('./photo_modal');
 
 var MAX_PER_ROW = 3;
 var _scrollCheckpoint = 0;
+var _idx;
 var PhotoGrid = React.createClass({
 
   getInitialState: function() {
@@ -20,7 +21,8 @@ var PhotoGrid = React.createClass({
     this.storeListener = PhotoStore.addListener(this.__onChange);
     window.addEventListener("resize", this.resizeHandler);
     document.addEventListener("scroll", this.scrollHandler);
-    _scrollCheckpoint += $(window).height();
+    _scrollCheckpoint += $(window).height()/2;
+    _idx = 0;
   },
 
   componentWillUnmount: function() {
@@ -31,6 +33,8 @@ var PhotoGrid = React.createClass({
 
   __onChange: function() {
     console.log("PhotoGrid component received photos");
+    _idx = 0;
+    _scrollCheckpoint = $(window).height()/2;
     this.setState(
       {
         photos: PhotoStore.inventory(),
@@ -39,13 +43,14 @@ var PhotoGrid = React.createClass({
       }
     );
     this.organizePhotosInGrid();
-    _scrollCheckpoint = $(window).height();
   },
 
   scrollHandler: function() {
     if ($(document).scrollTop() > _scrollCheckpoint) {
-      console.log($(document).scrollTop());
-      _scrollCheckpoint += $(window).height();
+      console.log("Scroll coordinate: ",$(document).scrollTop());
+      console.log("Fetching more photos now");
+      _scrollCheckpoint += $(window).height()/2;
+      this.organizePhotosInGrid();
     }
   },
 
@@ -62,15 +67,19 @@ var PhotoGrid = React.createClass({
   },
 
   organizePhotosInGrid: function() {
-    $( "#index-photo-grid" ).empty();
+    if (_idx === 0) {
+      $( "#index-photo-grid" ).empty();
+    }
     if (this.state.photos) {
-      var $row, rowItems, numRowItems, $img, accumWidth, i, idx;
+      var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
       var $parent = $("#index-photo-grid");
       var photos = this.state.photos;
       // This is actually O(n) operation even though it seems like a nested
       // loop structure
-      idx = 0;
-      while(idx < photos.length) {
+      photoLimit = _idx + 10;
+      //while(_idx < photos.length && _idx < photoLimit)
+      //This is the throttle limit
+      while(_idx < photos.length) {
         $row = $("<div></div>");
         $row.addClass("photo-row");
         accumWidth = 0;
@@ -79,17 +88,18 @@ var PhotoGrid = React.createClass({
 
         // Insert images to row
         for (i = 0; i < numRowItems; i++) {
-          if (idx === photos.length) {
+          if (_idx === photos.length) {
             break;
           }
           $img = $("<img></img>");
           $img.addClass("photo-item");
-          $img.attr("src", photos[idx].url);
-          $img.attr("photo-id", photos[idx].id);
+          $img.attr("src", photos[_idx].url);
+          $img.attr("photo-id", photos[_idx].id);
           $img.click(this.openModal);
-          accumWidth += photos[idx].width/photos[idx].height;
-          idx += 1;
+          accumWidth += photos[_idx].width/photos[_idx].height;
+          _idx += 1;
           rowItems.push($img);
+          console.log("_idx: ", _idx);
         }
         // Modify dimensions of the images before appending to row
         for (i = 0; i < rowItems.length; i++) {
