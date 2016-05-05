@@ -37,6 +37,7 @@ The following are the key milestone for a functional MVP.
 # Implementation Timeline
 
 ## Week 1
+
 ### Phase 1: Backend & Frontend Auth (1 Day)
 **objective:**
 - [x] Functioning Rails application with authentication
@@ -113,6 +114,7 @@ new photos
 - [x] Use Cloudinary for image hosting
 
 ## Week 2
+
 ### Phase 5: Upload Form & Styling (1 Day)
 **objectve:**
 Users should be able to upload photos to Cloudinary through its upload widget
@@ -126,12 +128,32 @@ and selected file.
 **objectve:**
 - [x] Allow users to visit their "My Photos" page which will enable them to edit/delete
 their own photos
-- [ ] Add extra column in Users table (backend) for avatar URL
-- [ ] Display user avatar in the upper right hand corner of the app
-- [ ] Clicking the icon should create a dropdown menu
-- [ ] Photographer icon should be shown in the index item page
+- [x] Add extra column in Users table (backend) for avatar URL
+- [x] Display user avatar in the upper right hand corner of the app
+- [x] Photographer icon should be shown in the photo modal page
+- [x] User can delete their own photos
+- [x] New Feature
+  - Added a navigation suggestion bar which helps user to get to places they want or
+  places that are popular
 
-### Phase 7: Seed database (1 Day)
+### Phase 7: Comments (2 Days)
+#### CRUD again...
+- [x] Comment model
+  - user_id
+  - photo_id
+  - content
+
+- [x] Associations
+  - User has many comments
+  - Photo has many comments
+
+- [ ] API::CommentsController:
+  - create
+  - destroy
+  
+- [ ] CommentStore & CommentActions
+
+### Phase 8: Seed database (1 Day)
 **objective:**
 - Search and find a large quantity of high quality photos for every major
 location in my application

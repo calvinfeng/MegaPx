@@ -8,6 +8,10 @@ class Photo < ActiveRecord::Base
   foreign_key: :user_id,
   class_name: "User"
 
+  has_many :comments,
+  foreign_key: :photo_id,
+  class_name: "Comment"
+
   def self.in_bounds(bounds)
     # format
     # {
