@@ -4,6 +4,7 @@ var PhotoStore = require('../../stores/photo_store');
 var MarkerStore = require('../../stores/marker_store');
 var PhotoActions = require('../../actions/photo_actions');
 var hashHistory = require('react-router').hashHistory;
+var LocationConstants = require('../../constants/location_constants');
 
 var _markers = [];
 /* global google */
@@ -39,6 +40,16 @@ var DiscoverMap = React.createClass({
 
   componentWillUnmount: function() {
     this.dragListener.remove();
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.suggestedLocation) {
+      this.mapPanTo(LocationConstants[nextProps.suggestedLocation]);
+    }
+  },
+
+  mapPanTo: function(location) {
+    this.map.panTo({lat: location.lat, lng: location.lng});
   },
 
   refetchWhenDragged: function() {

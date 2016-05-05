@@ -41,15 +41,13 @@ var PhotoInfoBox = React.createClass({
         <div className="photo-header">
           <img src={this.scaledAvatarUrl()} className="photographer-avatar"/>
           <div className="photo-title-container">
-            <h1>{_currentPhoto.title}</h1>
-            <h2>{_currentPhoto.photographer.username}</h2>
+            <h2>{_currentPhoto.title}</h2>
+            <span><h2>{_currentPhoto.photographer.username}</h2></span>
           </div>
         </div>
         <div className="photo-description">
           <p>
-            {_currentPhoto.description}Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit. Suspendisse sit amet suscipit diam.
-            Nunc sed nisl cursus, volutpat purus non, venenatis justo.
+            {_currentPhoto.description}
           </p>
           {this.deleteButton()}
         </div>

@@ -102,15 +102,38 @@
   position: relative;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .discover-map {
   position: absolute;
   top: 0;
   left: 35px;
-  height: 270px;
-  width: 480px;
+  height: 400px;
+  width: 600px;
   z-index: 100;
+}
+
+.discover-suggestion-bar {
+  opacity: 0.5;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-box-shadow: 0px 9px 25px 0px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0px 9px 25px 0px rgba(0,0,0,0.25);
+  box-shadow: 0px 9px 25px 0px rgba(0,0,0,0.25);
+}
+
+.location-item {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.location-item:hover {
+  cursor: pointer;
+  color: #00abff;
 }
 
 .photo-content-container {

@@ -18,13 +18,17 @@ var HomePage = React.createClass({
   },
 
   toggleMap: function() {
-    var $map = $('.discover-map');
-    if ($map.css('visibility') === 'visible') {
-      $('#map-icon').removeClass("map-toggled");
-      $map.css('visibility', 'hidden');
+    if(this.state.selectedTab === "discover") {
+      var $map = $('.discover-map');
+      if ($map.css('visibility') === 'visible') {
+        $('#map-icon').removeClass("map-toggled");
+        $map.css('visibility', 'hidden');
+      } else {
+        $('#map-icon').addClass("map-toggled");
+        $map.css('visibility', 'visible');
+      }
     } else {
-      $('#map-icon').addClass("map-toggled");
-      $map.css('visibility', 'visible');
+      //This button is disabled
     }
   },
 

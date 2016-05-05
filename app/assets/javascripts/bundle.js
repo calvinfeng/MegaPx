@@ -35656,13 +35656,17 @@
 	  },
 	
 	  toggleMap: function () {
-	    var $map = $('.discover-map');
-	    if ($map.css('visibility') === 'visible') {
-	      $('#map-icon').removeClass("map-toggled");
-	      $map.css('visibility', 'hidden');
+	    if (this.state.selectedTab === "discover") {
+	      var $map = $('.discover-map');
+	      if ($map.css('visibility') === 'visible') {
+	        $('#map-icon').removeClass("map-toggled");
+	        $map.css('visibility', 'hidden');
+	      } else {
+	        $('#map-icon').addClass("map-toggled");
+	        $map.css('visibility', 'visible');
+	      }
 	    } else {
-	      $('#map-icon').addClass("map-toggled");
-	      $map.css('visibility', 'visible');
+	      //This button is disabled
 	    }
 	  },
 	
@@ -35781,17 +35785,31 @@
 	var React = __webpack_require__(1);
 	var DiscoverMap = __webpack_require__(299);
 	var PhotoGrid = __webpack_require__(300);
+	var LocationConstants = __webpack_require__(308);
 	
 	var DiscoverIndex = React.createClass({
 	  displayName: 'DiscoverIndex',
 	
-	  toggleMap: function () {
-	    var $map = $('.map');
-	    if ($map.css('visibility') === 'visible') {
-	      $map.css('visibility', 'hidden');
-	    } else {
-	      $map.css('visibility', 'visible');
-	    }
+	
+	  getInitialState: function () {
+	    return { selectedSuggestion: undefined };
+	  },
+	
+	  clickHandler: function (event) {
+	    this.setState({ selectedSuggestion: event.currentTarget.value });
+	  },
+	
+	  generatePopularLocations: function () {
+	    var self = this;
+	    return Object.keys(LocationConstants).map(function (key) {
+	      return React.createElement(
+	        'div',
+	        { className: 'location-item',
+	          title: 'This is a popular location, click to go',
+	          value: key, onClick: self.clickHandler },
+	        LocationConstants[key].name
+	      );
+	    });
 	  },
 	
 	  componentDidMount: function () {
@@ -35802,7 +35820,12 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
-	      React.createElement(DiscoverMap, null),
+	      React.createElement(
+	        'div',
+	        { className: 'discover-suggestion-bar' },
+	        this.generatePopularLocations()
+	      ),
+	      React.createElement(DiscoverMap, { suggestedLocation: this.state.selectedSuggestion }),
 	      React.createElement(PhotoGrid, null)
 	    );
 	  }
@@ -35820,6 +35843,7 @@
 	var MarkerStore = __webpack_require__(277);
 	var PhotoActions = __webpack_require__(272);
 	var hashHistory = __webpack_require__(186).hashHistory;
+	var LocationConstants = __webpack_require__(308);
 	
 	var _markers = [];
 	/* global google */
@@ -35857,6 +35881,16 @@
 	
 	  componentWillUnmount: function () {
 	    this.dragListener.remove();
+	  },
+	
+	  componentWillReceiveProps: function (nextProps) {
+	    if (nextProps.suggestedLocation) {
+	      this.mapPanTo(LocationConstants[nextProps.suggestedLocation]);
+	    }
+	  },
+	
+	  mapPanTo: function (location) {
+	    this.map.panTo({ lat: location.lat, lng: location.lng });
 	  },
 	
 	  refetchWhenDragged: function () {
@@ -36580,14 +36614,18 @@
 	          'div',
 	          { className: 'photo-title-container' },
 	          React.createElement(
-	            'h1',
+	            'h2',
 	            null,
 	            _currentPhoto.title
 	          ),
 	          React.createElement(
-	            'h2',
+	            'span',
 	            null,
-	            _currentPhoto.photographer.username
+	            React.createElement(
+	              'h2',
+	              null,
+	              _currentPhoto.photographer.username
+	            )
 	          )
 	        )
 	      ),
@@ -36597,8 +36635,7 @@
 	        React.createElement(
 	          'p',
 	          null,
-	          _currentPhoto.description,
-	          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet suscipit diam. Nunc sed nisl cursus, volutpat purus non, venenatis justo.'
+	          _currentPhoto.description
 	        ),
 	        this.deleteButton()
 	      )
@@ -36607,6 +36644,20 @@
 	});
 	
 	module.exports = PhotoInfoBox;
+
+/***/ },
+/* 307 */,
+/* 308 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  SF: { lat: 37.773972, lng: -122.431297, name: "San Francisco" },
+	  LD: { lat: 51.508530, lng: -0.076132, name: "London" },
+	  HK: { lat: 22.284203, lng: 114.164710, name: "Hong Kong" },
+	  NY: { lat: 40.681363, lng: -74.008253, name: "New York" },
+	  YM: { lat: 37.864974, lng: -119.539016, name: "Yosemite" },
+	  GC: { lat: 36.107078, lng: -112.109720, name: "Grand Canyon" }
+	};
 
 /***/ }
 /******/ ]);
