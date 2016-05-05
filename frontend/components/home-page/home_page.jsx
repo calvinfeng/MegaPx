@@ -32,6 +32,9 @@ var HomePage = React.createClass({
     this.setState({selectedTab: "my photos"});
     $("#my-photos-tab").addClass("tab-highlighted");
     $("#discover-tab").removeClass("tab-highlighted");
+
+    $('#map-icon').removeClass("map-toggled");
+    $('.discover-map').css('visibility', 'hidden');
   },
 
   toggleDiscover: function() {
@@ -46,6 +49,11 @@ var HomePage = React.createClass({
 
   handleLogout: function() {
     UserActions.logout();
+  },
+
+  scaledAvatarUrl: function() {
+    var url = this.props.currentUser.avatar_url;
+    return (url.slice(0,47) + "w_100,h_100,c_fill,g_face" + url.slice(46));
   },
 
   // Content handlers ==================================================
@@ -77,6 +85,10 @@ var HomePage = React.createClass({
           <div className="home-nav-right-box">
             <div onClick={this.linkToUpload} className="link">Upload</div>
             <div onClick={this.handleLogout} className="link">Log out</div>
+            <div className="current-user">
+              <img src={this.scaledAvatarUrl()} height="50px" className="avatar"/>
+              {this.props.currentUser.first_name}
+            </div>
           </div>
         </nav>
         <nav className="tab-nav">

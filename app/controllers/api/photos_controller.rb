@@ -2,7 +2,7 @@ require 'cloudinary'
 class Api::PhotosController < ApplicationController
 
   def index
-    @photos = Photo.in_bounds(params[:bounds])
+    @photos = Photo.in_bounds(params[:bounds]).includes(:photographer)
     render :index
   end
 

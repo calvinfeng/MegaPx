@@ -1,6 +1,6 @@
 var React = require('react');
 var Modal = require('boron/OutlineModal');
-
+var PhotoInfoBox = require('./photo_info_box');
 //Custom styles for boron modal
 var backdropStyle = {
   backgroundColor: 'rgba(0,0,0,0.8)'
@@ -19,7 +19,7 @@ var contentStyle = {
 };
 
 var PhotoModal = React.createClass({
-  
+
   getInitialState: function() {
     return {url: undefined};
   },
@@ -27,7 +27,11 @@ var PhotoModal = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     //If a photo gets pass in, show the modal
     if (nextProps.photoId) {
-      this.setState({url: nextProps.photoUrl, aspectRatio: nextProps.photoAspectRatio});
+      this.setState({
+        id: nextProps.photoId,
+        url: nextProps.photoUrl,
+        aspectRatio: nextProps.photoAspectRatio
+      });
       this.showModal();
     } else {
       this.hideModal();
@@ -43,7 +47,6 @@ var PhotoModal = React.createClass({
     var imageWidth = $("#image-on-display").width();
     var boxHeight = $(".photo-modal-left-box").height();
     var imageHeight = imageWidth/(this.state.aspectRatio);
-    console.log("height: ",imageHeight);
     if (imageHeight > boxHeight) {
       $("#image-on-display").height(boxHeight);
       $("#image-on-display").width(boxHeight*this.state.aspectRatio);
@@ -56,6 +59,14 @@ var PhotoModal = React.createClass({
 
   hideModal: function(){
     this.refs.modal.hide();
+  },
+
+  renderInfoBox: function() {
+    if (this.state.id) {
+      return <PhotoInfoBox photoId={this.state.id}/>;
+    } else {
+      return ;
+    }
   },
 
   render: function() {
@@ -71,6 +82,7 @@ var PhotoModal = React.createClass({
             <img id="image-on-display" src={this.state.url}/>
           </div>
           <div className="photo-modal-comment-section">
+            {this.renderInfoBox()}
             <h2>Here are some comments</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.

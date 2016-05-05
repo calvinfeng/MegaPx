@@ -38,6 +38,18 @@
   justify-content: flex-end;
 }
 
+.current-user {
+  color: white;
+  display: flex;
+  align-items: center;
+  margin: 0 15px 0 5px;
+}
+
+.avatar {
+  margin: 0 10px 0 0;
+  border-radius: 2px;
+}
+
 .tab-nav {
   box-sizing: border-box;
   background: #f0f0f0;

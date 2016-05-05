@@ -34456,7 +34456,7 @@
 	
 	var PhotoStore = new Store(AppDispatcher);
 	
-	var _errors, _photos;
+	var _errors, _photos, _photo;
 	
 	PhotoStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
@@ -34467,7 +34467,7 @@
 	
 	    case "ONE PHOTO RECEIVED":
 	      console.log("Store has received one photo from API; successful POST");
-	      PhotoStore.setPhotos([payload.photo]);
+	      PhotoStore.setIndividualPhoto(payload.photo);
 	      break;
 	
 	    case "PHOTO DELETED":
@@ -34482,6 +34482,12 @@
 	  PhotoStore.__emitChange();
 	};
 	
+	// Setters
+	
+	PhotoStore.setIndividualPhoto = function (photo) {
+	  _photo = photo;
+	};
+	
 	PhotoStore.setPhotos = function (photos) {
 	  _photos = photos;
 	};
@@ -34490,10 +34496,16 @@
 	  _errors = errors;
 	};
 	
+	// Getters
+	
 	PhotoStore.errors = function () {
 	  if (_errors) {
 	    return JSON.parse(_errors.responseText);
 	  }
+	};
+	
+	PhotoStore.photo = function () {
+	  return _photo;
 	};
 	
 	PhotoStore.inventory = function () {
@@ -35658,6 +35670,9 @@
 	    this.setState({ selectedTab: "my photos" });
 	    $("#my-photos-tab").addClass("tab-highlighted");
 	    $("#discover-tab").removeClass("tab-highlighted");
+	
+	    $('#map-icon').removeClass("map-toggled");
+	    $('.discover-map').css('visibility', 'hidden');
 	  },
 	
 	  toggleDiscover: function () {
@@ -35672,6 +35687,11 @@
 	
 	  handleLogout: function () {
 	    UserActions.logout();
+	  },
+	
+	  scaledAvatarUrl: function () {
+	    var url = this.props.currentUser.avatar_url;
+	    return url.slice(0, 47) + "w_100,h_100,c_fill,g_face" + url.slice(46);
 	  },
 	
 	  // Content handlers ==================================================
@@ -35721,6 +35741,12 @@
 	            'div',
 	            { onClick: this.handleLogout, className: 'link' },
 	            'Log out'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'current-user' },
+	            React.createElement('img', { src: this.scaledAvatarUrl(), height: '50px', className: 'avatar' }),
+	            this.props.currentUser.first_name
 	          )
 	        )
 	      ),
@@ -36389,7 +36415,7 @@
 
 	var React = __webpack_require__(1);
 	var Modal = __webpack_require__(293);
-	
+	var PhotoInfoBox = __webpack_require__(306);
 	//Custom styles for boron modal
 	var backdropStyle = {
 	  backgroundColor: 'rgba(0,0,0,0.8)'
@@ -36418,7 +36444,11 @@
 	  componentWillReceiveProps: function (nextProps) {
 	    //If a photo gets pass in, show the modal
 	    if (nextProps.photoId) {
-	      this.setState({ url: nextProps.photoUrl, aspectRatio: nextProps.photoAspectRatio });
+	      this.setState({
+	        id: nextProps.photoId,
+	        url: nextProps.photoUrl,
+	        aspectRatio: nextProps.photoAspectRatio
+	      });
 	      this.showModal();
 	    } else {
 	      this.hideModal();
@@ -36434,7 +36464,6 @@
 	    var imageWidth = $("#image-on-display").width();
 	    var boxHeight = $(".photo-modal-left-box").height();
 	    var imageHeight = imageWidth / this.state.aspectRatio;
-	    console.log("height: ", imageHeight);
 	    if (imageHeight > boxHeight) {
 	      $("#image-on-display").height(boxHeight);
 	      $("#image-on-display").width(boxHeight * this.state.aspectRatio);
@@ -36447,6 +36476,14 @@
 	
 	  hideModal: function () {
 	    this.refs.modal.hide();
+	  },
+	
+	  renderInfoBox: function () {
+	    if (this.state.id) {
+	      return React.createElement(PhotoInfoBox, { photoId: this.state.id });
+	    } else {
+	      return;
+	    }
 	  },
 	
 	  render: function () {
@@ -36468,6 +36505,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'photo-modal-comment-section' },
+	          this.renderInfoBox(),
 	          React.createElement(
 	            'h2',
 	            null,
@@ -36485,6 +36523,90 @@
 	});
 	
 	module.exports = PhotoModal;
+
+/***/ },
+/* 305 */,
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PhotoStore = __webpack_require__(273);
+	var UserStore = __webpack_require__(246);
+	
+	var _currentPhoto;
+	var PhotoInfoBox = React.createClass({
+	  displayName: 'PhotoInfoBox',
+	
+	
+	  componentWillMount: function () {
+	    //Instead of hitting the backend for photographer information,
+	    //When the site is loaded, everything is already packed into PhotoStore
+	    var photos = PhotoStore.inventory();
+	    for (var i = 0; i < photos.length; i++) {
+	      if (photos[i].id === this.props.photoId) {
+	        _currentPhoto = photos[i];
+	        break;
+	      }
+	    }
+	  },
+	
+	  scaledAvatarUrl: function () {
+	    var url = _currentPhoto.photographer.avatar_url;
+	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
+	  },
+	
+	  deleteButton: function () {
+	    if (UserStore.currentUser().id === _currentPhoto.photographer.id) {
+	      return React.createElement(
+	        'button',
+	        { className: 'photo-delete-button' },
+	        'Delete Photo'
+	      );
+	    } else {
+	      return;
+	    }
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'photo-info-container' },
+	      React.createElement(
+	        'div',
+	        { className: 'photo-header' },
+	        React.createElement('img', { src: this.scaledAvatarUrl(), className: 'photographer-avatar' }),
+	        React.createElement(
+	          'div',
+	          { className: 'photo-title-container' },
+	          React.createElement(
+	            'h1',
+	            null,
+	            _currentPhoto.title
+	          ),
+	          React.createElement(
+	            'h2',
+	            null,
+	            _currentPhoto.photographer.username
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'photo-description' },
+	        React.createElement(
+	          'p',
+	          null,
+	          _currentPhoto.description,
+	          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet suscipit diam. Nunc sed nisl cursus, volutpat purus non, venenatis justo.'
+	        ),
+	        this.deleteButton()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = PhotoInfoBox;
 
 /***/ }
 /******/ ]);

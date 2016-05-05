@@ -8,4 +8,5 @@ json.array! @photos do |photo|
   json.lng photo.lng
   json.width photo.width
   json.height photo.height
+  json.photographer(photo.photographer, :id, :username, :first_name, :last_name, :avatar_url)
 end
