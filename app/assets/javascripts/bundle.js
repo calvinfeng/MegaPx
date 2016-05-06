@@ -36450,6 +36450,7 @@
 	var React = __webpack_require__(1);
 	var Modal = __webpack_require__(293);
 	var PhotoInfoBox = __webpack_require__(306);
+	var PhotoCommentBox = __webpack_require__(309);
 	//Custom styles for boron modal
 	var backdropStyle = {
 	  backgroundColor: 'rgba(0,0,0,0.8)'
@@ -36520,6 +36521,14 @@
 	    }
 	  },
 	
+	  renderCommentBox: function () {
+	    if (this.state.id) {
+	      return React.createElement(PhotoCommentBox, { photoId: this.state.id });
+	    } else {
+	      return;
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      Modal,
@@ -36540,16 +36549,7 @@
 	          'div',
 	          { className: 'photo-modal-comment-section' },
 	          this.renderInfoBox(),
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Here are some comments'
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu molestie tortor, eget lobortis augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel laoreet nibh. Maecenas eget gravida ante. Suspendisse potenti. Aliquam erat volutpat. Nulla dignissim congue condimentum.'
-	          )
+	          this.renderCommentBox()
 	        )
 	      )
 	    );
@@ -36657,6 +36657,185 @@
 	  NY: { lat: 40.681363, lng: -74.008253, name: "New York" },
 	  YM: { lat: 37.864974, lng: -119.539016, name: "Yosemite" },
 	  GC: { lat: 36.107078, lng: -112.109720, name: "Grand Canyon" }
+	};
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var CommentActions = __webpack_require__(311);
+	var CommentStore = __webpack_require__(310);
+	
+	var PhotoCommentBox = React.createClass({
+	  displayName: 'PhotoCommentBox',
+	
+	  componentWillMount: function () {
+	    // CommentActions.fetchCommentsForPhoto(this.props.photoId);
+	  },
+	
+	  componentDidMount: function () {
+	    CommentStore.addListener(this.__onChange);
+	  },
+	
+	  __onChange: function () {
+	    this.setState({ comments: CommentStore.inventory() });
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'h1',
+	      null,
+	      'Hello'
+	    );
+	  }
+	
+	});
+	
+	module.exports = PhotoCommentBox;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(247).Store;
+	var AppDispatcher = __webpack_require__(265);
+	var CommentStore = new Store(AppDispatcher);
+	
+	var _comments, _errors;
+	
+	CommentStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case "COMMENTS RECEIVED":
+	      console.log("Comments loaded");
+	      CommentStore.setComments(payload.comments);
+	      CommentStore.__emitChange();
+	      break;
+	
+	    case "COMMENT DELETED":
+	      console.log("Comment deleted");
+	      CommentStore.setComments(payload.comments);
+	      CommentStore.__emitChange();
+	      break;
+	
+	    case "COMMENT CREATED":
+	      console.log("Comment created");
+	      CommentStore.setComments(payload.comments);
+	      CommentStore.__emitChange();
+	      break;
+	
+	    case "ERROR":
+	      console.log("Error in CommentStore");
+	      CommentStore.setErrors(payload.errors);
+	      CommentStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	CommentStore.setComments = function (comments) {
+	  _comments = comments;
+	};
+	
+	CommentStore.setErrors = function (errors) {
+	  _errors = errors;
+	};
+	
+	CommentStore.inventory = function () {
+	  return _comments.slice();
+	};
+	
+	module.exports = CommentStore;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(265);
+	var CommentStore = __webpack_require__(310);
+	var CommentApiUtil = __webpack_require__(312);
+	var CommentConstants = __webpack_require__(313);
+	
+	var CommentActions = {
+	  // ClientActions: API Request ========================================
+	  fetchCommentsForPhoto: function (photoId) {
+	    CommentApiUtil.fetchComments(photoId, this.receiveComments, this.handleError);
+	  },
+	
+	  postComment: function (comment) {
+	    CommentApiUtil.postComment(comment, this.receiveComments, this.handleError);
+	  },
+	
+	  deleteComment: function (commentId) {
+	    CommentApiUtil.deleteComment(commentId, this.receiveComments, this.handleError);
+	  },
+	
+	  // ServerActions: Success Handlers ===================================
+	  receiveComments: function (comments) {
+	    AppDispatcher.dispatch({
+	      actionType: CommentConstants.RECEIVE,
+	      comments: comments
+	    });
+	  },
+	
+	  // ServerActions: Error Handler ======================================
+	  handleError: function (response) {
+	    AppDispatcher.dispatch({
+	      actionType: CommentConstants.ERROR,
+	      errors: response.error()
+	    });
+	  }
+	
+	};
+	
+	module.exports = CommentActions;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports) {
+
+	var CommentApiUtil = {
+	
+	  fetchComments: function (photoId, successCallback, errorCallback) {
+	    $.ajax({
+	      url: "/api/photos/" + photoId + "/comments",
+	      method: "GET",
+	      success: successCallback,
+	      error: errorCallback
+	    });
+	  },
+	
+	  postComment: function (comment, successCallback, errorCallback) {
+	    $.ajax({
+	      url: "/api/comments",
+	      method: "POST",
+	      data: { comment: comment },
+	      success: successCallback,
+	      error: errorCallback
+	    });
+	  },
+	
+	  deleteComment: function (commentId, successCallback, errorCallback) {
+	    $.ajax({
+	      url: "/api/comments/" + commentId,
+	      method: "DELETE",
+	      success: successCallback,
+	      error: errorCallback
+	    });
+	  }
+	
+	};
+	
+	module.exports = CommentApiUtil;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  RECEIVE: "COMMENTS RECEIVED",
+	  ERROR: "ERROR",
+	  DELETE: "COMMENT DELETED",
+	  POST: "COMMENT CREATED"
 	};
 
 /***/ }

@@ -1,6 +1,7 @@
 var React = require('react');
 var Modal = require('boron/OutlineModal');
 var PhotoInfoBox = require('./photo_info_box');
+var PhotoCommentBox = require('./photo_comment_box');
 //Custom styles for boron modal
 var backdropStyle = {
   backgroundColor: 'rgba(0,0,0,0.8)'
@@ -65,7 +66,15 @@ var PhotoModal = React.createClass({
     if (this.state.id) {
       return <PhotoInfoBox photoId={this.state.id}/>;
     } else {
-      return ;
+      return;
+    }
+  },
+
+  renderCommentBox: function() {
+    if (this.state.id) {
+      return <PhotoCommentBox photoId={this.state.id}/>;
+    } else {
+      return;
     }
   },
 
@@ -83,15 +92,7 @@ var PhotoModal = React.createClass({
           </div>
           <div className="photo-modal-comment-section">
             {this.renderInfoBox()}
-            <h2>Here are some comments</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse eu molestie tortor, eget lobortis augue.
-              Vestibulum ante ipsum primis in faucibus orci luctus et
-              ultrices posuere cubilia Curae; Ut vel laoreet nibh.
-              Maecenas eget gravida ante. Suspendisse potenti.
-              Aliquam erat volutpat. Nulla dignissim congue condimentum.
-            </p>
+            {this.renderCommentBox()}
           </div>
         </div>
 
