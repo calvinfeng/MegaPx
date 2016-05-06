@@ -6,11 +6,11 @@ var LocationConstants = require('../../constants/location_constants');
 var DiscoverIndex = React.createClass({
 
   getInitialState: function() {
-    return {selectedSuggestion: undefined};
+    return {selectedSuggestion: undefined, isChangingLocation: false};
   },
 
   clickHandler: function(event) {
-    this.setState({selectedSuggestion: event.currentTarget.value});
+    this.setState({selectedSuggestion: event.currentTarget.value, isChangingLocation: true});
   },
 
   generatePopularLocations: function() {
@@ -40,7 +40,7 @@ var DiscoverIndex = React.createClass({
           {this.generatePopularLocations()}
         </div>
         <DiscoverMap suggestedLocation={this.state.selectedSuggestion}/>
-        <PhotoGrid/>
+        <PhotoGrid isChangingLocation={this.state.isChangingLocation}/>
       </div>
     );
   }

@@ -34471,18 +34471,17 @@
 	      break;
 	
 	    case "ONE PHOTO RECEIVED":
-	      console.log("Store has received one photo from API; successful POST");
 	      PhotoStore.setIndividualPhoto(payload.photo);
 	      PhotoStore.__emitChange();
 	      break;
 	
 	    case "PHOTO DELETED":
+	      PhotoStore.setPhotos(payload.photos);
 	      PhotoStore.__emitChange();
 	      break;
 	
 	    case "PHOTO ERROR":
 	      PhotoStore.setErrors(payload.errors);
-	      console.log(PhotoStore.errors());
 	      PhotoStore.__emitChange();
 	      break;
 	  }
@@ -35799,11 +35798,11 @@
 	
 	
 	  getInitialState: function () {
-	    return { selectedSuggestion: undefined };
+	    return { selectedSuggestion: undefined, isChangingLocation: false };
 	  },
 	
 	  clickHandler: function (event) {
-	    this.setState({ selectedSuggestion: event.currentTarget.value });
+	    this.setState({ selectedSuggestion: event.currentTarget.value, isChangingLocation: true });
 	  },
 	
 	  generatePopularLocations: function () {
@@ -35834,7 +35833,7 @@
 	        this.generatePopularLocations()
 	      ),
 	      React.createElement(DiscoverMap, { suggestedLocation: this.state.selectedSuggestion }),
-	      React.createElement(PhotoGrid, null)
+	      React.createElement(PhotoGrid, { isChangingLocation: this.state.isChangingLocation })
 	    );
 	  }
 	});
@@ -35954,6 +35953,19 @@
 	    };
 	  },
 	
+	  componentWillReceiveProps: function (nextProps) {
+	    // If user selects a suggested location, the map will pan and the
+	    // discover index will re-render. If that's the case, make sure to clear
+	    // the modal so it won't pop up on re-render
+	    if (nextProps.isChangingLocation) {
+	      this.setState({
+	        currentPhotoId: undefined,
+	        currentPhotoUrl: undefined,
+	        curentPhotoAspectRatio: undefined
+	      });
+	    }
+	  },
+	
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	    window.addEventListener("resize", this.resizeHandler);
@@ -35962,6 +35974,10 @@
 	  componentWillUnmount: function () {
 	    this.storeListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
+	  },
+	
+	  resizeHandler: function () {
+	    this.organizePhotosInGrid();
 	  },
 	
 	  __onChange: function () {
@@ -35975,11 +35991,8 @@
 	    this.organizePhotosInGrid();
 	  },
 	
-	  resizeHandler: function () {
-	    this.organizePhotosInGrid();
-	  },
-	
 	  openModal: function (event) {
+	    // setState will pass new props its children
 	    event.preventDefault();
 	    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
 	    var url = $(event.currentTarget).attr("url");
@@ -35989,7 +36002,6 @@
 	      currentPhotoUrl: url,
 	      currentPhotoAspectRatio: aspectRatio
 	    });
-	    // setState will cause new props being pass into its child
 	  },
 	
 	  organizePhotosInGrid: function () {

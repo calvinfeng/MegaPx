@@ -18,6 +18,19 @@ var PhotoGrid = React.createClass({
     );
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    // If user selects a suggested location, the map will pan and the
+    // discover index will re-render. If that's the case, make sure to clear
+    // the modal so it won't pop up on re-render
+    if (nextProps.isChangingLocation) {
+      this.setState({
+        currentPhotoId: undefined,
+        currentPhotoUrl: undefined,
+        curentPhotoAspectRatio: undefined
+      });
+    }
+  },
+
   componentDidMount: function(){
     this.storeListener = PhotoStore.addListener(this.__onChange);
     window.addEventListener("resize", this.resizeHandler);
@@ -28,24 +41,23 @@ var PhotoGrid = React.createClass({
     window.removeEventListener("resize", this.resizeHandler);
   },
 
-  __onChange: function() {
-    console.log("PhotoGrid component received photos");
-    this.setState(
-      {
-        photos: PhotoStore.inventory(),
-        currentPhotoId: undefined,
-        currentPhotoUrl: undefined,
-        currentPhotoAspectRatio: undefined
-      }
-    );
-    this.organizePhotosInGrid();
-  },
-
   resizeHandler: function() {
     this.organizePhotosInGrid();
   },
 
+  __onChange: function() {
+    console.log("PhotoGrid component received photos");
+    this.setState({
+      photos: PhotoStore.inventory(),
+      currentPhotoId: undefined,
+      currentPhotoUrl: undefined,
+      currentPhotoAspectRatio: undefined
+    });
+    this.organizePhotosInGrid();
+  },
+
   openModal: function(event) {
+    // setState will pass new props its children
     event.preventDefault();
     var photoId = parseInt($(event.currentTarget).attr("photo-id"));
     var url = $(event.currentTarget).attr("url");
@@ -55,7 +67,6 @@ var PhotoGrid = React.createClass({
       currentPhotoUrl: url,
       currentPhotoAspectRatio: aspectRatio
     });
-    // setState will cause new props being pass into its child
   },
 
   organizePhotosInGrid: function() {
@@ -136,7 +147,7 @@ var PhotoGrid = React.createClass({
           photoId = {this.state.currentPhotoId}
           photoUrl = {this.state.currentPhotoUrl}
           photoAspectRatio = {this.state.currentPhotoAspectRatio}
-        />
+          />
       </div>
     );
   }

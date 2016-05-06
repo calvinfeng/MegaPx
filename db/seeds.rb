@@ -21,20 +21,35 @@ avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462410234/Profile/
 #id: 5
 User.create!(username: 'guest', password: 'password', first_name: 'Guest', last_name: 'Recruiter',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462400515/Profile/avatar.png")
-
-# Development/Test seed data
-
+#id: 6
+User.create!(username: 'maxwell', password: '123456', first_name: 'James', last_name: 'Maxwell',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556309/Profile/maxwell.jpg")
+#id: 7
+User.create!(username: 'turing', password: '123456', first_name: 'Alan', last_name: 'Turing',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555648/Profile/turing.jpg")
+#id: 8
+User.create!(username: 'schrodinger', password: '123456', first_name: 'Erwin', last_name: 'Schrodinger',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555482/Profile/schrodinger.jpg")
+#id: 9
+User.create!(username: 'bohr', password: '123456', first_name: 'Niels', last_name: 'Bohr',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555366/Profile/bohr.jpg")
+#id: 10
+User.create!(username: 'heisenberg', password: '123456', first_name: 'Werner', last_name: 'Heisenberg',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555321/Profile/heisenberg.jpg")
+#id: 11
+User.create!(username: 'ritchie', password: '123456', first_name: 'Dennis', last_name: 'Ritchie',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556312/Profile/ritchie.jpg")
 
 # Production seed data
 
 ## San Francisco
-Photo.create!(user_id: 2, title: "1", url: "https://res.cloudinary.com/megapx/image/upload/v1462145861/Seeds/1.jpg",
+Photo.create!(user_id: 2, title: "Golden Gate", url: "https://res.cloudinary.com/megapx/image/upload/v1462145861/Seeds/1.jpg",
 lat: 37.808409, lng: -122.470737, width: 2000, height: 1337)
-Photo.create!(user_id: 2, title: "2", url: "https://res.cloudinary.com/megapx/image/upload/v1462145872/Seeds/2.jpg",
+Photo.create!(user_id: 2, title: "Market", url: "https://res.cloudinary.com/megapx/image/upload/v1462145872/Seeds/2.jpg",
 lat: 37.767284, lng: -122.427950, width: 2000, height: 1335)
-Photo.create!(user_id: 2, title: "3", url: "https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/3.jpg",
+Photo.create!(user_id: 2, title: "Sunset Through the Golden Gate", url: "https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/3.jpg",
 lat: 37.806762, lng: -122.471380, width: 2000, height: 1335)
-Photo.create!(user_id: 2, title: "4", url: "https://res.cloudinary.com/megapx/image/upload/v1462145882/Seeds/4.jpg",
+Photo.create!(user_id: 2, title: "Fireworks", url: "https://res.cloudinary.com/megapx/image/upload/v1462145882/Seeds/4.jpg",
 lat: 37.823306, lng: -122.375937, width: 2000, height: 949)
 Photo.create!(user_id: 2, title: "5", url: "https://res.cloudinary.com/megapx/image/upload/v1462145894/Seeds/5.jpg",
 lat: 37.795504, lng: -122.391214, width: 2000, height: 1335)
@@ -60,9 +75,9 @@ Photo.create!(user_id: 2, title: "15", url: "https://res.cloudinary.com/megapx/i
 lat: 37.821137, lng: -122.500563, width: 2000, height: 1370)
 Photo.create!(user_id: 5, title: "16", url: "https://res.cloudinary.com/megapx/image/upload/v1462145862/Seeds/16.jpg",
 lat: 37.794210, lng: -122.404325, width: 2000, height: 1359)
-Photo.create!(user_id: 5, title: "17", url: "https://res.cloudinary.com/megapx/image/upload/v1462145865/Seeds/17.jpg",
+Photo.create!(user_id: 5, title: "Snake Trails", url: "https://res.cloudinary.com/megapx/image/upload/v1462145865/Seeds/17.jpg",
 lat: 37.792403, lng: -122.458463, width: 2000, height: 1297)
-Photo.create!(user_id: 5, title: "18", url: "https://res.cloudinary.com/megapx/image/upload/v1462145864/Seeds/18.jpg",
+Photo.create!(user_id: 5, title: "Mist of Twin Peaks", url: "https://res.cloudinary.com/megapx/image/upload/v1462145864/Seeds/18.jpg",
 lat: 37.747198, lng: -122.438593, width: 2000, height: 1336)
 Photo.create!(user_id: 5, title: "19", url: "https://res.cloudinary.com/megapx/image/upload/v1462145860/Seeds/19.jpg",
 lat: 37.790485, lng: -122.390184, width: 2000, height: 1333)
@@ -70,11 +85,11 @@ Photo.create!(user_id: 5, title: "20", url: "https://res.cloudinary.com/megapx/i
 lat: 37.795640, lng: -122.481508, width: 2000, height: 1335)
 Photo.create!(user_id: 5, title: "21", url:"https://res.cloudinary.com/megapx/image/upload/v1462145876/Seeds/21.jpg",
 lat: 37.754407, lng: -122.447684, width: 2000, height: 1333)
-Photo.create!(user_id: 4, title: "22", url:"https://res.cloudinary.com/megapx/image/upload/v1462145875/Seeds/22.jpg",
+Photo.create!(user_id: 4, title: "Hover over Downtown", url:"https://res.cloudinary.com/megapx/image/upload/v1462145875/Seeds/22.jpg",
 lat: 37.770638, lng: -122.366581, width: 2000, height: 1333)
 Photo.create!(user_id: 4, title: "23", url:"https://res.cloudinary.com/megapx/image/upload/v1462145894/Seeds/23.jpg",
 lat: 37.789090, lng: -122.418079, width: 2000, height: 1350)
-Photo.create!(user_id: 4, title: "24", url:"https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/24.jpg",
+Photo.create!(user_id: 4, title: "Market Stream", url:"https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/24.jpg",
 lat: 37.789090, lng: -122.411556, width: 2000, height: 1328)
 Photo.create!(user_id: 4, title: "25", url:"https://res.cloudinary.com/megapx/image/upload/v1462145884/Seeds/25.jpg",
 lat: 37.797445, lng: -122.401116, width: 2000, height: 1250)
@@ -86,7 +101,7 @@ Photo.create!(user_id: 1, title: "28", url:"https://res.cloudinary.com/megapx/im
 lat: 37.787115, lng: -122.385029, width: 2000, height: 1125)
 # Photo.create!(user_id: 1, title: "29", url:"https://res.cloudinary.com/megapx/image/upload/v1462145904/Seeds/29.jpg",
 # lat: 37.795983, lng: -122.404131, width: 662, height: 1000)
-Photo.create!(user_id: 1, title: "30", url:"https://res.cloudinary.com/megapx/image/upload/v1462145926/Seeds/30.jpg",
+Photo.create!(user_id: 1, title: "View from Twin Peaks", url:"https://res.cloudinary.com/megapx/image/upload/v1462145926/Seeds/30.jpg",
 lat: 37.769063, lng: -122.439160, width: 2000, height: 1114)
 
 ## Yosemite
@@ -100,7 +115,6 @@ Photo.create!(user_id: 2, title: "Somewhere in Yosemite 4", url: "https://res.cl
 lat: 37.715352, lng: -119.676640, width: 2000, height: 1328)
 Photo.create!(user_id: 2, title: "Somewhere in Yosemite 5", url: "https://res.cloudinary.com/megapx/image/upload/v1462145968/Seeds/yosemite_5.jpg",
 lat: 37.967145, lng: -119.308002, width: 2000, height: 1055)
-
 Photo.create!(user_id: 2, title: "El Capitan", url: "https://res.cloudinary.com/megapx/image/upload/v1462145982/Seeds/yosemite_6.jpg",
 lat: 37.723815, lng: -119.635444, width: 2000, height: 1300)
 Photo.create!(user_id: 2, title: "Somewhere in Yosemite 7", url: "https://res.cloudinary.com/megapx/image/upload/v1462145980/Seeds/yosemite_7.jpg",
@@ -124,3 +138,77 @@ lat: 37.737651, lng: -119.638280, width: 2337, height: 1821, description: "I thi
 
 
 ## Hong Kong
+Photo.create!(user_id: 3, title: "Quarry Bay", url: "https://res.cloudinary.com/megapx/image/upload/v1462421526/Seeds/hk01.jpg",
+width: 2000, height: 1185, lat: 22.289131, lng: 114.208878)
+Photo.create!(user_id: 3, title: "Skyscrappers", url: "https://res.cloudinary.com/megapx/image/upload/v1462421519/Seeds/hk02.jpg",
+width: 1600, height: 1068, lat: 22.279204, lng: 114.145460)
+Photo.create!(user_id: 3, title: "Nightscape", url: "https://res.cloudinary.com/megapx/image/upload/v1462421523/Seeds/hk03.jpg",
+width: 2000, height: 1324, lat: 22.279680, lng: 114.144773)
+Photo.create!(user_id: 3, title: "Untitled 4", url: "https://res.cloudinary.com/megapx/image/upload/v1462421534/Seeds/hk04.jpg",
+width: 2000, height: 1138, lat: 22.281904, lng: 144.153013)
+Photo.create!(user_id: 3, title: "Disappearing Culture", url: "https://res.cloudinary.com/megapx/image/upload/v1462421532/Seeds/hk05.jpg",
+width: 2000, height: 1333, lat: 22.317163, lng: 114.168634)
+Photo.create!(user_id: 3, title: "Windows", url: "https://res.cloudinary.com/megapx/image/upload/v1462421534/Seeds/hk06.jpg",
+width: 2000, height: 1125, lat: 22.305252, lng: 114.185286)
+Photo.create!(user_id: 9, title: "Construction", url: "https://res.cloudinary.com/megapx/image/upload/v1462421535/Seeds/hk07.jpg",
+width: 2000, height: 1125, lat: 22.316845, lng: 114.171896)
+
+## New York
+Photo.create!(user_id: rand(10).to_i + 1, title: "Brooklyn", url: "https://res.cloudinary.com/megapx/image/upload/v1462421544/Seeds/ny01.jpg",
+width: 2000, height: 750, lat: 40.700144, lng: -74.000344)
+Photo.create!(user_id: rand(10).to_i + 1, title: "Night", url: "https://res.cloudinary.com/megapx/image/upload/v1462421562/Seeds/ny02.jpg",
+width: 2000, height: 1333, lat: 40.708472, lng: -74.007983)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421553/Seeds/ny03.jpg",
+width: 2000, height: 932, lat: 40.708538, lng: -74.033475)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421553/Seeds/ny04.jpg",
+width: 1700, height: 1135, lat: 40.702421, lng: -73.996911)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421550/Seeds/ny05.jpg",
+width: 2000, height: 1333, lat: 40.693441, lng: -74.003091)
+Photo.create!(user_id: rand(10).to_i + 1, title: "Empire State", url: "https://res.cloudinary.com/megapx/image/upload/v1462421564/Seeds/ny06.jpg",
+width: 2000, height: 1263, lat: 40.712784, lng: -74.005941)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421553/Seeds/ny07.jpg",
+width: 2000, height: 1202, lat: 40.714700, lng: -73.995066)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421568/Seeds/ny08.jpg",
+width: 2000, height: 1333, lat: 40.733434, lng: -73.991976)
+Photo.create!(user_id: rand(10).to_i + 1, title: "My Liberty Lady", url: "https://res.cloudinary.com/megapx/image/upload/v1462421558/Seeds/ny09.jpg",
+width: 2000, height: 807, lat: 40.687533, lng: -74.052690)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421578/Seeds/ny10.jpg",
+width: 2000, height: 1333, lat: 40.706001, lng: -74.008801)
+
+## Grand Canyon
+Photo.create!(user_id: rand(10).to_i + 1, title: "Thunderstorm", url: "https://res.cloudinary.com/megapx/image/upload/v1462421459/Seeds/gc01.jpg",
+width: 2000, height: 1218, lat: 36.037284, lng: -112.146378)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421460/Seeds/gc02.jpg",
+width: 2000, height: 1253, lat: 36.059490, lng: -112.267227)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421460/Seeds/gc03.jpg",
+width: 2000, height: 1334, lat: 36.073366, lng: -111.805115)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421462/Seeds/gc04.jpg",
+width: 2000, height: 1362, lat: 36.026577, lng: -111.836700)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421465/Seeds/gc05.jpg",
+width: 1000, height: 1000, lat: 36.175262, lng: -111.792755)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421468/Seeds/gc06.jpg",
+width: 2000, height: 1352, lat: 36.192997, lng: -111.807861)
+Photo.create!(user_id: rand(10).to_i + 1, title: "Explorer", url: "https://res.cloudinary.com/megapx/image/upload/v1462421467/Seeds/gc07.jpg",
+width: 2000, height: 1481, lat: 36.144217, lng: -112.294006)
+Photo.create!(user_id: rand(10).to_i + 1, title: "Light Up The Sky", url: "https://res.cloudinary.com/megapx/image/upload/v1462421469/Seeds/gc08.jpg",
+width: 2000, height: 1335, lat: 36.113159, lng: -112.365417)
+Photo.create!(user_id: rand(10).to_i + 1, title: "Horseshoe Bend", url: "https://res.cloudinary.com/megapx/image/upload/v1462421470/Seeds/gc09.jpg",
+width: 2000, height: 1001, lat: 36.188564,lng: -111.803741)
+
+## London
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421582/Seeds/uk01.jpg",
+width: 1800, height: 1200, lat: 51.497410, lng: -0.176281)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421567/Seeds/uk02.jpg",
+width: 2000, height: 1333, lat: 51.497410, lng: -0.176281)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421570/Seeds/uk03.jpg",
+width: 2000, height: 1331, lat: 51.506219, lng: -0.075091)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421582/Seeds/uk04.jpg",
+width: 1920, height: 1440, lat: 51.501023, lng: -0.119175)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421581/Seeds/uk05.jpg",
+width: 2000, height: 1265, lat: 51.504409, lng: -0.076149)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421578/Seeds/uk06.jpg",
+width: 2000, height: 1286, lat: 51.509455, lng: -0.104465)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421583/Seeds/uk07.jpg",
+width: 2000, height: 1333, lat: 51.503317, lng: -0.123634)
+Photo.create!(user_id: rand(10).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421584/Seeds/uk08.jpg",
+width: 2000, height: 1341, lat: 51.504465, lng: -0.088639)

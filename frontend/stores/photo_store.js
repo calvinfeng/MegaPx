@@ -13,18 +13,17 @@ PhotoStore.__onDispatch = function(payload) {
     break;
 
     case "ONE PHOTO RECEIVED":
-      console.log("Store has received one photo from API; successful POST");
       PhotoStore.setIndividualPhoto(payload.photo);
       PhotoStore.__emitChange();
     break;
 
     case "PHOTO DELETED":
+      PhotoStore.setPhotos(payload.photos);
       PhotoStore.__emitChange();
     break;
 
     case "PHOTO ERROR":
       PhotoStore.setErrors(payload.errors);
-      console.log(PhotoStore.errors());
       PhotoStore.__emitChange();
     break;
   }
