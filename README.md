@@ -7,7 +7,7 @@ MegaPx is an image hosting web application inspired by 500px. In terms of functi
 The following are the key milestone for a functional MVP.
 - [x] Users may sign up and log in
 - [x] Location fetching is only available to signed in users
-- [ ] Users can comment on photos
+- [x] Users can comment on photos
 - [x] Create/Edit/Destroy photos
 - [x] Google map integration with photos
 - [x] Beautiful image layout
@@ -150,7 +150,7 @@ their own photos
 - [ ] API::CommentsController:
   - create
   - destroy
-  
+
 - [ ] CommentStore & CommentActions
 
 ### Phase 8: Seed database (1 Day)

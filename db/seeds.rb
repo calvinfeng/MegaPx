@@ -39,6 +39,9 @@ avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555321/Profile/
 #id: 11
 User.create!(username: 'ritchie', password: '123456', first_name: 'Dennis', last_name: 'Ritchie',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556312/Profile/ritchie.jpg")
+#id: 12
+User.create!(username: 'loki', password: '123456', first_name: 'Loki', last_name: 'Laufeyson',
+avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462566623/Profile/loki.jpg")
 
 # Production seed data
 
