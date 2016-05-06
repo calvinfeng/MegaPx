@@ -24,7 +24,7 @@ CommentStore.__onDispatch = function(payload) {
       CommentStore.__emitChange();
     break;
 
-    case "ERROR":
+    case "COMMENT ERROR":
       console.log("Error in CommentStore");
       CommentStore.setErrors(payload.errors);
       CommentStore.__emitChange();

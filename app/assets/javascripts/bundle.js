@@ -34453,7 +34453,6 @@
 
 	var Store = __webpack_require__(247).Store;
 	var AppDispatcher = __webpack_require__(265);
-	
 	var PhotoStore = new Store(AppDispatcher);
 	
 	var _errors, _photos, _photo;
@@ -34463,23 +34462,25 @@
 	    case "PHOTOS RECEIVED":
 	      console.log("Store has received photos from API!");
 	      PhotoStore.setPhotos(payload.photos);
+	      PhotoStore.__emitChange();
 	      break;
 	
 	    case "ONE PHOTO RECEIVED":
 	      console.log("Store has received one photo from API; successful POST");
 	      PhotoStore.setIndividualPhoto(payload.photo);
+	      PhotoStore.__emitChange();
 	      break;
 	
 	    case "PHOTO DELETED":
-	
+	      PhotoStore.__emitChange();
 	      break;
 	
-	    case "ERROR":
+	    case "PHOTO ERROR":
 	      PhotoStore.setErrors(payload.errors);
 	      console.log(PhotoStore.errors());
+	      PhotoStore.__emitChange();
 	      break;
 	  }
-	  PhotoStore.__emitChange();
 	};
 	
 	// Setters
@@ -34579,7 +34580,7 @@
 	module.exports = {
 	  RECEIVE_ONE: "ONE PHOTO RECEIVED",
 	  RECEIVE: "PHOTOS RECEIVED",
-	  ERROR: "ERROR"
+	  ERROR: "PHOTO ERROR"
 	};
 
 /***/ },
@@ -35948,19 +35949,15 @@
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	    window.addEventListener("resize", this.resizeHandler);
-	    // document.addEventListener("scroll", this.scrollHandler);
-	    _scrollCheckpoint += $(window).height() / 2;
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.storeListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
-	    // document.removeEventListener("scroll", this.scrollHandler);
 	  },
 	
 	  __onChange: function () {
 	    console.log("PhotoGrid component received photos");
-	    _scrollCheckpoint = $(window).height() / 2;
 	    this.setState({
 	      photos: PhotoStore.inventory(),
 	      currentPhotoId: undefined,
@@ -35970,16 +35967,6 @@
 	    this.organizePhotosInGrid();
 	  },
 	
-	  //================= Deprecated feature ===============================
-	  scrollHandler: function () {
-	    if ($(document).scrollTop() > _scrollCheckpoint) {
-	      console.log("Scroll coordinate: ", $(document).scrollTop());
-	      console.log("Fetching more photos now");
-	      _scrollCheckpoint += $(window).height() / 2;
-	      this.organizePhotosInGrid();
-	    }
-	  },
-	  //====================================================================
 	  resizeHandler: function () {
 	    this.organizePhotosInGrid();
 	  },
@@ -36004,9 +35991,7 @@
 	      var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
 	      var $parent = $("#index-photo-grid");
 	      var photos = this.state.photos;
-	      // photoLimit = _idx + 10;
-	      // while(_idx < photos.length && _idx < photoLimit)
-	      // This is the throttle limit
+	
 	      while (_idx < photos.length) {
 	        $row = $("<div></div>");
 	        $row.addClass("photo-row");
@@ -36451,6 +36436,9 @@
 	var Modal = __webpack_require__(293);
 	var PhotoInfoBox = __webpack_require__(306);
 	var PhotoCommentBox = __webpack_require__(309);
+	var CommentStore = __webpack_require__(310);
+	var CommentActions = __webpack_require__(311);
+	
 	//Custom styles for boron modal
 	var backdropStyle = {
 	  backgroundColor: 'rgba(0,0,0,0.8)'
@@ -36473,11 +36461,10 @@
 	
 	
 	  getInitialState: function () {
-	    return { url: undefined };
+	    return { url: undefined, id: undefined, aspectRatio: undefined };
 	  },
 	
 	  componentWillReceiveProps: function (nextProps) {
-	    //If a photo gets pass in, show the modal
 	    if (nextProps.photoId) {
 	      this.setState({
 	        id: nextProps.photoId,
@@ -36485,8 +36472,6 @@
 	        aspectRatio: nextProps.photoAspectRatio
 	      });
 	      this.showModal();
-	    } else {
-	      this.hideModal();
 	    }
 	  },
 	
@@ -36670,23 +36655,64 @@
 	var PhotoCommentBox = React.createClass({
 	  displayName: 'PhotoCommentBox',
 	
-	  componentWillMount: function () {
-	    // CommentActions.fetchCommentsForPhoto(this.props.photoId);
+	
+	  getInitialState: function () {
+	    return { comments: [] };
 	  },
 	
 	  componentDidMount: function () {
-	    CommentStore.addListener(this.__onChange);
+	    //for some reason, comment store is causing page to scroll up
+	    CommentActions.fetchCommentsForPhoto(this.props.photoId);
+	    this.storeListener = CommentStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.storeListener.remove();
 	  },
 	
 	  __onChange: function () {
 	    this.setState({ comments: CommentStore.inventory() });
 	  },
 	
+	  scaledAvatarUrl: function (url) {
+	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
+	  },
+	
+	  renderComments: function () {
+	    if (this.state.comments.length > 0) {
+	      var comments = this.state.comments;
+	      var self = this;
+	      return comments.map(function (comment) {
+	        return React.createElement(
+	          'div',
+	          { className: 'comment', key: comment.id },
+	          React.createElement(
+	            'div',
+	            { className: 'comment-author' },
+	            React.createElement('img', { height: '50', src: self.scaledAvatarUrl(comment.author.avatar_url) })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'comment-content' },
+	            React.createElement(
+	              'span',
+	              null,
+	              comment.author.first_name + " " + comment.author.last_name
+	            ),
+	            comment.content
+	          )
+	        );
+	      });
+	    } else {
+	      return;
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
-	      'h1',
-	      null,
-	      'Hello'
+	      'div',
+	      { className: 'comment-box' },
+	      this.renderComments()
 	    );
 	  }
 	
@@ -36724,7 +36750,7 @@
 	      CommentStore.__emitChange();
 	      break;
 	
-	    case "ERROR":
+	    case "COMMENT ERROR":
 	      console.log("Error in CommentStore");
 	      CommentStore.setErrors(payload.errors);
 	      CommentStore.__emitChange();
@@ -36833,7 +36859,7 @@
 
 	module.exports = {
 	  RECEIVE: "COMMENTS RECEIVED",
-	  ERROR: "ERROR",
+	  ERROR: "COMMENT ERROR",
 	  DELETE: "COMMENT DELETED",
 	  POST: "COMMENT CREATED"
 	};

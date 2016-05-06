@@ -21,19 +21,15 @@ var PhotoGrid = React.createClass({
   componentDidMount: function(){
     this.storeListener = PhotoStore.addListener(this.__onChange);
     window.addEventListener("resize", this.resizeHandler);
-    // document.addEventListener("scroll", this.scrollHandler);
-    _scrollCheckpoint += $(window).height()/2;
   },
 
   componentWillUnmount: function() {
     this.storeListener.remove();
     window.removeEventListener("resize", this.resizeHandler);
-    // document.removeEventListener("scroll", this.scrollHandler);
   },
 
   __onChange: function() {
     console.log("PhotoGrid component received photos");
-    _scrollCheckpoint = $(window).height()/2;
     this.setState(
       {
         photos: PhotoStore.inventory(),
@@ -45,16 +41,6 @@ var PhotoGrid = React.createClass({
     this.organizePhotosInGrid();
   },
 
-  //================= Deprecated feature ===============================
-  scrollHandler: function() {
-    if ($(document).scrollTop() > _scrollCheckpoint) {
-      console.log("Scroll coordinate: ",$(document).scrollTop());
-      console.log("Fetching more photos now");
-      _scrollCheckpoint += $(window).height()/2;
-      this.organizePhotosInGrid();
-    }
-  },
-  //====================================================================
   resizeHandler: function() {
     this.organizePhotosInGrid();
   },
@@ -79,9 +65,7 @@ var PhotoGrid = React.createClass({
       var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
       var $parent = $("#index-photo-grid");
       var photos = this.state.photos;
-      // photoLimit = _idx + 10;
-      // while(_idx < photos.length && _idx < photoLimit)
-      // This is the throttle limit
+
       while(_idx < photos.length) {
         $row = $("<div></div>");
         $row.addClass("photo-row");

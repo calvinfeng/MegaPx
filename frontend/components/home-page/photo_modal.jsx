@@ -2,6 +2,9 @@ var React = require('react');
 var Modal = require('boron/OutlineModal');
 var PhotoInfoBox = require('./photo_info_box');
 var PhotoCommentBox = require('./photo_comment_box');
+var CommentStore = require('../../stores/comment_store');
+var CommentActions = require('../../actions/comment_actions');
+
 //Custom styles for boron modal
 var backdropStyle = {
   backgroundColor: 'rgba(0,0,0,0.8)'
@@ -22,11 +25,10 @@ var contentStyle = {
 var PhotoModal = React.createClass({
 
   getInitialState: function() {
-    return {url: undefined};
+    return {url: undefined, id: undefined, aspectRatio: undefined};
   },
 
   componentWillReceiveProps: function(nextProps) {
-    //If a photo gets pass in, show the modal
     if (nextProps.photoId) {
       this.setState({
         id: nextProps.photoId,
@@ -34,9 +36,7 @@ var PhotoModal = React.createClass({
         aspectRatio: nextProps.photoAspectRatio
       });
       this.showModal();
-    } else {
-      this.hideModal();
-    }
+    } 
   },
 
   componentDidUpdate: function() {

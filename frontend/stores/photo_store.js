@@ -1,6 +1,5 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
-
 var PhotoStore = new Store(AppDispatcher);
 
 var _errors, _photos, _photo;
@@ -10,23 +9,25 @@ PhotoStore.__onDispatch = function(payload) {
     case "PHOTOS RECEIVED":
       console.log("Store has received photos from API!");
       PhotoStore.setPhotos(payload.photos);
+      PhotoStore.__emitChange();
     break;
 
     case "ONE PHOTO RECEIVED":
       console.log("Store has received one photo from API; successful POST");
       PhotoStore.setIndividualPhoto(payload.photo);
+      PhotoStore.__emitChange();
     break;
 
     case "PHOTO DELETED":
-
+      PhotoStore.__emitChange();
     break;
 
-    case "ERROR":
+    case "PHOTO ERROR":
       PhotoStore.setErrors(payload.errors);
       console.log(PhotoStore.errors());
+      PhotoStore.__emitChange();
     break;
   }
-  PhotoStore.__emitChange();
 };
 
 // Setters
