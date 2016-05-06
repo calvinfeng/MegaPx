@@ -174,14 +174,14 @@ var UploadForm = React.createClass({
               </div>
 
               <div className="upload-input-group">
-                <input type="text" required/>
+                <input type="text" required onChange={this.setTitle}/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>Title</label>
               </div>
 
               <div className="upload-input-group">
-                <input type="text" required/>
+                <input type="text" required onChange={this.setDescription}/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>Description</label>

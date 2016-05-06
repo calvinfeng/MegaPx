@@ -9,7 +9,6 @@ var PhotoCommentBox = React.createClass({
   },
 
   componentDidMount: function() {
-    //for some reason, comment store is causing page to scroll up
     CommentActions.fetchCommentsForPhoto(this.props.photoId);
     this.storeListener = CommentStore.addListener(this.__onChange);
   },
@@ -24,6 +23,11 @@ var PhotoCommentBox = React.createClass({
 
   scaledAvatarUrl: function(url) {
     return (url.slice(0,47) + "w_60,h_60,c_fill,g_face" + url.slice(46));
+  },
+
+  handleSubmit: function(event) {
+    event.preventDefault();
+    console.log(this.state.content);
   },
 
   renderComments: function() {
@@ -48,10 +52,20 @@ var PhotoCommentBox = React.createClass({
     }
   },
 
+  setContent: function(event) {
+    this.setState({content: event.target.value});
+  },
+
   render: function() {
     return (
-      <div className="comment-box">
-        {this.renderComments()}
+      <div>
+        <div className="comment-box">
+          {this.renderComments()}
+        </div>
+        <form className="comment-form" onSubmit={this.handleSubmit}>
+          <input type="text" id="comment-field" onChange={this.setContent}></input>
+          <input type="Submit" id="comment-submit" value="submit"></input>
+        </form>
       </div>
     );
   }

@@ -60,6 +60,7 @@
 	  displayName: 'App',
 	
 	  render: function () {
+	    console.log("App Page is rendering");
 	    return React.createElement(
 	      'div',
 	      null,
@@ -27430,6 +27431,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("Index component is rendering");
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
@@ -35560,7 +35562,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'upload-input-group' },
-	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('input', { type: 'text', required: true, onChange: this.setTitle }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
 	              React.createElement(
@@ -35572,7 +35574,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'upload-input-group' },
-	              React.createElement('input', { type: 'text', required: true }),
+	              React.createElement('input', { type: 'text', required: true, onChange: this.setDescription }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
 	              React.createElement(
@@ -35723,6 +35725,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("HomePage component is rendering");
 	    return React.createElement(
 	      'div',
 	      { id: 'home-page' },
@@ -35818,6 +35821,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("DiscoverIndex component is rendering");
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
@@ -35856,9 +35860,9 @@
 	  },
 	
 	  __onChange: function () {
+	    console.log("Map component received photos: setting markers");
 	    MarkerStore.resetMarkers();
 	    MarkerStore.setMapOnMarkers(this.map);
-	    console.log("Drag event occurs");
 	  },
 	
 	  componentDidMount: function () {
@@ -35870,7 +35874,7 @@
 	
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
 	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
-	    PhotoStore.addListener(this.__onChange);
+	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	
 	    var self = this;
 	    navigator.geolocation.getCurrentPosition(function (position) {
@@ -35882,6 +35886,7 @@
 	
 	  componentWillUnmount: function () {
 	    this.dragListener.remove();
+	    this.storeListener.remove();
 	  },
 	
 	  componentWillReceiveProps: function (nextProps) {
@@ -36053,6 +36058,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("PhotoGrid component is rendering");
 	    return React.createElement(
 	      'div',
 	      { className: 'photo-content-container' },
@@ -36661,7 +36667,6 @@
 	  },
 	
 	  componentDidMount: function () {
-	    //for some reason, comment store is causing page to scroll up
 	    CommentActions.fetchCommentsForPhoto(this.props.photoId);
 	    this.storeListener = CommentStore.addListener(this.__onChange);
 	  },
@@ -36676,6 +36681,11 @@
 	
 	  scaledAvatarUrl: function (url) {
 	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    console.log(this.state.content);
 	  },
 	
 	  renderComments: function () {
@@ -36708,11 +36718,25 @@
 	    }
 	  },
 	
+	  setContent: function (event) {
+	    this.setState({ content: event.target.value });
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'comment-box' },
-	      this.renderComments()
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'comment-box' },
+	        this.renderComments()
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'comment-form', onSubmit: this.handleSubmit },
+	        React.createElement('input', { type: 'text', id: 'comment-field', onChange: this.setContent }),
+	        React.createElement('input', { type: 'Submit', id: 'comment-submit', value: 'submit' })
+	      )
 	    );
 	  }
 	

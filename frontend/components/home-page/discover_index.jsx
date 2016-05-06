@@ -33,6 +33,7 @@ var DiscoverIndex = React.createClass({
   },
 
   render: function() {
+    console.log("DiscoverIndex component is rendering");
     return (
       <div className="home-content-container">
         <div className="discover-suggestion-bar">

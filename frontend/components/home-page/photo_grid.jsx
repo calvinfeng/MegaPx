@@ -128,6 +128,7 @@ var PhotoGrid = React.createClass({
   },
 
   render: function() {
+    console.log("PhotoGrid component is rendering");
     return (
       <div className="photo-content-container">
         <div id="index-photo-grid"></div>

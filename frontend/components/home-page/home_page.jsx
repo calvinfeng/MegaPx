@@ -80,6 +80,7 @@ var HomePage = React.createClass({
   },
 
   render: function() {
+    console.log("HomePage component is rendering");
     return (
       <div id="home-page">
         <nav className="home-nav">

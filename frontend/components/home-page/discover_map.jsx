@@ -14,9 +14,9 @@ var DiscoverMap = React.createClass({
   },
 
   __onChange: function() {
+    console.log("Map component received photos: setting markers");
     MarkerStore.resetMarkers();
     MarkerStore.setMapOnMarkers(this.map);
-    console.log("Drag event occurs");
   },
 
   componentDidMount: function() {
@@ -28,7 +28,7 @@ var DiscoverMap = React.createClass({
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
-    PhotoStore.addListener(this.__onChange);
+    this.storeListener = PhotoStore.addListener(this.__onChange);
 
     var self = this;
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -40,6 +40,7 @@ var DiscoverMap = React.createClass({
 
   componentWillUnmount: function() {
     this.dragListener.remove();
+    this.storeListener.remove();
   },
 
   componentWillReceiveProps: function(nextProps) {

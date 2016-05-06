@@ -56,3 +56,17 @@
   margin-right: 10px;
   font-weight: bold;
 }
+
+.comment-form {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#comment-submit {
+  width: 30%;
+}
+
+#comment-field {
+  border: 2px solid black;
+  width: 90%;
+}

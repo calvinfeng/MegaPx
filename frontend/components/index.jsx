@@ -24,6 +24,7 @@ var Index = React.createClass({
   },
 
   render: function() {
+    console.log("Index component is rendering");
     if (this.state.currentUser) {
       return (
         <div>
