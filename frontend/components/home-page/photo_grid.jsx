@@ -1,10 +1,12 @@
 var React = require('react');
+var Loader = require('react-loader');
 var PhotoStore = require('../../stores/photo_store');
 var PhotoModal = require('./photo_modal');
 
+
 var MAX_PER_ROW = 3;
-var _scrollCheckpoint = 0;
 var _idx;
+
 var PhotoGrid = React.createClass({
 
   getInitialState: function() {
@@ -26,7 +28,8 @@ var PhotoGrid = React.createClass({
       this.setState({
         currentPhotoId: undefined,
         currentPhotoUrl: undefined,
-        curentPhotoAspectRatio: undefined
+        curentPhotoAspectRatio: undefined,
+        loaded: false
       });
     }
   },
@@ -49,6 +52,7 @@ var PhotoGrid = React.createClass({
     console.log("PhotoGrid component received photos");
     this.setState({
       photos: PhotoStore.inventory(),
+      loaded: true,
       currentPhotoId: undefined,
       currentPhotoUrl: undefined,
       currentPhotoAspectRatio: undefined
@@ -141,14 +145,15 @@ var PhotoGrid = React.createClass({
   render: function() {
     console.log("PhotoGrid component is rendering");
     return (
-      <div className="photo-content-container">
-        <div id="index-photo-grid"></div>
-        <PhotoModal
-          photoId = {this.state.currentPhotoId}
-          photoUrl = {this.state.currentPhotoUrl}
-          photoAspectRatio = {this.state.currentPhotoAspectRatio}
-          />
-      </div>
+      <Loader className="loader" loaded={this.state.loaded}>
+        <div className="photo-content-container">
+          <div id="index-photo-grid"></div>
+          <PhotoModal
+            photoId = {this.state.currentPhotoId}
+            photoUrl = {this.state.currentPhotoUrl}
+            photoAspectRatio = {this.state.currentPhotoAspectRatio}/>
+        </div>
+      </Loader>
     );
   }
 

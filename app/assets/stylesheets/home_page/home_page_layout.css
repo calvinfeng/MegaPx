@@ -136,11 +136,20 @@
   color: #00abff;
 }
 
+.loader {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  top: 20vh;
+}
+
 .photo-content-container {
   display: flex;
   width: 100%;
   justify-content: center;
 }
+
 
 /*Deprecate*/
 .masonry-photo-grid {
