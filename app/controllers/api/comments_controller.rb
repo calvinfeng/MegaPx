@@ -15,7 +15,9 @@ class Api::CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     @comment.user_id = current_user.id
     if @comment.save
-      #Don't need to render, no one will look at one comment
+      photo = Photo.find_by_id(@comment.photo_id)
+      @comments = photo.comments
+      render :index
     else
       @errors = @comment.errors.full_messages
       render "api/shared/error", status: 422

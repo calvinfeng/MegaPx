@@ -37,6 +37,15 @@
   border-radius: 5px;
 }
 
+.comment-box {
+  height: 100%;
+}
+
+.comment-scroll {
+  height: 55%;
+}
+
+/* This is the container that contains the comment content and author avatar*/
 .comment {
   display: flex;
   flex-direction: row;
@@ -60,13 +69,28 @@
 .comment-form {
   width: 100%;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#comment-field {
+  width: 90%;
+  background-color: #F2F2F2;
+  border-radius: 5px;
+  margin-bottom: 5px;
 }
 
 #comment-submit {
   width: 30%;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid #F3F3F3;
+  -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.2);
+  box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.2);
 }
 
-#comment-field {
-  border: 2px solid black;
-  width: 90%;
+#comment-submit:hover {
+  cursor: pointer;
 }

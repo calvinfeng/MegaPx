@@ -1,11 +1,13 @@
 var React = require('react');
+var UserStore = require('../../stores/user_store');
 var CommentActions = require('../../actions/comment_actions');
 var CommentStore = require('../../stores/comment_store');
+var ScrollArea = require('react-scrollbar');
 
 var PhotoCommentBox = React.createClass({
 
   getInitialState: function() {
-    return {comments: []};
+    return {comments: [], content: ''};
   },
 
   componentDidMount: function() {
@@ -27,7 +29,13 @@ var PhotoCommentBox = React.createClass({
 
   handleSubmit: function(event) {
     event.preventDefault();
-    console.log(this.state.content);
+    var comment = {
+      user_id: UserStore.currentUser().id,
+      photo_id: this.props.photoId,
+      content: this.state.content
+    };
+    CommentActions.postComment(comment);
+    this.setState({content: ''});
   },
 
   renderComments: function() {
@@ -58,12 +66,20 @@ var PhotoCommentBox = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <div className="comment-box">
+      <div className="comment-box">
+        <ScrollArea
+          speed={0.8}
+          className="comment-scroll"
+          horizontal={false}>
           {this.renderComments()}
-        </div>
+        </ScrollArea>
+
         <form className="comment-form" onSubmit={this.handleSubmit}>
-          <input type="text" id="comment-field" onChange={this.setContent}></input>
+          <input type="text"
+            id="comment-field"
+            onChange={this.setContent}
+            value={this.state.content}
+            placeholder="Your comment"/>
           <input type="Submit" id="comment-submit" value="submit"></input>
         </form>
       </div>
