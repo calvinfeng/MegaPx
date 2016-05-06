@@ -121,3 +121,6 @@ Photo.create!(user_id: 4, title: "Clearing Winterstorm", url: "https://res.cloud
 lat: 37.715353, lng: -119.676640, width: 1600, height: 1306, description: "Epic, isn't it?")
 Photo.create!(user_id: 4, title: "Winter Sunrise", url: "https://res.cloudinary.com/megapx/image/upload/v1462421428/Seeds/yosemite-winter-sunrise.jpg",
 lat: 37.737651, lng: -119.638280, width: 2337, height: 1821, description: "I think this was taken at El Capitan right? I am too old, I can't remember")
+
+
+## Hong Kong

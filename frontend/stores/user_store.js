@@ -10,15 +10,17 @@ UserStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "LOGIN":
     UserStore.login(payload.user);
+    UserStore.__emitChange();
     break;
     case "LOGOUT":
     UserStore.logout(payload.user);
+    UserStore.__emitChange();
     break;
     case "ERROR":
     UserStore.setErrors(payload.errors);
+    UserStore.__emitChange();
     break;
   }
-  UserStore.__emitChange();
 };
 
 UserStore.setErrors = function(errors) {
