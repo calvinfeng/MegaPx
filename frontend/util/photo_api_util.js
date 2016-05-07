@@ -45,6 +45,15 @@ var PhotoApiUtil = {
       success: successCallback,
       error: errorCallback
     });
+  },
+
+  deletePhoto: function(photoId, successCallback, errorCallback) {
+    $.ajax({
+      method: "DELETE",
+      url: "api/photos/" + photoId,
+      success: successCallback,
+      error: errorCallback
+    });
   }
 };
 

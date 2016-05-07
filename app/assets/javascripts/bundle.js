@@ -34426,6 +34426,10 @@
 	    PhotoApiUtil.postPhoto(photo, this.receiveOnePhoto, this.handleError);
 	  },
 	
+	  deletePhoto: function (photoId) {
+	    PhotoApiUtil.deletePhoto(photoId, this.receivePhotos, this.handleError);
+	  },
+	
 	  // ServerActions: Success Handlers ===================================
 	  receiveOnePhoto: function (photo) {
 	    AppDispatcher.dispatch({
@@ -34440,6 +34444,7 @@
 	      photos: photos
 	    });
 	  },
+	
 	  // ServerActions: Error Handler ======================================
 	  handleError: function (response) {
 	    AppDispatcher.dispatch({
@@ -34569,6 +34574,15 @@
 	      method: "POST",
 	      url: "api/photos",
 	      data: photo,
+	      success: successCallback,
+	      error: errorCallback
+	    });
+	  },
+	
+	  deletePhoto: function (photoId, successCallback, errorCallback) {
+	    $.ajax({
+	      method: "DELETE",
+	      url: "api/photos/" + photoId,
 	      success: successCallback,
 	      error: errorCallback
 	    });
@@ -36499,6 +36513,8 @@
 	        aspectRatio: nextProps.photoAspectRatio
 	      });
 	      this.showModal();
+	    } else {
+	      this.hideModal();
 	    }
 	  },
 	
@@ -36577,6 +36593,7 @@
 
 	var React = __webpack_require__(1);
 	var PhotoStore = __webpack_require__(273);
+	var PhotoActions = __webpack_require__(272);
 	var UserStore = __webpack_require__(246);
 	
 	var _currentPhoto;
@@ -36601,11 +36618,16 @@
 	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
 	  },
 	
+	  handleDelete: function (event) {
+	    event.preventDefault();
+	    PhotoActions.deletePhoto(this.props.photoId);
+	  },
+	
 	  deleteButton: function () {
 	    if (UserStore.currentUser().id === _currentPhoto.photographer.id) {
 	      return React.createElement(
-	        'button',
-	        { className: 'photo-delete-button' },
+	        'div',
+	        { className: 'photo-delete-button', onClick: this.handleDelete },
 	        'Delete Photo'
 	      );
 	    } else {
@@ -36648,9 +36670,9 @@
 	          'p',
 	          null,
 	          _currentPhoto.description
-	        ),
-	        this.deleteButton()
-	      )
+	        )
+	      ),
+	      this.deleteButton()
 	    );
 	  }
 	});

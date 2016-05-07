@@ -1,5 +1,6 @@
 var React = require('react');
 var PhotoStore = require('../../stores/photo_store');
+var PhotoActions = require('../../actions/photo_actions');
 var UserStore = require('../../stores/user_store');
 
 var _currentPhoto;
@@ -22,12 +23,17 @@ var PhotoInfoBox = React.createClass({
     return (url.slice(0,47) + "w_60,h_60,c_fill,g_face" + url.slice(46));
   },
 
+  handleDelete: function(event) {
+    event.preventDefault();
+    PhotoActions.deletePhoto(this.props.photoId);
+  },
+
   deleteButton: function() {
     if (UserStore.currentUser().id === _currentPhoto.photographer.id) {
       return (
-        <button className="photo-delete-button">
+        <div className="photo-delete-button" onClick={this.handleDelete}>
           Delete Photo
-        </button>
+        </div>
       );
     } else {
       return ;
@@ -38,6 +44,7 @@ var PhotoInfoBox = React.createClass({
 
     return (
       <div className="photo-info-container">
+
         <div className="photo-header">
           <img src={this.scaledAvatarUrl()} className="photographer-avatar"/>
           <div className="photo-title-container">
@@ -45,12 +52,14 @@ var PhotoInfoBox = React.createClass({
             <span><h2>{_currentPhoto.photographer.username}</h2></span>
           </div>
         </div>
+
         <div className="photo-description">
           <p>
             {_currentPhoto.description}
           </p>
-          {this.deleteButton()}
         </div>
+
+        {this.deleteButton()}
       </div>
     );
   }

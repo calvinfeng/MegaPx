@@ -36,7 +36,9 @@ var PhotoModal = React.createClass({
         aspectRatio: nextProps.photoAspectRatio
       });
       this.showModal();
-    } 
+    } else {
+      this.hideModal();
+    }
   },
 
   componentDidUpdate: function() {

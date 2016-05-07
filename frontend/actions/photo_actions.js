@@ -26,6 +26,10 @@ var PhotoActions = {
     PhotoApiUtil.postPhoto(photo, this.receiveOnePhoto, this.handleError);
   },
 
+  deletePhoto: function(photoId) {
+    PhotoApiUtil.deletePhoto(photoId, this.receivePhotos, this.handleError);
+  },
+
   // ServerActions: Success Handlers ===================================
   receiveOnePhoto: function(photo) {
     AppDispatcher.dispatch({
@@ -40,6 +44,7 @@ var PhotoActions = {
       photos: photos
     });
   },
+  
   // ServerActions: Error Handler ======================================
   handleError: function(response) {
     AppDispatcher.dispatch({

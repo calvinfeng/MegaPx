@@ -43,7 +43,8 @@ class Api::PhotosController < ApplicationController
       if (@photo.public_id)
         Cloudinary::Uploader.destroy(@photo.public_id)
       end
-      render :show
+      @photos = current_user.photos
+      render :index
     else
       @errors = ["Can't find the requested photo"]
       render "api/shared/error", status: 404
