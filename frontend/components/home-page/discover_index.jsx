@@ -9,6 +9,10 @@ var DiscoverIndex = React.createClass({
     return {selectedSuggestion: undefined, isChangingLocation: false};
   },
 
+  componentDidMount: function() {
+    $('.discover-map-container').css('visibility', 'hidden');
+  },
+
   clickHandler: function(event) {
     this.setState({selectedSuggestion: event.currentTarget.value, isChangingLocation: true});
   },
@@ -26,10 +30,6 @@ var DiscoverIndex = React.createClass({
         );
       })
     );
-  },
-
-  componentDidMount: function() {
-    $('.discover-map-container').css('visibility', 'hidden');
   },
 
   render: function() {

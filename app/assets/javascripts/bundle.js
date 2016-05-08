@@ -34766,6 +34766,10 @@
 	    return { selectedSuggestion: undefined, isChangingLocation: false };
 	  },
 	
+	  componentDidMount: function () {
+	    $('.discover-map-container').css('visibility', 'hidden');
+	  },
+	
 	  clickHandler: function (event) {
 	    this.setState({ selectedSuggestion: event.currentTarget.value, isChangingLocation: true });
 	  },
@@ -34781,10 +34785,6 @@
 	        LocationConstants[key].name
 	      );
 	    });
-	  },
-	
-	  componentDidMount: function () {
-	    $('.discover-map-container').css('visibility', 'hidden');
 	  },
 	
 	  render: function () {
@@ -34946,19 +34946,6 @@
 	  }
 	};
 	
-	// MarkerStore.setMapOnMarkers = function(map) {
-	//   for (var i = 0; i < _markers.length; i++) {
-	//     _markers[i].setMap(map);
-	//   }
-	// };
-	// var contentString = "<div>Hello</div>";
-	// var infoWindow = new google.maps.InfoWindow({
-	//   content:contentString
-	// });
-	// _markers[i].addListener('mouseover', function(){
-	//   infoWindow.open(map, _markers[i]);
-	// });
-	
 	MarkerStore.addMarker = function (photo, map) {
 	  var marker = new google.maps.Marker({
 	    position: { lat: photo.lat, lng: photo.lng },
@@ -34967,7 +34954,7 @@
 	  marker.setMap(map);
 	
 	  var infoWindow = new google.maps.InfoWindow();
-	  infoWindow.setContent('<img height="' + $(window).height() * 0.20 + '" src="' + photo.url.slice(0, 47) + 'c_scale,h_200' + photo.url.slice(46) + '"></img>');
+	  infoWindow.setContent('<h3>' + photo.title + '</h3><img height="' + $(window).height() * 0.20 + '" src="' + photo.url.slice(0, 47) + 'c_scale,h_200' + photo.url.slice(46) + '"></img><p>by ' + photo.photographer.first_name + ' ' + photo.photographer.last_name + '</p>');
 	
 	  marker.addListener('click', function () {
 	    MarkerActions.openModalOnPhoto(photo.id);
@@ -56419,7 +56406,8 @@
 	          'div',
 	          { className: 'right-box' },
 	          React.createElement('img', { src: 'http://www.bartosztomas.eu/upload/templates/img/logo.png',
-	            width: '50', height: '50' }),
+	            width: '50',
+	            height: '50' }),
 	          React.createElement(
 	            'div',
 	            { className: 'text-box' },
@@ -56629,7 +56617,7 @@
 	          React.createElement(
 	            'button',
 	            { className: 'submit-button', id: 'guest-login', onClick: this.guestLogin },
-	            'Guest Login'
+	            'Demo'
 	          ),
 	          React.createElement(
 	            'h1',

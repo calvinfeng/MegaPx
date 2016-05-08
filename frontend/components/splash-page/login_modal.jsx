@@ -162,7 +162,7 @@ var LoginModal = React.createClass({
             </section>
             {this.submitButtons()}
             <button className="submit-button" id="guest-login" onClick={this.guestLogin}>
-              Guest Login
+              Demo
             </button>
             <h1 className="login-error">{this.errors()}</h1>
           </form>

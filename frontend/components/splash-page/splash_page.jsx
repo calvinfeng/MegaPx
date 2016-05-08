@@ -76,7 +76,8 @@ var SplashPage = React.createClass({
             </div>
             <div className="right-box">
               <img src="http://www.bartosztomas.eu/upload/templates/img/logo.png"
-                width="50" height="50"/>
+                width="50"
+                height="50"/>
               <div className="text-box">
                 <h1>Photography Enthusiasts</h1>
                 <p>Upload and share your megapixel images</p>
