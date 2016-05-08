@@ -1,0 +1,51 @@
+.introduction {
+  height: 100vh;
+  width: 100%;
+}
+
+.react-player {
+  margin-top: 69px;
+}
+
+.about-me  {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 20vh;
+  background-color: white;
+}
+
+.about-me-left-box {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-right: 1px solid #f2f2f2;
+}
+
+.about-me-right-box {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border-left: 1px solid #f2f2f2;
+}
+
+.github {
+  margin-right: 50px;
+}
+
+.github:hover {
+  cursor: pointer;
+}
+
+.linkedin {
+  margin-left: 70px;
+  margin-top: 20px
+}
+
+.linkedin:hover {
+  cursor: pointer;
+}
