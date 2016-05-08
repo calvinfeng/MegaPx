@@ -19,7 +19,7 @@ var HomePage = React.createClass({
 
   toggleMap: function() {
     if(this.state.selectedTab === "discover") {
-      var $map = $('.discover-map');
+      var $map = $('.discover-map-container');
       if ($map.css('visibility') === 'visible') {
         $('#map-icon').removeClass("map-toggled");
         $map.css('visibility', 'hidden');
@@ -38,7 +38,7 @@ var HomePage = React.createClass({
     $("#discover-tab").removeClass("tab-highlighted");
 
     $('#map-icon').removeClass("map-toggled");
-    $('.discover-map').css('visibility', 'hidden');
+    $('.discover-map-container').css('visibility', 'hidden');
   },
 
   toggleDiscover: function() {

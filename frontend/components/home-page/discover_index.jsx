@@ -29,7 +29,7 @@ var DiscoverIndex = React.createClass({
   },
 
   componentDidMount: function() {
-    $('.discover-map').css('visibility', 'hidden');
+    $('.discover-map-container').css('visibility', 'hidden');
   },
 
   render: function() {

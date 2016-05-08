@@ -34420,7 +34420,7 @@
 	
 	  toggleMap: function () {
 	    if (this.state.selectedTab === "discover") {
-	      var $map = $('.discover-map');
+	      var $map = $('.discover-map-container');
 	      if ($map.css('visibility') === 'visible') {
 	        $('#map-icon').removeClass("map-toggled");
 	        $map.css('visibility', 'hidden');
@@ -34439,7 +34439,7 @@
 	    $("#discover-tab").removeClass("tab-highlighted");
 	
 	    $('#map-icon').removeClass("map-toggled");
-	    $('.discover-map').css('visibility', 'hidden');
+	    $('.discover-map-container').css('visibility', 'hidden');
 	  },
 	
 	  toggleDiscover: function () {
@@ -34784,7 +34784,7 @@
 	  },
 	
 	  componentDidMount: function () {
-	    $('.discover-map').css('visibility', 'hidden');
+	    $('.discover-map-container').css('visibility', 'hidden');
 	  },
 	
 	  render: function () {
@@ -34814,6 +34814,7 @@
 	var PhotoStore = __webpack_require__(273);
 	var MarkerStore = __webpack_require__(278);
 	var PhotoActions = __webpack_require__(272);
+	
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var LocationConstants = __webpack_require__(279);
 	
@@ -34827,16 +34828,15 @@
 	  },
 	
 	  __onChange: function () {
-	    console.log("Map component received photos: setting markers");
-	    MarkerStore.resetMarkers();
-	    MarkerStore.setMapOnMarkers(this.map);
+	    console.log("Map component received photos: resetting markers");
+	    MarkerStore.resetMarkers(this.map);
 	  },
 	
 	  componentDidMount: function () {
 	    var mapDOMNode = this.refs.map;
 	    var mapOptions = {
 	      center: this.state.center,
-	      zoom: 10
+	      zoom: 11
 	    };
 	
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
@@ -34888,7 +34888,11 @@
 	  },
 	
 	  render: function () {
-	    return React.createElement('div', { className: 'discover-map', ref: 'map' });
+	    return React.createElement(
+	      'div',
+	      { className: 'discover-map-container' },
+	      React.createElement('div', { className: 'discover-map', ref: 'map' })
+	    );
 	  }
 	});
 	
@@ -34899,51 +34903,84 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(265);
-	var PhotoConstants = __webpack_require__(275);
 	/* global google */
 	var Store = __webpack_require__(247).Store;
 	var PhotoStore = __webpack_require__(273);
+	var MarkerActions = __webpack_require__(478);
 	
 	var _markers = [];
+	var _selectedPhoto;
 	var MarkerStore = new Store(AppDispatcher);
 	
 	MarkerStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case PhotoConstants.PHOTO_SELECTED:
-	      _markers[payload.benchIndex].setAnimation(google.maps.Animation.BOUNCE);
-	      break;
-	    case PhotoConstants.PHOTO_DESELECTED:
-	      _markers[payload.benchIndex].setAnimation(null);
+	    case "OPEN MODAL TRHOUGH MARKER":
+	      var photos = PhotoStore.inventory();
+	      for (var i = 0; i < photos.length; i++) {
+	        if (photos[i].id === payload.photoId) {
+	          _selectedPhoto = photos[i];
+	          MarkerStore.__emitChange();
+	          break;
+	        }
+	      }
 	      break;
 	  }
 	};
 	
-	MarkerStore.all = function () {
+	MarkerStore.markers = function () {
 	  return _markers.slice();
 	};
 	
-	MarkerStore.resetMarkers = function () {
-	  var locations;
+	MarkerStore.selectedPhoto = function () {
+	  return _selectedPhoto;
+	};
+	
+	MarkerStore.resetMarkers = function (map) {
+	  var photos;
 	  this.deleteMarkers();
-	  locations = PhotoStore.inventory();
-	  if (locations) {
-	    for (var i = 0; i < locations.length; i++) {
-	      this.addMarker(locations[i]);
+	  photos = PhotoStore.inventory();
+	  if (photos) {
+	    for (var i = 0; i < photos.length; i++) {
+	      this.addMarker(photos[i], map);
 	    }
 	  }
 	};
 	
-	MarkerStore.setMapOnMarkers = function (map) {
-	  for (var i = 0; i < _markers.length; i++) {
-	    _markers[i].setMap(map);
-	  }
-	};
+	// MarkerStore.setMapOnMarkers = function(map) {
+	//   for (var i = 0; i < _markers.length; i++) {
+	//     _markers[i].setMap(map);
+	//   }
+	// };
+	// var contentString = "<div>Hello</div>";
+	// var infoWindow = new google.maps.InfoWindow({
+	//   content:contentString
+	// });
+	// _markers[i].addListener('mouseover', function(){
+	//   infoWindow.open(map, _markers[i]);
+	// });
 	
-	MarkerStore.addMarker = function (position) {
+	MarkerStore.addMarker = function (photo, map) {
 	  var marker = new google.maps.Marker({
-	    position: { lat: position.lat, lng: position.lng },
-	    title: position.description
+	    position: { lat: photo.lat, lng: photo.lng },
+	    title: photo.title
 	  });
+	  marker.setMap(map);
+	
+	  var infoWindow = new google.maps.InfoWindow();
+	  infoWindow.setContent('<img height="' + $(window).height() * 0.20 + '" src="' + photo.url.slice(0, 47) + 'c_scale,h_200' + photo.url.slice(46) + '"></img>');
+	
+	  marker.addListener('click', function () {
+	    MarkerActions.openModalOnPhoto(photo.id);
+	  });
+	
+	  marker.addListener('mouseover', function () {
+	    infoWindow.open(map, marker);
+	  });
+	
+	  marker.addListener('mouseout', function () {
+	    infoWindow.close();
+	  });
+	
 	  _markers.push(marker);
 	};
 	
@@ -34953,7 +34990,9 @@
 	};
 	
 	MarkerStore.clearMarkers = function () {
-	  this.setMapOnMarkers(null);
+	  for (var i = 0; i < _markers.length; i++) {
+	    _markers[i].setMap(null);
+	  }
 	};
 	
 	module.exports = MarkerStore;
@@ -34978,6 +35017,7 @@
 	var React = __webpack_require__(1);
 	var Loader = __webpack_require__(281);
 	var PhotoStore = __webpack_require__(273);
+	var MarkerStore = __webpack_require__(278);
 	var PhotoModal = __webpack_require__(283);
 	
 	var MAX_PER_ROW = 3;
@@ -35012,11 +35052,13 @@
 	
 	  componentDidMount: function () {
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
+	    this.markerListener = MarkerStore.addListener(this.__onChangeFromMarkerStore);
 	    window.addEventListener("resize", this.resizeHandler);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.storeListener.remove();
+	    this.markerListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
 	  },
 	
@@ -35034,6 +35076,15 @@
 	      currentPhotoAspectRatio: undefined
 	    });
 	    this.organizePhotosInGrid();
+	  },
+	
+	  __onChangeFromMarkerStore: function () {
+	    var currentPhoto = MarkerStore.selectedPhoto();
+	    this.setState({
+	      currentPhotoId: currentPhoto.id,
+	      currentPhotoUrl: currentPhoto.url,
+	      currentPhotoAspectRatio: currentPhoto.width / currentPhoto.height
+	    });
 	  },
 	
 	  openModal: function (event) {
@@ -59737,6 +59788,32 @@
 	});
 	
 	module.exports = UploadForm;
+
+/***/ },
+/* 478 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(265);
+	var MarkerConstants = __webpack_require__(479);
+	
+	var MarkerActions = {
+	  openModalOnPhoto: function (photoId) {
+	    AppDispatcher.dispatch({
+	      actionType: MarkerConstants.OPEN_MODAL,
+	      photoId: photoId
+	    });
+	  }
+	};
+	
+	module.exports = MarkerActions;
+
+/***/ },
+/* 479 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  OPEN_MODAL: "OPEN MODAL TRHOUGH MARKER"
+	};
 
 /***/ }
 /******/ ]);

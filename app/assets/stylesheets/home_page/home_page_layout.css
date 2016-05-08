@@ -105,12 +105,20 @@
   flex-direction: column;
 }
 
+.discover-map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70vh;
+}
+
 .discover-map {
   position: absolute;
   top: 0;
-  left: 35px;
-  height: 400px;
-  width: 600px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
   z-index: 100;
 }
 

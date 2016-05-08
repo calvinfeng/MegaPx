@@ -1,8 +1,8 @@
 var React = require('react');
 var Loader = require('react-loader');
 var PhotoStore = require('../../stores/photo_store');
+var MarkerStore = require('../../stores/marker_store');
 var PhotoModal = require('./photo_modal');
-
 
 var MAX_PER_ROW = 3;
 var _idx;
@@ -36,11 +36,13 @@ var PhotoGrid = React.createClass({
 
   componentDidMount: function(){
     this.storeListener = PhotoStore.addListener(this.__onChange);
+    this.markerListener = MarkerStore.addListener(this.__onChangeFromMarkerStore);
     window.addEventListener("resize", this.resizeHandler);
   },
 
   componentWillUnmount: function() {
     this.storeListener.remove();
+    this.markerListener.remove();
     window.removeEventListener("resize", this.resizeHandler);
   },
 
@@ -58,6 +60,15 @@ var PhotoGrid = React.createClass({
       currentPhotoAspectRatio: undefined
     });
     this.organizePhotosInGrid();
+  },
+
+  __onChangeFromMarkerStore: function() {
+    var currentPhoto = MarkerStore.selectedPhoto();
+    this.setState({
+      currentPhotoId: currentPhoto.id,
+      currentPhotoUrl: currentPhoto.url,
+      currentPhotoAspectRatio: currentPhoto.width/currentPhoto.height
+    });
   },
 
   openModal: function(event) {

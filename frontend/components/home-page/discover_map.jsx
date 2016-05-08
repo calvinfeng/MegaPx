@@ -3,6 +3,7 @@ var React = require('react');
 var PhotoStore = require('../../stores/photo_store');
 var MarkerStore = require('../../stores/marker_store');
 var PhotoActions = require('../../actions/photo_actions');
+
 var hashHistory = require('react-router').hashHistory;
 var LocationConstants = require('../../constants/location_constants');
 
@@ -14,16 +15,15 @@ var DiscoverMap = React.createClass({
   },
 
   __onChange: function() {
-    console.log("Map component received photos: setting markers");
-    MarkerStore.resetMarkers();
-    MarkerStore.setMapOnMarkers(this.map);
+    console.log("Map component received photos: resetting markers");
+    MarkerStore.resetMarkers(this.map);
   },
 
   componentDidMount: function() {
     var mapDOMNode = this.refs.map;
     var mapOptions = {
       center: this.state.center,
-      zoom: 10
+      zoom: 11
     };
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
@@ -76,7 +76,9 @@ var DiscoverMap = React.createClass({
 
   render: function() {
     return (
-      <div className="discover-map" ref="map"></div>
+      <div className="discover-map-container">
+        <div className="discover-map" ref="map"></div>
+      </div>
     );
   }
 });
