@@ -10,7 +10,8 @@ var DiscoverIndex = React.createClass({
   },
 
   componentDidMount: function() {
-    $('.discover-map-container').css('visibility', 'hidden');
+    // $('.discover-map-container').css("display","none");
+    // $('.discover-map').css("visibility","hidden");
   },
 
   clickHandler: function(event) {
@@ -36,10 +37,10 @@ var DiscoverIndex = React.createClass({
     console.log("DiscoverIndex component is rendering");
     return (
       <div className="home-content-container">
+        <DiscoverMap suggestedLocation={this.state.selectedSuggestion}/>
         <div className="discover-suggestion-bar">
           {this.generatePopularLocations()}
         </div>
-        <DiscoverMap suggestedLocation={this.state.selectedSuggestion}/>
         <PhotoGrid isChangingLocation={this.state.isChangingLocation}/>
       </div>
     );

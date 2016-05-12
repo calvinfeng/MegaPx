@@ -17,15 +17,37 @@ var HomePage = React.createClass({
     this.toggleDiscover();
   },
 
+  // toggleMap: function() {
+  //   if(this.state.selectedTab === "discover") {
+  //     var $map = $('.discover-map-container');
+  //     if ($map.css('visibility') === 'visible') {
+  //       $('#map-icon').removeClass("map-toggled");
+  //       $map.css('visibility', 'hidden');
+  //     } else {
+  //       $('#map-icon').addClass("map-toggled");
+  //       $map.css('visibility', 'visible');
+  //     }
+  //   } else {
+  //     //This button is disabled
+  //   }
+  // },
   toggleMap: function() {
     if(this.state.selectedTab === "discover") {
-      var $map = $('.discover-map-container');
-      if ($map.css('visibility') === 'visible') {
+      var $mapContainer = $(".discover-map-container");
+      var $map = $(".discover-map");
+
+      if ($mapContainer.css("display") === "block") {
+
         $('#map-icon').removeClass("map-toggled");
-        $map.css('visibility', 'hidden');
+        $mapContainer.css('display', "none");
+        $map.css('visibility','hidden');
+
       } else {
+
         $('#map-icon').addClass("map-toggled");
-        $map.css('visibility', 'visible');
+        $mapContainer.css('display', "block");
+        $map.css('visibility','visible');
+
       }
     } else {
       //This button is disabled
@@ -99,7 +121,7 @@ var HomePage = React.createClass({
         <nav className="tab-nav">
           <img height="35" id="map-icon"
                onClick={this.toggleMap}
-               src="http://www.map-embed.net/wp-content/uploads/2015/11/Google-Maps-icon.png"/>
+               src="http://icons.iconarchive.com/icons/dakirby309/simply-styled/256/Google-Maps-icon.png"/>
              <h1 onClick={this.toggleDiscover} className="tab" id="discover-tab">Discover</h1>
           <h1 onClick={this.toggleMyPhotos} className="tab" id="my-photos-tab">My Photos</h1>
         </nav>

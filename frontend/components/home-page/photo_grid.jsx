@@ -156,7 +156,10 @@ var PhotoGrid = React.createClass({
   render: function() {
     console.log("PhotoGrid component is rendering");
     return (
-      <Loader className="loader" loaded={this.state.loaded}>
+      <Loader
+        className="spinner"
+        loadedClassName="loadedContent"
+        loaded={this.state.loaded}>
         <div className="photo-content-container">
           <div id="index-photo-grid"></div>
           <PhotoModal

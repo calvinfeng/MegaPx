@@ -9,6 +9,7 @@ PhotoStore.__onDispatch = function(payload) {
     case "PHOTOS RECEIVED":
       console.log("Store has received photos from API!");
       PhotoStore.setPhotos(payload.photos);
+      console.log(payload.photos);
       PhotoStore.__emitChange();
     break;
 
