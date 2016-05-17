@@ -1,166 +1,84 @@
 # MegaPx
-Heroku: https://mega-px.herokuapp.com/
-## Minimum Viable Product
-MegaPx is an image hosting web application inspired by 500px. In terms of functionality and front-end design, MegaPX closely mimics 500px except for one part; location-based image fetching. MegaPX will exhibit photo-works that were taken in your geological area.
+[MegaPx live][heroku]
+[heroku]: https://mega-px.herokuapp.com/
 
-## Product Goals and Priorities
-The following are the key milestone for a functional MVP.
-- [x] Users may sign up and log in
-- [x] Location fetching is only available to signed in users
-- [x] Users can comment on photos
-- [x] Create/Edit/Destroy photos
-- [x] Google map integration with photos
-- [x] Beautiful image layout
-- Bonus
-  - [ ] Users can upvote photos
-  - [ ] Sort photos by popularity and recentness
+MegaPx is a full stack, single page application, modeled after the popular online photography network 500px. In the backend and database level, MegaPx runs on Rails with PostgreSQL as its database. On the frontend, it uses React.js exclusively and architecture is designed under the uni-directional data flow principle of Flux.
 
-## Design Documents
-### Backends
-* [API Endpoints][api-endpoints]
-* [Database Schema][schema]
+## Features & Implementation
 
-### Frontends
-* Wireframes
-  * [Before sign in][views-before-sign-in]
-  * [After sign in][views_after_sign-in]
-* [React Component][components]
-* [Flux][flux-cycle]
+### Single-Page
+MegaPx is a single page application, which means that throughout the duration of user visitation, the website does not redirect nor refresh; everything happens on the same page. Upon changes and interactions, the page will swap out components and re-render the page with the updated content. The process of re-rendering has enabled MegaPx to deliver a smooth user experience.
 
-[views-before-sign-in]: ./docs/views-before-sign-in.md
-[views_after_sign-in]: ./docs/views-after-sign-in.md
-[api-endpoints]: ./docs/api-endpoints.md
-[components]: ./docs/components.md
-[schema]: ./docs/schema.md
-[flux-cycle]: ./docs/flux-cycles.md
+Before log in
+![hash_history]
+After log in
+![hash_history_after]
+The hash history changed, but the URL did not. The page did not go anywhere. However, the whole content has swapped after user logged in.
 
-# Implementation Timeline
+[hash_history]: ./docs/screenshots/before-log-in.png
+[hash_history_after]: ./docs/screenshots/after-log-in.png
 
-## Week 1
+Entire application comes down to one static page which we called root
+``` html
+<div id="application">
+  Single-page React WebApp
+</div>
+```
+During session, React will inject content into this html `<div>` element to create dynamic contents
 
-### Phase 1: Backend & Frontend Auth (1 Day)
-**objective:**
-- [x] Functioning Rails application with authentication
-- [x] Key components to work on for the day
-  - [x] User models
-  - [x] UsersController, SessionsController, ApplicationController
-  - [x] Render JSON instead of views for backend controllers
-  - [x] UserActions
-  - [x] UserStore
-  - [x] UserApiUtil
-  - [x] LoginForm, SplashPage, HomePage
-- [x] By the end of the day, users should be able to log in and log out
+``` javascript
+var App = React.createClass({
+  render: function() {
+    console.log("App Page is rendering");
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    );
+  }
+});
+```
 
-### Phase 2: Visual Enhancement (1.5 Day)
-**objectve:**
-- [x] Create appropriate CSS for LoginForm
-- [x] Set up LoginForm with Modal
-- [x] SplashPage
-  - Navigation Bar with Login buttons
-  - Video plays in the background
-  - Appropriate container for each element
-- [x] Login Modal
-- [x] Users has three different ways to bring up the login modal
-  - Log in
-  - Get Started
-  - Sign up
-- [x] Once logged in, user will get navigated to home page
-- [ ] Secondary splash page to display photos uploaded by users
+### CRUD
+Starting with the basics, MegaPx has the basic CRUD (Create, Read, Update, and Delete) functionality for user accounts, photos, and comments. User can sign up and log in. Their information will persist in the database (in a secured way.) Account password is encrypted with the blowfish hash function and stored as password digest in the database.
 
+### Discover
+MegaPx delivers location-based content. It integrates Google map and browser's built-in JavaScript navigator to fetch photos that were taken/uploaded within users' geographical area. Users also have
+the option to navigate themselves to anywhere in the world to look at others' works.
+The upper left hand corner is the toggle map button. When toggled, it brings up a Google Map with markers that indicate where the photos were taken.
 
-### Phase 3: CRUD on Photos (2 Days)
-**objectve:**
-- Create marker store, photo store
-- Set up appropriate actions for retrieving photos
+![discover]
+[discover]: ./docs/screenshots/discover.png
+The app will also give users a list of suggested locations to go to. These locations are typically seeded with data. However, in the future updates, the suggestion bar will be dynamically generated by the popularities of regions.
 
-- [x] Create Photos model
-  - user_id
-  - description
-  - title (default: Untitled)
-  - lat
-  - lng
-  - img_url
+``` javascript
+generatePopularLocations: function() {
+  var self = this;
+  return (
+    Object.keys(LocationConstants).map(function(key){
+      return (
+        <div className="location-item"
+          title="This is a popular location, click to go"
+          value={key} onClick={self.clickHandler}>
+          {LocationConstants[key].name}
+        </div>
+      );
+    })
+  );
+}
+```
+Potentially, the LocationConstants will be a function of user upload activities. Every region will receive a ranking based on how many uploads and likes occur. The ranking will then be used to populate the suggestion bar on the front discover page.
 
-- [x] Create PhotosController: photos can be access/create/delete through
-submitting API requests
-  - index
-  - create
-  - update
-  - destroy
-  - show
+### MyPhotos
+As previously mentioned, this is a CRUD app. Users can upload their photos. It's done by clicking the upload button in the upper right hand corner. Users can also manage their own photos. They can go to the MyPhotos page to look at photos they have uploaded. They can also delete them.
 
-- [x] Create Associations
-  - User has many photos
-  - Photo belongs to photograher
+<img height=400 src="./docs/screenshots/upload.png"></img>
 
-- [x] Create PhotoStore, PhotoActions
-  - fetchAllPhotos()
-  - fetchSinglePhoto()
-  - fetchCurrentUserPhotos()
-  - fetchPhotosWithinBounds()
-  - postPhoto
-  - deletePhoto
-  - updatePhoto
+![myphotos]
+[myphotos]: ./docs/screenshots/my-photos.png
 
-### Phase 4 HomePage layout (1 Day)
-**objective:**
-- [x] Create HomePage component: its responsibility is to display photo
-correctly in grid.
-- [x] Create Map component
-  - Make API call to backend for fetching photos base on map bounds, like what
-  we did in BenchBnB
-- Add listener to drag event, whenever the map is dragged, call API to fetch
-new photos
-- [x] Use Cloudinary for image hosting
-
-## Week 2
-
-### Phase 5: Upload Form & Styling (1 Day)
-**objectve:**
-Users should be able to upload photos to Cloudinary through its upload widget
-- [x] The form has input field: title, description, latitude, longitude (through clicking),
-and selected file.
-- [x] Instead of using modal form, this should be its own route
-- [x] There are submit, cancel, and home buttons
-- [x] There is a mini map for location tagging
-
-### Phase 6: Profile & Photo Management (2 Days)
-**objectve:**
-- [x] Allow users to visit their "My Photos" page which will enable them to edit/delete
-their own photos
-- [x] Add extra column in Users table (backend) for avatar URL
-- [x] Display user avatar in the upper right hand corner of the app
-- [x] Photographer icon should be shown in the photo modal page
-- [x] User can delete their own photos
-- [x] New Feature
-  - Added a navigation suggestion bar which helps user to get to places they want or
-  places that are popular
-
-### Phase 7: Comments (2 Days)
-#### CRUD again...
-- [x] Comment model
-  - user_id
-  - photo_id
-  - content
-
-- [x] Associations
-  - User has many comments
-  - Photo has many comments
-
-- [ ] API::CommentsController:
-  - create
-  - destroy
-
-- [ ] CommentStore & CommentActions
-
-### Phase 8: Seed database (1 Day)
-**objective:**
-- Search and find a large quantity of high quality photos for every major
-location in my application
-  - San Francisco
-  - New York City
-  - Some national parks maybe like Yosemite
-
-### Bonus Features
-- Search photos by location and tag
-- Users can upvote photos
+### Incoming Features
+* Tag: Photos shall receive hash tags
+* Search bar
+* Users can upload/update/delete their avatars
+* Extract Lat/Lng from EXIF data of the photos
