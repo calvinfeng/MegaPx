@@ -23,14 +23,6 @@ var UploadForm = React.createClass({
     };
   },
 
-  setTitle: function(event) {
-    this.setState({imgTitle: event.target.value});
-  },
-
-  setDescription: function(event) {
-    this.setState({imgDescription: event.target.value});
-  },
-
   componentWillMount: function() {
     if (!UserStore.currentUser()) {
       HashHistory.push({pathname: "/"});
@@ -49,6 +41,27 @@ var UploadForm = React.createClass({
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     this.clickListener = this.map.addListener('click', this.mapClickHandle);
     navigator.geolocation.getCurrentPosition(this.setCurrentLocation);
+    this.storeListener = PhotoStore.addListener(this.__onChange);
+  },
+
+  __onChange: function() {
+    this.setState({
+      submitErrors: PhotoStore.errors(),
+    });
+  },
+
+  componentWillUnmount: function() {
+    this.clickListener.remove();
+    this.storeListener.remove();
+    _isMounted = false;
+  },
+
+  setTitle: function(event) {
+    this.setState({imgTitle: event.target.value});
+  },
+
+  setDescription: function(event) {
+    this.setState({imgDescription: event.target.value});
   },
 
   setCurrentLocation: function(position) {
@@ -57,44 +70,12 @@ var UploadForm = React.createClass({
     // this is to prevent calling setState on unmounted component
     if (_isMounted) {
       this.map.panTo({lat: currentLat, lng: currentLng});
+      this.marker = new google.maps.Marker({
+        position: {lat: currentLat, lng: currentLng}
+      });
+      this.marker.setMap(this.map);
+      this.setState({imgLat: currentLat, imgLng: currentLng});
     }
-  },
-
-  componentWillUnmount: function() {
-    this.clickListener.remove();
-    _isMounted = false;
-  },
-
-  uploadToCloud: function(event) {
-    event.preventDefault();
-    // currently, it only allows one image upload at a time
-    cloudinary.openUploadWidget(window.cloudinary_options,
-      function(errors, images){
-        if (!errors) {
-          this.setState({imgUrl: images[0].secure_url});
-          this.setState({imgWidth: images[0].width});
-          this.setState({imgHeight: images[0].height});
-          this.setState({imgPublicId: images[0].public_id});
-        }
-      }.bind(this)
-    );
-  },
-
-  showImage: function() {
-    if (this.state.imgUrl) {
-      return (
-        <img className="image-display"
-          src={this.state.imgUrl}/>
-      );
-    } else {
-      return ;
-    }
-  },
-
-  mapClickHandle: function(event) {
-    var lat = event.latLng.lat();
-    var lng = event.latLng.lng();
-    this.setState({imgLat: lat, imgLng: lng});
   },
 
   getLat: function() {
@@ -113,6 +94,34 @@ var UploadForm = React.createClass({
     }
   },
 
+  uploadToCloud: function(event) {
+    event.preventDefault();
+    // currently, it only allows one image upload at a time
+    cloudinary.openUploadWidget(window.cloudinary_options,
+      function(errors, images){
+        if (!errors) {
+          this.setState({imgUrl: images[0].secure_url});
+          this.setState({imgWidth: images[0].width});
+          this.setState({imgHeight: images[0].height});
+          this.setState({imgPublicId: images[0].public_id});
+        }
+      }.bind(this)
+    );
+  },
+
+  mapClickHandle: function(event) {
+    if (this.marker) {
+      this.marker.setMap(null);
+    }
+    var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
+    this.setState({imgLat: lat, imgLng: lng});
+    this.marker = new google.maps.Marker({
+      position: event.latLng
+    });
+    this.marker.setMap(this.map);
+  },
+
   submitHandle: function(event) {
     event.preventDefault();
     var photo = {
@@ -127,41 +136,34 @@ var UploadForm = React.createClass({
       public_id: this.state.imgPublicId
     };
     PhotoActions.postPhoto({photo: photo});
-    HashHistory.push({pathname: "/"});
-  },
-
-  redirectRoot: function(event) {
-    event.preventDefault();
-    HashHistory.push({pathname: "/"});
-  },
-
-  navigation: function() {
-    return (
-      <nav className="home-nav">
-        <div className="home-nav-left-box">
-          <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
-            height="40px" className="home-logo" onClick={this.redirectRoot}/>
-        </div>
-        <div className="home-nav-right-box">
-        </div>
-      </nav>
-    );
   },
 
   errors: function() {
-    return PhotoStore.errors();
+    if (!this.state.submitErrors) {
+      return;
+    }
+    return (
+      <div className="submit-errors">
+        <ul>
+          {
+            this.state.submitErrors.errors.map(function(error, idx) {
+              return (<li key={idx}>{error}</li>);
+            })
+          }
+        </ul>
+      </div>
+    );
   },
-
 
   render: function() {
     return (
       <div>
-        {this.navigation()}
         <form onSubmit={this.submitHandle}>
           <article className="upload-form">
             <section className="input-column">
 
               <div className="geo-tag-map" ref="geoTagMap"></div>
+
               <div className="geo-info">
                 <img src="http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/256/map-marker.png"
                   height="30px"/>
@@ -173,44 +175,36 @@ var UploadForm = React.createClass({
                 </div>
               </div>
 
-              <div className="upload-input-group">
-                <input type="text" onChange={this.setTitle}/>
+              <div className="group">
+                <input id="title" type="text" onChange={this.setTitle}/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
-                <label>Title</label>
+                <label htmlFor="title">Title</label>
               </div>
 
-              <div className="upload-input-group">
+              <div className="group">
                 <input type="text" onChange={this.setDescription}/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>Description</label>
               </div>
 
-              <div className="upload-input-group">
+              <div className="cloudinary-upload-group">
                 <img src="https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png"
                   height="35"
                   onClick={this.uploadToCloud}
                   id="cloud-icon"/>
+                <a className="cloudinary-link" href={this.state.url}></a>
               </div>
 
               <div className="submission-container">
                 <div className="submission">
                   <input type="Submit" className="upload-submit" value="SUBMIT"/>
                 </div>
-                <div className="submission-cancel">
-                  <div onClick={this.redirectRoot}>Cancel</div>
-                </div>
-              </div>
-            </section>
-
-            <section className="image-display-column">
-              <div className="image-frame">
-                {this.showImage()}
               </div>
             </section>
           </article>
-          <ul>{this.errors()}</ul>
+          {this.errors()}
         </form>
       </div>
     );

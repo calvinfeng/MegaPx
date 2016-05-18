@@ -34399,12 +34399,19 @@
 
 	var React = __webpack_require__(1);
 	var HashHistory = __webpack_require__(186).hashHistory;
+	var Modal = __webpack_require__(480);
 	
 	var UserActions = __webpack_require__(268);
 	var PhotoActions = __webpack_require__(272);
 	
 	var DiscoverIndex = __webpack_require__(276);
 	var UserPhotoIndex = __webpack_require__(458);
+	
+	var UploadForm = __webpack_require__(479);
+	
+	var modalStyle = {
+	  width: '50%'
+	};
 	
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
@@ -34418,20 +34425,13 @@
 	    this.toggleDiscover();
 	  },
 	
-	  // toggleMap: function() {
-	  //   if(this.state.selectedTab === "discover") {
-	  //     var $map = $('.discover-map-container');
-	  //     if ($map.css('visibility') === 'visible') {
-	  //       $('#map-icon').removeClass("map-toggled");
-	  //       $map.css('visibility', 'hidden');
-	  //     } else {
-	  //       $('#map-icon').addClass("map-toggled");
-	  //       $map.css('visibility', 'visible');
-	  //     }
-	  //   } else {
-	  //     //This button is disabled
-	  //   }
-	  // },
+	  showModal: function () {
+	    this.refs.modal.show();
+	  },
+	  hideModal: function () {
+	    this.refs.modal.hide();
+	  },
+	
 	  toggleMap: function () {
 	    if (this.state.selectedTab === "discover") {
 	      var $mapContainer = $(".discover-map-container");
@@ -34522,8 +34522,13 @@
 	          { className: 'home-nav-right-box' },
 	          React.createElement(
 	            'div',
-	            { onClick: this.linkToUpload, className: 'link' },
+	            { onClick: this.showModal, className: 'link' },
 	            'Upload'
+	          ),
+	          React.createElement(
+	            Modal,
+	            { ref: 'modal', modalStyle: modalStyle },
+	            React.createElement(UploadForm, null)
 	          ),
 	          React.createElement(
 	            'div',
@@ -56995,7 +57000,7 @@
 /* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -59601,14 +59606,6 @@
 	    };
 	  },
 	
-	  setTitle: function (event) {
-	    this.setState({ imgTitle: event.target.value });
-	  },
-	
-	  setDescription: function (event) {
-	    this.setState({ imgDescription: event.target.value });
-	  },
-	
 	  componentWillMount: function () {
 	    if (!UserStore.currentUser()) {
 	      HashHistory.push({ pathname: "/" });
@@ -59627,6 +59624,27 @@
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
 	    this.clickListener = this.map.addListener('click', this.mapClickHandle);
 	    navigator.geolocation.getCurrentPosition(this.setCurrentLocation);
+	    this.storeListener = PhotoStore.addListener(this.__onChange);
+	  },
+	
+	  __onChange: function () {
+	    this.setState({
+	      submitErrors: PhotoStore.errors()
+	    });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.clickListener.remove();
+	    this.storeListener.remove();
+	    _isMounted = false;
+	  },
+	
+	  setTitle: function (event) {
+	    this.setState({ imgTitle: event.target.value });
+	  },
+	
+	  setDescription: function (event) {
+	    this.setState({ imgDescription: event.target.value });
 	  },
 	
 	  setCurrentLocation: function (position) {
@@ -59635,40 +59653,12 @@
 	    // this is to prevent calling setState on unmounted component
 	    if (_isMounted) {
 	      this.map.panTo({ lat: currentLat, lng: currentLng });
+	      this.marker = new google.maps.Marker({
+	        position: { lat: currentLat, lng: currentLng }
+	      });
+	      this.marker.setMap(this.map);
+	      this.setState({ imgLat: currentLat, imgLng: currentLng });
 	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.clickListener.remove();
-	    _isMounted = false;
-	  },
-	
-	  uploadToCloud: function (event) {
-	    event.preventDefault();
-	    // currently, it only allows one image upload at a time
-	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
-	      if (!errors) {
-	        this.setState({ imgUrl: images[0].secure_url });
-	        this.setState({ imgWidth: images[0].width });
-	        this.setState({ imgHeight: images[0].height });
-	        this.setState({ imgPublicId: images[0].public_id });
-	      }
-	    }.bind(this));
-	  },
-	
-	  showImage: function () {
-	    if (this.state.imgUrl) {
-	      return React.createElement('img', { className: 'image-display',
-	        src: this.state.imgUrl });
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  mapClickHandle: function (event) {
-	    var lat = event.latLng.lat();
-	    var lng = event.latLng.lng();
-	    this.setState({ imgLat: lat, imgLng: lng });
 	  },
 	
 	  getLat: function () {
@@ -59687,6 +59677,32 @@
 	    }
 	  },
 	
+	  uploadToCloud: function (event) {
+	    event.preventDefault();
+	    // currently, it only allows one image upload at a time
+	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
+	      if (!errors) {
+	        this.setState({ imgUrl: images[0].secure_url });
+	        this.setState({ imgWidth: images[0].width });
+	        this.setState({ imgHeight: images[0].height });
+	        this.setState({ imgPublicId: images[0].public_id });
+	      }
+	    }.bind(this));
+	  },
+	
+	  mapClickHandle: function (event) {
+	    if (this.marker) {
+	      this.marker.setMap(null);
+	    }
+	    var lat = event.latLng.lat();
+	    var lng = event.latLng.lng();
+	    this.setState({ imgLat: lat, imgLng: lng });
+	    this.marker = new google.maps.Marker({
+	      position: event.latLng
+	    });
+	    this.marker.setMap(this.map);
+	  },
+	
 	  submitHandle: function (event) {
 	    event.preventDefault();
 	    var photo = {
@@ -59701,37 +59717,33 @@
 	      public_id: this.state.imgPublicId
 	    };
 	    PhotoActions.postPhoto({ photo: photo });
-	    HashHistory.push({ pathname: "/" });
-	  },
-	
-	  redirectRoot: function (event) {
-	    event.preventDefault();
-	    HashHistory.push({ pathname: "/" });
-	  },
-	
-	  navigation: function () {
-	    return React.createElement(
-	      'nav',
-	      { className: 'home-nav' },
-	      React.createElement(
-	        'div',
-	        { className: 'home-nav-left-box' },
-	        React.createElement('img', { src: 'https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png',
-	          height: '40px', className: 'home-logo', onClick: this.redirectRoot })
-	      ),
-	      React.createElement('div', { className: 'home-nav-right-box' })
-	    );
 	  },
 	
 	  errors: function () {
-	    return PhotoStore.errors();
+	    if (!this.state.submitErrors) {
+	      return;
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'submit-errors' },
+	      React.createElement(
+	        'ul',
+	        null,
+	        this.state.submitErrors.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      )
+	    );
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      null,
-	      this.navigation(),
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.submitHandle },
@@ -59762,19 +59774,19 @@
 	            ),
 	            React.createElement(
 	              'div',
-	              { className: 'upload-input-group' },
-	              React.createElement('input', { type: 'text', onChange: this.setTitle }),
+	              { className: 'group' },
+	              React.createElement('input', { id: 'title', type: 'text', onChange: this.setTitle }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
 	              React.createElement(
 	                'label',
-	                null,
+	                { htmlFor: 'title' },
 	                'Title'
 	              )
 	            ),
 	            React.createElement(
 	              'div',
-	              { className: 'upload-input-group' },
+	              { className: 'group' },
 	              React.createElement('input', { type: 'text', onChange: this.setDescription }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
@@ -59786,11 +59798,12 @@
 	            ),
 	            React.createElement(
 	              'div',
-	              { className: 'upload-input-group' },
+	              { className: 'cloudinary-upload-group' },
 	              React.createElement('img', { src: 'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/256/upload.png',
 	                height: '35',
 	                onClick: this.uploadToCloud,
-	                id: 'cloud-icon' })
+	                id: 'cloud-icon' }),
+	              React.createElement('a', { className: 'cloudinary-link', href: this.state.url })
 	            ),
 	            React.createElement(
 	              'div',
@@ -59799,33 +59812,11 @@
 	                'div',
 	                { className: 'submission' },
 	                React.createElement('input', { type: 'Submit', className: 'upload-submit', value: 'SUBMIT' })
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'submission-cancel' },
-	                React.createElement(
-	                  'div',
-	                  { onClick: this.redirectRoot },
-	                  'Cancel'
-	                )
 	              )
-	            )
-	          ),
-	          React.createElement(
-	            'section',
-	            { className: 'image-display-column' },
-	            React.createElement(
-	              'div',
-	              { className: 'image-frame' },
-	              this.showImage()
 	            )
 	          )
 	        ),
-	        React.createElement(
-	          'ul',
-	          null,
-	          this.errors()
-	        )
+	        this.errors()
 	      )
 	    );
 	  }
@@ -59833,6 +59824,145 @@
 	});
 	
 	module.exports = UploadForm;
+
+/***/ },
+/* 480 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var modalFactory = __webpack_require__(287);
+	var insertKeyframesRule = __webpack_require__(292);
+	var appendVendorPrefix = __webpack_require__(289);
+	
+	var animation = {
+	    show: {
+	        animationDuration: '0.4s',
+	        animationTimingFunction: 'cubic-bezier(0.7,0,0.3,1)'
+	    },
+	
+	    hide: {
+	        animationDuration: '0.4s',
+	        animationTimingFunction: 'cubic-bezier(0.7,0,0.3,1)'
+	    },
+	
+	    showModalAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0,
+	            transform: 'translate3d(-50%, -300px, 0)'
+	        },
+	        '100%': {
+	            opacity: 1,
+	            transform: 'translate3d(-50%, -50%, 0)'
+	        }
+	    }),
+	
+	    hideModalAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 1,
+	            transform: 'translate3d(-50%, -50%, 0)'
+	        },
+	        '100%': {
+	            opacity: 0,
+	            transform: 'translate3d(-50%, 100px, 0)'
+	        }
+	    }),
+	
+	    showBackdropAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0
+	        },
+	        '100%': {
+	            opacity: 0.9
+	        }
+	    }),
+	
+	    hideBackdropAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0.9
+	        },
+	        '100%': {
+	            opacity: 0
+	        }
+	    }),
+	
+	    showContentAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 0,
+	            transform: 'translate3d(0, -20px, 0)'
+	        },
+	        '100%': {
+	            opacity: 1,
+	            transform: 'translate3d(0, 0, 0)'
+	        }
+	    }),
+	
+	    hideContentAnimation: insertKeyframesRule({
+	        '0%': {
+	            opacity: 1,
+	            transform: 'translate3d(0, 0, 0)'
+	        },
+	        '100%': {
+	            opacity: 0,
+	            transform: 'translate3d(0, 50px, 0)'
+	        }
+	    })
+	};
+	
+	var showAnimation = animation.show;
+	var hideAnimation = animation.hide;
+	var showModalAnimation = animation.showModalAnimation;
+	var hideModalAnimation = animation.hideModalAnimation;
+	var showBackdropAnimation = animation.showBackdropAnimation;
+	var hideBackdropAnimation = animation.hideBackdropAnimation;
+	var showContentAnimation = animation.showContentAnimation;
+	var hideContentAnimation = animation.hideContentAnimation;
+	
+	module.exports = modalFactory({
+	    getRef: function(willHidden) {
+	        return 'modal';
+	    },
+	    getModalStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            position: "fixed",
+	            width: "500px",
+	            transform: "translate3d(-50%, -50%, 0)",
+	            top: "50%",
+	            left: "50%",
+	            backgroundColor: "white",
+	            zIndex: 1050,
+	            animationDuration: (willHidden ? hideAnimation : showAnimation).animationDuration,
+	            animationFillMode: 'forwards',
+	            animationName: willHidden ? hideModalAnimation : showModalAnimation,
+	            animationTimingFunction: (willHidden ? hideAnimation : showAnimation).animationTimingFunction
+	        })
+	    },
+	    getBackdropStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            position: "fixed",
+	            top: 0,
+	            right: 0,
+	            bottom: 0,
+	            left: 0,
+	            zIndex: 1040,
+	            backgroundColor: "#373A47",
+	            animationDuration: (willHidden ? hideAnimation : showAnimation).animationDuration,
+	            animationFillMode: 'forwards',
+	            animationName: willHidden ? hideBackdropAnimation : showBackdropAnimation,
+	            animationTimingFunction: (willHidden ? hideAnimation : showAnimation).animationTimingFunction
+	        });
+	    },
+	    getContentStyle: function(willHidden) {
+	        return appendVendorPrefix({
+	            margin: 0,
+	            opacity: 0,
+	            animationDuration: (willHidden ? hideAnimation : showAnimation).animationDuration,
+	            animationFillMode: 'forwards',
+	            animationDelay: '0.25s',
+	            animationName: showContentAnimation,
+	            animationTimingFunction: (willHidden ? hideAnimation : showAnimation).animationTimingFunction
+	        })
+	    }
+	});
+
 
 /***/ }
 /******/ ]);

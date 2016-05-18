@@ -1,11 +1,18 @@
 var React = require('react');
 var HashHistory = require('react-router').hashHistory;
+var Modal = require('boron/DropModal');
 
 var UserActions = require('../../actions/user_actions');
 var PhotoActions = require('../../actions/photo_actions');
 
 var DiscoverIndex = require('./discover_index');
 var UserPhotoIndex = require('./user_photo_index');
+
+var UploadForm = require('../upload-page/upload_form');
+
+var modalStyle = {
+    width: '50%'
+};
 
 var HomePage = React.createClass({
 
@@ -17,20 +24,13 @@ var HomePage = React.createClass({
     this.toggleDiscover();
   },
 
-  // toggleMap: function() {
-  //   if(this.state.selectedTab === "discover") {
-  //     var $map = $('.discover-map-container');
-  //     if ($map.css('visibility') === 'visible') {
-  //       $('#map-icon').removeClass("map-toggled");
-  //       $map.css('visibility', 'hidden');
-  //     } else {
-  //       $('#map-icon').addClass("map-toggled");
-  //       $map.css('visibility', 'visible');
-  //     }
-  //   } else {
-  //     //This button is disabled
-  //   }
-  // },
+  showModal: function(){
+      this.refs.modal.show();
+  },
+  hideModal: function(){
+      this.refs.modal.hide();
+  },
+
   toggleMap: function() {
     if(this.state.selectedTab === "discover") {
       var $mapContainer = $(".discover-map-container");
@@ -110,7 +110,10 @@ var HomePage = React.createClass({
             <img src={this.logoURL()} height="40px" className="home-logo"/>
           </div>
           <div className="home-nav-right-box">
-            <div onClick={this.linkToUpload} className="link">Upload</div>
+            <div onClick={this.showModal} className="link">Upload</div>
+            <Modal ref="modal" modalStyle={modalStyle}>
+              <UploadForm/>
+            </Modal>
             <div onClick={this.handleLogout} className="link">Log out</div>
             <div className="current-user">
               <img src={this.scaledAvatarUrl()} height="50px" className="avatar"/>

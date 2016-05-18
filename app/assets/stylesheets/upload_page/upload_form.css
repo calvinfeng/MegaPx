@@ -5,11 +5,11 @@
 }
 
 .input-column {
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding:30px 30px 30px 30px;
+  align-items: center;
 }
 
 .geo-tag-map {
@@ -19,39 +19,14 @@
 
 .geo-info {
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.submission-container {
-  width: 48%;
-  bottom: 30px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 50px;
-}
-
-.submission {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  cursor:pointer;
-}
-
-.submission-cancel {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  cursor: pointer;
-}
-
 .img-lat {
-  margin-left: 20px;
+  margin-left: 30px;
   width: 35%;
   padding-top: 5px;
 }
@@ -62,40 +37,64 @@
   padding-top: 5px;
 }
 
-.image-display-column {
-  width: 50%;
+.submission-container {
+  margin-bottom: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  /*border: 2px solid red;*/
-  padding: 30px 30px 30px 30px;
+  justify-content: center;
 }
 
-.image-display {
-  max-height: 650px;
-  max-width: 100%;
-  -webkit-box-shadow: 0px -10px 20px 0px rgba(0,0,0,0.7);
-  -moz-box-shadow: 0px -10px 20px 0px rgba(0,0,0,0.7);
-  box-shadow: 0px 0px -10px 20px rgba(0,0,0,0.7);
+.submission {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+  margin-right: 20px;
+  cursor:pointer;
+}
+
+.submission-cancel {
+  margin-top: 10px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  cursor: pointer;
 }
 
 #cloud-icon {
   cursor: pointer;
 }
 
+.cloudinary-upload-group {
+  width: 500px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cloudinary-link {
+
+}
+
+.submit-errors {
+  padding: 20px 20px 20px 20px;
+}
+
 /* Materialized input form =========================================== */
-.upload-input-group {
-  top: 20px;
+.group {
+  margin-top: 10px;
+  margin-bottom: 20px;
   position:relative;
-  margin-bottom:20px;
 }
 
 input {
   font-size:18px;
-  padding:10px 10px 10px 5px;
+  padding: 10px 10px 10px 10px;
   display:block;
-  width: 100%;
-  border:none;
+  width: 500px;
+  border: none;
+  border-bottom:1px solid #757575;
 }
 
 input:focus {
@@ -105,7 +104,7 @@ input:focus {
 /* LABEL ======================================= */
 label 				 {
   color:#999;
-  font-size:16px;
+  font-size:18px;
   font-weight:normal;
   position:absolute;
   pointer-events:none;
@@ -117,35 +116,33 @@ label 				 {
 }
 
 /* active state */
-input:focus ~ label, input:valid ~ label 		{
-  top:-20px;
-  font-size:14px;
-  color:#000;
+input:focus ~ label {
+  top: -20px;
+  font-size: 14px;
+  color:#5264AE;
 }
 
-/* BOTTOM BARS ====================================================== */
+/* BOTTOM BARS ================================= */
 .bar 	{
   position:relative;
   display:block;
-  width: 100%;
+  width: 520px;
 }
 
-.bar:before, .bar:after {
+.bar:before, .bar:after 	{
   content:'';
-  height:2px;
-  width:0;
-  bottom:1px;
-  position:absolute;
-  background:#000;
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #5264AE;
   transition:0.2s ease all;
   -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
-
 .bar:before {
   left:50%;
 }
-
 .bar:after {
   right:50%;
 }
@@ -159,7 +156,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
 .highlight {
   position:absolute;
   height:60%;
-  width:50%;
+  width: 500px;
   top:25%;
   left:0;
   pointer-events:none;
@@ -173,23 +170,23 @@ input:focus ~ .highlight {
   animation:inputHighlighter 0.3s ease;
 }
 
-/* ANIMATIONS =================================== */
+/* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
-  from { background:#5264AE; }
+	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
 @-moz-keyframes inputHighlighter {
-  from { background:#5264AE; }
+	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
 @keyframes inputHighlighter {
-  from { background:#5264AE; }
+	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
 
 /*Submit button=======================================================*/
 .upload-submit{
-  width: 100%;
+  width: 50%;
   background:#1AAB8A;
   color:#fff;
   border:none;
