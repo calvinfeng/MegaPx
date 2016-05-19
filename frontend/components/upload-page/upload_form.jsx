@@ -155,6 +155,28 @@ var UploadForm = React.createClass({
     );
   },
 
+  imageLink: function() {
+    if (this.state.imgUrl) {
+      var titleText;
+      if (this.state.imgTitle) {
+        titleText = this.state.imgTitle;
+      } else {
+        titleText = "Untilted";
+      }
+      return (
+        <a href={this.state.imgUrl} className="cloudinary-link">
+          {titleText}
+        </a>
+      );
+    } else {
+      return (
+        <div className="cloudinary-link">
+          Click the button on the left to upload photo
+        </div>
+      );
+    }
+  },
+
   render: function() {
     return (
       <div>
@@ -176,14 +198,14 @@ var UploadForm = React.createClass({
               </div>
 
               <div className="group">
-                <input id="title" type="text" onChange={this.setTitle}/>
+                <input id="title" type="text" onChange={this.setTitle} required/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label htmlFor="title">Title</label>
               </div>
 
               <div className="group">
-                <input type="text" onChange={this.setDescription}/>
+                <input type="text" onChange={this.setDescription} required/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>Description</label>
@@ -194,7 +216,7 @@ var UploadForm = React.createClass({
                   height="35"
                   onClick={this.uploadToCloud}
                   id="cloud-icon"/>
-                <a className="cloudinary-link" href={this.state.url}></a>
+                {this.imageLink()}
               </div>
 
               <div className="submission-container">

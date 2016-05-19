@@ -57000,7 +57000,7 @@
 /* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -59740,6 +59740,28 @@
 	    );
 	  },
 	
+	  imageLink: function () {
+	    if (this.state.imgUrl) {
+	      var titleText;
+	      if (this.state.imgTitle) {
+	        titleText = this.state.imgTitle;
+	      } else {
+	        titleText = "Untilted";
+	      }
+	      return React.createElement(
+	        'a',
+	        { href: this.state.imgUrl, className: 'cloudinary-link' },
+	        titleText
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'cloudinary-link' },
+	        'Click the button on the left to upload photo'
+	      );
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -59775,7 +59797,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'group' },
-	              React.createElement('input', { id: 'title', type: 'text', onChange: this.setTitle }),
+	              React.createElement('input', { id: 'title', type: 'text', onChange: this.setTitle, required: true }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
 	              React.createElement(
@@ -59787,7 +59809,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'group' },
-	              React.createElement('input', { type: 'text', onChange: this.setDescription }),
+	              React.createElement('input', { type: 'text', onChange: this.setDescription, required: true }),
 	              React.createElement('span', { className: 'highlight' }),
 	              React.createElement('span', { className: 'bar' }),
 	              React.createElement(
@@ -59803,7 +59825,7 @@
 	                height: '35',
 	                onClick: this.uploadToCloud,
 	                id: 'cloud-icon' }),
-	              React.createElement('a', { className: 'cloudinary-link', href: this.state.url })
+	              this.imageLink()
 	            ),
 	            React.createElement(
 	              'div',

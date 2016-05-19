@@ -70,11 +70,16 @@
 .cloudinary-upload-group {
   width: 500px;
   display: flex;
+  flex-direction: row;
   justify-content: flex-start;
 }
 
 .cloudinary-link {
-
+  color: black;
+  display: inline-block;
+  margin-left: 20px;
+  margin-top: 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 .submit-errors {
@@ -116,7 +121,13 @@ label 				 {
 }
 
 /* active state */
-input:focus ~ label {
+input:focus ~ label{
+  top: -20px;
+  font-size: 14px;
+  color:#5264AE;
+}
+
+input:valid ~ label {
   top: -20px;
   font-size: 14px;
   color:#5264AE;
