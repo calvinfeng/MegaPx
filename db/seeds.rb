@@ -5,41 +5,42 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-numOfUsers = 12
+require 'faker'
+numOfUsers = 11
 #id: 1
 User.create!(username: 'calvin', password: '123456', first_name: 'Calvin', last_name: 'Feng',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399141/Profile/admin.jpg")
 #id: 2
-User.create!(username: 'tomato', password: '123456', first_name: 'Tomato', last_name: 'Yi',
-avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399285/Profile/tomato.jpg")
-#id: 3
+# User.create!(username: 'tomato', password: '123456', first_name: 'Tomato', last_name: 'Yi',
+# avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399285/Profile/tomato.jpg")
+#id: 2
 User.create!(username: 'trey', password: '123456', first_name: 'Trey', last_name: 'Ratcliff',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462410132/Profile/trey.jpg")
-#id: 4
+#id: 3
 User.create!(username: 'ansel', password: '123456', first_name: 'Ansel', last_name: 'Adams',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462410234/Profile/ansel.jpg")
-#id: 5
+#id: 4
 User.create!(username: 'guest', password: 'password', first_name: 'Guest', last_name: 'Demo',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462400515/Profile/avatar.png")
-#id: 6
+#id: 5
 User.create!(username: 'maxwell', password: '123456', first_name: 'James', last_name: 'Maxwell',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556309/Profile/maxwell.jpg")
-#id: 7
+#id: 6
 User.create!(username: 'turing', password: '123456', first_name: 'Alan', last_name: 'Turing',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555648/Profile/turing.jpg")
-#id: 8
+#id: 7
 User.create!(username: 'schrodinger', password: '123456', first_name: 'Erwin', last_name: 'Schrodinger',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555482/Profile/schrodinger.jpg")
-#id: 9
+#id: 8
 User.create!(username: 'bohr', password: '123456', first_name: 'Niels', last_name: 'Bohr',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555366/Profile/bohr.jpg")
-#id: 10
+#id: 9
 User.create!(username: 'heisenberg', password: '123456', first_name: 'Werner', last_name: 'Heisenberg',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555321/Profile/heisenberg.jpg")
-#id: 11
+#id: 10
 User.create!(username: 'ritchie', password: '123456', first_name: 'Dennis', last_name: 'Ritchie',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556312/Profile/ritchie.jpg")
-#id: 12
+#id: 11
 User.create!(username: 'loki', password: '123456', first_name: 'Loki', last_name: 'Laufeyson',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462566623/Profile/loki.jpg")
 
@@ -94,7 +95,7 @@ Photo.create!(user_id: 1, url: "https://res.cloudinary.com/megapx/image/upload/v
 lat: 37.789090, lng: -122.418079, width: 2000, height: 1350)
 Photo.create!(user_id: 4, title: "Market Stream", url:"https://res.cloudinary.com/megapx/image/upload/v1462145897/Seeds/24.jpg",
 lat: 37.789090, lng: -122.411556, width: 2000, height: 1328)
-Photo.create!(user_id: 4, url:"https://res.cloudinary.com/megapx/image/upload/v1462145884/Seeds/25.jpg",
+Photo.create!(user_id: 3, url:"https://res.cloudinary.com/megapx/image/upload/v1462145884/Seeds/25.jpg",
 lat: 37.797445, lng: -122.401116, width: 2000, height: 1250)
 Photo.create!(user_id: 1, url:"https://res.cloudinary.com/megapx/image/upload/v1462145899/Seeds/26.jpg",
 lat: 37.793265, lng: -122.403413, width: 2000, height: 1335)
@@ -132,11 +133,11 @@ Photo.create!(user_id: 1, title: "Yosemite 11", url: "https://res.cloudinary.com
 lat: 37.739466, lng: -119.411427, width: 2000, height: 1335)
 Photo.create!(user_id: 3, title: "Yosemite 12", url: "https://res.cloudinary.com/megapx/image/upload/v1462145986/Seeds/yosemite_12.jpg",
 lat: 37.859447, lng: -119.375849, width: 1500, height: 864)
-Photo.create!(user_id: 4, title: "Moon Over Half Dome", url: "https://res.cloudinary.com/megapx/image/upload/v1462421424/Seeds/yosemite-moon-and-the-half-dome.jpg",
+Photo.create!(user_id: 3, title: "Moon Over Half Dome", url: "https://res.cloudinary.com/megapx/image/upload/v1462421424/Seeds/yosemite-moon-and-the-half-dome.jpg",
 lat: 37.746936, lng: -119.533242, width: 864, height: 1200, description: "Awesome work I did before there was any digital camera")
-Photo.create!(user_id: 4, title: "Clearing Winterstorm", url: "https://res.cloudinary.com/megapx/image/upload/v1462421425/Seeds/yosemite-valley-clearing-winterstorm.jpg",
+Photo.create!(user_id: 3, title: "Clearing Winterstorm", url: "https://res.cloudinary.com/megapx/image/upload/v1462421425/Seeds/yosemite-valley-clearing-winterstorm.jpg",
 lat: 37.715353, lng: -119.676640, width: 1600, height: 1306, description: "Epic, isn't it?")
-Photo.create!(user_id: 4, title: "Winter Sunrise", url: "https://res.cloudinary.com/megapx/image/upload/v1462421428/Seeds/yosemite-winter-sunrise.jpg",
+Photo.create!(user_id: 3, title: "Winter Sunrise", url: "https://res.cloudinary.com/megapx/image/upload/v1462421428/Seeds/yosemite-winter-sunrise.jpg",
 lat: 37.737651, lng: -119.638280, width: 2337, height: 1821, description: "I think this was taken at El Capitan right? I am too old, I can't remember")
 
 
@@ -215,3 +216,10 @@ Photo.create!(user_id: rand(numOfUsers).to_i + 1, url: "https://res.cloudinary.c
 width: 2000, height: 1333, lat: 51.503317, lng: -0.123634)
 Photo.create!(user_id: rand(numOfUsers).to_i + 1, url: "https://res.cloudinary.com/megapx/image/upload/v1462421584/Seeds/uk08.jpg",
 width: 2000, height: 1341, lat: 51.504465, lng: -0.088639)
+
+Photo.all.each do |photo|
+  num = rand(10).to_i
+  num.times do
+    Comment.create!(photo_id: photo.id, user_id: rand(numOfUsers).to_i + 1, content: Faker::Lorem.sentence)
+  end
+end

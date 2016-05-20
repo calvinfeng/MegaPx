@@ -30,6 +30,9 @@ gem 'figaro'
 # Cloudinary
 gem 'cloudinary'
 
+# Faker
+gem 'faker'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
