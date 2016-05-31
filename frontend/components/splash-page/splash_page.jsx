@@ -62,8 +62,10 @@ var SplashPage = React.createClass({
 
         <div className="welcome">
           <div className="center-panel">
-            <h2>Home to everyone's megapixel photos</h2>
-            <h5>Time has passed, tech has changed, you are no longer limited to 500 pixels</h5>
+            <div className="center-text-box">
+              <h2>Home to everyone's megapixel photos</h2>
+              <h5>Time has passed, tech has changed, you are no longer limited to 500 pixels</h5>
+            </div>
             <LoginModal buttonClass="get-started-button"
               buttonText="Get Started"
               form="login"/>

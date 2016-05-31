@@ -56834,14 +56834,18 @@
 	          'div',
 	          { className: 'center-panel' },
 	          React.createElement(
-	            'h2',
-	            null,
-	            'Home to everyone\'s megapixel photos'
-	          ),
-	          React.createElement(
-	            'h5',
-	            null,
-	            'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	            'div',
+	            { className: 'center-text-box' },
+	            React.createElement(
+	              'h2',
+	              null,
+	              'Home to everyone\'s megapixel photos'
+	            ),
+	            React.createElement(
+	              'h5',
+	              null,
+	              'Time has passed, tech has changed, you are no longer limited to 500 pixels'
+	            )
 	          ),
 	          React.createElement(LoginModal, { buttonClass: 'get-started-button',
 	            buttonText: 'Get Started',
@@ -57411,7 +57415,7 @@
 /* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license

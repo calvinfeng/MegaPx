@@ -23,8 +23,9 @@
 	padding: 20px 30px;
   color: white;
   box-shadow: white 0 0px 0px 2px inset;
-  margin: 200px auto;
   z-index: 1;
+  font-weight: 400;
+  margin-top: 5em;
 }
 
 .get-started-button:hover {
