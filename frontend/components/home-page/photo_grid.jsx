@@ -51,7 +51,6 @@ var PhotoGrid = React.createClass({
   },
 
   __onChange: function() {
-    console.log("PhotoGrid component received photos");
     this.setState({
       photos: PhotoStore.inventory(),
       loaded: true,
@@ -154,7 +153,6 @@ var PhotoGrid = React.createClass({
   },
 
   render: function() {
-    console.log("PhotoGrid component is rendering");
     return (
       <Loader
         className="spinner"

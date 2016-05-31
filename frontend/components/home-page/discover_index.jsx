@@ -25,7 +25,7 @@ var DiscoverIndex = React.createClass({
         return (
           <div className="location-item"
             title="This is a popular location, click to go"
-            value={key} onClick={self.clickHandler}>
+            key={key} value={key} onClick={self.clickHandler}>
             {LocationConstants[key].name}
           </div>
         );
@@ -34,7 +34,6 @@ var DiscoverIndex = React.createClass({
   },
 
   render: function() {
-    console.log("DiscoverIndex component is rendering");
     return (
       <div className="home-content-container">
         <DiscoverMap suggestedLocation={this.state.selectedSuggestion}/>

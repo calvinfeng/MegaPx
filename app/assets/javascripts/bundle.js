@@ -60,7 +60,6 @@
 	  displayName: 'App',
 	
 	  render: function () {
-	    console.log("App Page is rendering");
 	    return React.createElement(
 	      'div',
 	      null,
@@ -27432,7 +27431,6 @@
 	  },
 	
 	  render: function () {
-	    console.log("Index component is rendering");
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
@@ -34403,6 +34401,7 @@
 	
 	var UserActions = __webpack_require__(268);
 	var PhotoActions = __webpack_require__(281);
+	var PhotoStore = __webpack_require__(282);
 	
 	var DiscoverIndex = __webpack_require__(285);
 	var UserPhotoIndex = __webpack_require__(459);
@@ -34421,8 +34420,19 @@
 	    return { selectedTab: "discover" };
 	  },
 	
+	  __onChange: function () {
+	    if (PhotoStore.errors()) {
+	      //Bad upload, do nothing
+	    } else {
+	        //Good upload, turn off modal
+	        this.hideModal();
+	      }
+	  },
+	
 	  componentDidMount: function () {
+	    $('#map-icon').addClass("map-toggled");
 	    this.toggleDiscover();
+	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	  },
 	
 	  showModal: function () {
@@ -34438,12 +34448,10 @@
 	      var $map = $(".discover-map");
 	
 	      if ($mapContainer.css("display") === "block") {
-	
 	        $('#map-icon').removeClass("map-toggled");
 	        $mapContainer.css('display', "none");
 	        $map.css('visibility', 'hidden');
 	      } else {
-	
 	        $('#map-icon').addClass("map-toggled");
 	        $mapContainer.css('display', "block");
 	        $map.css('visibility', 'visible');
@@ -34466,6 +34474,7 @@
 	    this.setState({ selectedTab: "discover" });
 	    $("#discover-tab").addClass("tab-highlighted");
 	    $("#my-photos-tab").removeClass("tab-highlighted");
+	    $('#map-icon').addClass("map-toggled");
 	  },
 	
 	  linkToUpload: function () {
@@ -34505,7 +34514,6 @@
 	  },
 	
 	  render: function () {
-	    console.log("HomePage component is rendering");
 	    return React.createElement(
 	      'div',
 	      { id: 'home-page' },
@@ -35235,21 +35243,21 @@
 	PhotoStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "PHOTOS RECEIVED":
-	      console.log("Store has received photos from API!");
 	      PhotoStore.setPhotos(payload.photos);
-	      console.log(payload.photos);
 	      PhotoStore.__emitChange();
 	      break;
 	
 	    case "ONE PHOTO RECEIVED":
+	      PhotoStore.setErrors(null);
 	      PhotoStore.setIndividualPhoto(payload.photo);
 	      PhotoStore.__emitChange();
 	      break;
 	
-	    case "PHOTO DELETED":
-	      PhotoStore.setPhotos(payload.photos);
-	      PhotoStore.__emitChange();
-	      break;
+	    // case "PHOTO DELETED":
+	    //   PhotoStore.setErrors(null);
+	    //   PhotoStore.setPhotos(payload.photos);
+	    //   PhotoStore.__emitChange();
+	    // break;
 	
 	    case "PHOTO ERROR":
 	      PhotoStore.setErrors(payload.errors);
@@ -35259,9 +35267,9 @@
 	};
 	
 	// Setters
-	
 	PhotoStore.setIndividualPhoto = function (photo) {
 	  _photo = photo;
+	  _photos.push(photo);
 	};
 	
 	PhotoStore.setPhotos = function (photos) {
@@ -35273,7 +35281,6 @@
 	};
 	
 	// Getters
-	
 	PhotoStore.errors = function () {
 	  if (_errors) {
 	    return JSON.parse(_errors.responseText);
@@ -35364,7 +35371,8 @@
 	module.exports = {
 	  RECEIVE_ONE: "ONE PHOTO RECEIVED",
 	  RECEIVE: "PHOTOS RECEIVED",
-	  ERROR: "PHOTO ERROR"
+	  ERROR: "PHOTO ERROR",
+	  DELETE: "PHOTO DELETED"
 	};
 
 /***/ },
@@ -35400,14 +35408,13 @@
 	        'div',
 	        { className: 'location-item',
 	          title: 'This is a popular location, click to go',
-	          value: key, onClick: self.clickHandler },
+	          key: key, value: key, onClick: self.clickHandler },
 	        LocationConstants[key].name
 	      );
 	    });
 	  },
 	
 	  render: function () {
-	    console.log("DiscoverIndex component is rendering");
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
@@ -35447,7 +35454,6 @@
 	  },
 	
 	  __onChange: function () {
-	    console.log("Map component received photos: resetting markers");
 	    MarkerStore.resetMarkers(this.map);
 	  },
 	
@@ -35699,7 +35705,6 @@
 	  },
 	
 	  __onChange: function () {
-	    console.log("PhotoGrid component received photos");
 	    this.setState({
 	      photos: PhotoStore.inventory(),
 	      loaded: true,
@@ -35801,7 +35806,6 @@
 	  },
 	
 	  render: function () {
-	    console.log("PhotoGrid component is rendering");
 	    return React.createElement(
 	      Loader,
 	      {
@@ -36859,25 +36863,21 @@
 	CommentStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "COMMENTS RECEIVED":
-	      console.log("Comments loaded");
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
 	    case "COMMENT DELETED":
-	      console.log("Comment deleted");
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
 	    case "COMMENT CREATED":
-	      console.log("Comment created");
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
 	    case "COMMENT ERROR":
-	      console.log("Error in CommentStore");
 	      CommentStore.setErrors(payload.errors);
 	      CommentStore.__emitChange();
 	      break;

@@ -1,19 +1,19 @@
 ---
 development:
-  cloud_name: megapx
-  api_key: '256335991452495'
-  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  cloud_name: upload
+  api_key: '196893495867949'
+  api_secret: 3dQDLGl-LNusAxGter9n6rHX1DM
   enhance_image_tag: true
   static_image_support: false
 production:
-  cloud_name: megapx
-  api_key: '256335991452495'
-  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  cloud_name: upload
+  api_key: '196893495867949'
+  api_secret: 3dQDLGl-LNusAxGter9n6rHX1DM
   enhance_image_tag: true
   static_image_support: true
 test:
-  cloud_name: megapx
-  api_key: '256335991452495'
-  api_secret: FUkEN6QcffDj17J5LjO2FlLyQiQ
+  cloud_name: upload
+  api_key: '196893495867949'
+  api_secret: 3dQDLGl-LNusAxGter9n6rHX1DM
   enhance_image_tag: true
   static_image_support: false

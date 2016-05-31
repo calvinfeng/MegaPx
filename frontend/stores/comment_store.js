@@ -7,25 +7,21 @@ var _comments, _errors;
 CommentStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "COMMENTS RECEIVED":
-      console.log("Comments loaded");
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
     case "COMMENT DELETED":
-      console.log("Comment deleted");
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
     case "COMMENT CREATED":
-      console.log("Comment created");
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
     case "COMMENT ERROR":
-      console.log("Error in CommentStore");
       CommentStore.setErrors(payload.errors);
       CommentStore.__emitChange();
     break;

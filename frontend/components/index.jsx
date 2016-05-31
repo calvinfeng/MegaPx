@@ -6,7 +6,7 @@ var HomePage = require('./home-page/home_page');
 var SplashPage = require('./splash-page/splash_page');
 
 var Index = React.createClass({
-  
+
   getInitialState: function() {
     return {currentUser: null};
   },
@@ -25,7 +25,6 @@ var Index = React.createClass({
   },
 
   render: function() {
-    console.log("Index component is rendering");
     if (this.state.currentUser) {
       return (
         <div>

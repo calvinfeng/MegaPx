@@ -12,7 +12,6 @@ var UploadForm = require('./components/upload-page/upload_form');
 
 var App = React.createClass({
   render: function() {
-    console.log("App Page is rendering");
     return (
       <div>
         {this.props.children}

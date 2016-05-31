@@ -5,14 +5,18 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+# User.create!(username: 'turing', password: '123456', first_name: 'Alan', last_name: 'Turing',
+# avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555648/Profile/turing.jpg")
+# User.create!(username: 'tomato', password: '123456', first_name: 'Tomato', last_name: 'Yi',
+# avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399285/Profile/tomato.jpg")
+
 require 'faker'
-numOfUsers = 11
+numOfUsers = 10
 #id: 1
 User.create!(username: 'calvin', password: '123456', first_name: 'Calvin', last_name: 'Feng',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399141/Profile/admin.jpg")
-#id: 2
-# User.create!(username: 'tomato', password: '123456', first_name: 'Tomato', last_name: 'Yi',
-# avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462399285/Profile/tomato.jpg")
 #id: 2
 User.create!(username: 'trey', password: '123456', first_name: 'Trey', last_name: 'Ratcliff',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462410132/Profile/trey.jpg")
@@ -26,21 +30,18 @@ avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462400515/Profile/
 User.create!(username: 'maxwell', password: '123456', first_name: 'James', last_name: 'Maxwell',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556309/Profile/maxwell.jpg")
 #id: 6
-User.create!(username: 'turing', password: '123456', first_name: 'Alan', last_name: 'Turing',
-avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555648/Profile/turing.jpg")
-#id: 7
 User.create!(username: 'schrodinger', password: '123456', first_name: 'Erwin', last_name: 'Schrodinger',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555482/Profile/schrodinger.jpg")
-#id: 8
+#id: 7
 User.create!(username: 'bohr', password: '123456', first_name: 'Niels', last_name: 'Bohr',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555366/Profile/bohr.jpg")
-#id: 9
+#id: 8
 User.create!(username: 'heisenberg', password: '123456', first_name: 'Werner', last_name: 'Heisenberg',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462555321/Profile/heisenberg.jpg")
-#id: 10
+#id: 9
 User.create!(username: 'ritchie', password: '123456', first_name: 'Dennis', last_name: 'Ritchie',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462556312/Profile/ritchie.jpg")
-#id: 11
+#id: 10
 User.create!(username: 'loki', password: '123456', first_name: 'Loki', last_name: 'Laufeyson',
 avatar_url: "https://res.cloudinary.com/megapx/image/upload/v1462566623/Profile/loki.jpg")
 

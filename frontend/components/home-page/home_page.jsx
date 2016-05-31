@@ -4,6 +4,7 @@ var Modal = require('boron/DropModal');
 
 var UserActions = require('../../actions/user_actions');
 var PhotoActions = require('../../actions/photo_actions');
+var PhotoStore = require('../../stores/photo_store');
 
 var DiscoverIndex = require('./discover_index');
 var UserPhotoIndex = require('./user_photo_index');
@@ -20,8 +21,19 @@ var HomePage = React.createClass({
     return {selectedTab: "discover"};
   },
 
+  __onChange: function() {
+    if (PhotoStore.errors()) {
+      //Bad upload, do nothing
+    } else {
+      //Good upload, turn off modal
+      this.hideModal();
+    }
+  },
+
   componentDidMount: function() {
+    $('#map-icon').addClass("map-toggled");
     this.toggleDiscover();
+    this.storeListener = PhotoStore.addListener(this.__onChange);
   },
 
   showModal: function(){
@@ -37,17 +49,13 @@ var HomePage = React.createClass({
       var $map = $(".discover-map");
 
       if ($mapContainer.css("display") === "block") {
-
         $('#map-icon').removeClass("map-toggled");
         $mapContainer.css('display', "none");
         $map.css('visibility','hidden');
-
       } else {
-
         $('#map-icon').addClass("map-toggled");
         $mapContainer.css('display', "block");
         $map.css('visibility','visible');
-
       }
     } else {
       //This button is disabled
@@ -67,6 +75,7 @@ var HomePage = React.createClass({
     this.setState({selectedTab: "discover"});
     $("#discover-tab").addClass("tab-highlighted");
     $("#my-photos-tab").removeClass("tab-highlighted");
+    $('#map-icon').addClass("map-toggled");
   },
 
   linkToUpload: function() {
@@ -102,7 +111,6 @@ var HomePage = React.createClass({
   },
 
   render: function() {
-    console.log("HomePage component is rendering");
     return (
       <div id="home-page">
         <nav className="home-nav">

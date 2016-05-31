@@ -7,21 +7,21 @@ var _errors, _photos, _photo;
 PhotoStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case "PHOTOS RECEIVED":
-      console.log("Store has received photos from API!");
       PhotoStore.setPhotos(payload.photos);
-      console.log(payload.photos);
       PhotoStore.__emitChange();
     break;
 
     case "ONE PHOTO RECEIVED":
+      PhotoStore.setErrors(null);
       PhotoStore.setIndividualPhoto(payload.photo);
       PhotoStore.__emitChange();
     break;
 
-    case "PHOTO DELETED":
-      PhotoStore.setPhotos(payload.photos);
-      PhotoStore.__emitChange();
-    break;
+    // case "PHOTO DELETED":
+    //   PhotoStore.setErrors(null);
+    //   PhotoStore.setPhotos(payload.photos);
+    //   PhotoStore.__emitChange();
+    // break;
 
     case "PHOTO ERROR":
       PhotoStore.setErrors(payload.errors);
@@ -31,9 +31,9 @@ PhotoStore.__onDispatch = function(payload) {
 };
 
 // Setters
-
 PhotoStore.setIndividualPhoto = function(photo) {
   _photo = photo;
+  _photos.push(photo);
 };
 
 PhotoStore.setPhotos = function(photos) {
@@ -45,7 +45,6 @@ PhotoStore.setErrors = function(errors) {
 };
 
 // Getters
-
 PhotoStore.errors = function() {
   if (_errors) {
     return JSON.parse(_errors.responseText);

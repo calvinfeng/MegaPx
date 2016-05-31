@@ -44,7 +44,7 @@ var PhotoActions = {
       photos: photos
     });
   },
-  
+
   // ServerActions: Error Handler ======================================
   handleError: function(response) {
     AppDispatcher.dispatch({

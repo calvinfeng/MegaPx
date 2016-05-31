@@ -15,7 +15,6 @@ var DiscoverMap = React.createClass({
   },
 
   __onChange: function() {
-    console.log("Map component received photos: resetting markers");
     MarkerStore.resetMarkers(this.map);
   },
 
