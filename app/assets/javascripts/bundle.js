@@ -27462,6 +27462,7 @@
 	var _currentUser, _errors;
 	
 	UserStore.__onDispatch = function (payload) {
+	  console.log("UserStore is listening");
 	  switch (payload.actionType) {
 	    case "LOGIN":
 	      UserStore.login(payload.user);
@@ -35241,6 +35242,7 @@
 	var _errors, _photos, _photo;
 	
 	PhotoStore.__onDispatch = function (payload) {
+	  console.log("PhotoStore is listening");
 	  switch (payload.actionType) {
 	    case "PHOTOS RECEIVED":
 	      PhotoStore.setPhotos(payload.photos);
@@ -35538,6 +35540,7 @@
 	var MarkerStore = new Store(AppDispatcher);
 	
 	MarkerStore.__onDispatch = function (payload) {
+	  console.log("MarkerStore is listening");
 	  switch (payload.actionType) {
 	    case "OPEN MODAL TRHOUGH MARKER":
 	      var photos = PhotoStore.inventory();
@@ -36861,6 +36864,7 @@
 	var _comments, _errors;
 	
 	CommentStore.__onDispatch = function (payload) {
+	  console.log("CommentStore is listening");
 	  switch (payload.actionType) {
 	    case "COMMENTS RECEIVED":
 	      CommentStore.setComments(payload.comments);
@@ -57415,7 +57419,7 @@
 /* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
