@@ -1,17 +1,37 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Modal = require('react-modal');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Modal = require('react-modal');
+const Router = require('react-router').Router;
+const Route = require('react-router').Route;
+const IndexRoute = require('react-router').IndexRoute;
+const hashHistory = require('react-router').hashHistory;
 
-var Router = require('react-router').Router;
-var Route = require('react-router').Route;
-var IndexRoute = require('react-router').IndexRoute;
-var HashHistory = require('react-router').hashHistory;
+const UserStore = require('./stores/user_store');
+const UserActions = require('./actions/user_actions');
 
-var Index = require('./components/index');
-var UploadForm = require('./components/upload-page/upload_form');
+const SplashPage = require('./components/splash_page');
+const HomePage = require('./components/home_page');
 
-var App = React.createClass({
-  render: function() {
+const MegaPx = React.createClass({
+
+  componentWillMount() {
+    UserActions.fetchCurrentUser();
+    this.storeListener = UserStore.addListener(this.__ensureLogin);
+  },
+
+  componentWillUnmount() {
+    this.storeListener.remove();
+  },
+
+  __ensureLogin() {
+    if (UserStore.currentUser()) {
+      hashHistory.push('/home');
+    } else {
+      hashHistory.replace('/');
+    }
+  },
+
+  render() {
     return (
       <div>
         {this.props.children}
@@ -20,19 +40,16 @@ var App = React.createClass({
   }
 });
 
-var routes = (
-  <Router history={HashHistory}>
-    <Route path="/" component={App}>
-    <IndexRoute component={Index}/>
-      <Route path="/upload" component={UploadForm}/>
+const routes = (
+  <Router history={hashHistory}>
+    <Route path="/" component={MegaPx}>
+      <IndexRoute component={SplashPage}/>
+      <Route path="/home" component={HomePage}/>
     </Route>
   </Router>
 );
 
 document.addEventListener("DOMContentLoaded", function() {
   Modal.setAppElement(document.body);
-  ReactDOM.render(
-    routes,
-    document.getElementById("application")
-  );
+  ReactDOM.render(routes, document.getElementById("application"));
 });

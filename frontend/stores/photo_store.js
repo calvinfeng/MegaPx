@@ -41,6 +41,7 @@ PhotoStore.setPhotos = function(photos) {
 };
 
 PhotoStore.setErrors = function(errors) {
+  _photo = null;
   _errors = errors;
 };
 

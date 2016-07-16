@@ -1,39 +1,42 @@
-var Store = require('flux/utils').Store;
-var HashHistory = require('react-router').hashHistory;
-var AppDispatcher = require('../dispatcher/dispatcher');
+const Store = require('flux/utils').Store;
+const Dispatcher = require('../dispatcher/dispatcher');
+const UserConstants = require('../constants/user_constants');
+const UserStore = new Store(Dispatcher);
 
-var UserStore = new Store(AppDispatcher);
-
-var _currentUser, _errors;
-
+let _currentUser, _errors;
 UserStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
-    case "LOGIN":
-    UserStore.login(payload.user);
-    UserStore.__emitChange();
+    case UserConstants.LOGIN:
+      UserStore.login(payload.user);
+      UserStore.__emitChange();
     break;
-    case "LOGOUT":
-    UserStore.logout(payload.user);
-    UserStore.__emitChange();
+
+    case UserConstants.LOGOUT:
+      UserStore.logout(payload.user);
+      UserStore.__emitChange();
     break;
-    case "ERROR":
-    UserStore.setErrors(payload.errors);
-    UserStore.__emitChange();
+
+    case UserConstants.ERROR:
+      UserStore.setErrors(payload.errors);
+      UserStore.__emitChange();
     break;
   }
 };
 
+// Setter methods
 UserStore.setErrors = function(errors) {
+  _currentUser = null;
   _errors = errors;
 };
 
 UserStore.login = function(user) {
+  window.user = user;
   _currentUser = user;
   _errors = null;
-  HashHistory.push({pathname: "/"});
 };
 
 UserStore.logout = function() {
+  window.user = null;
   _currentUser = null;
   _errors = null;
 };

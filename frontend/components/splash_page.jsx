@@ -1,21 +1,43 @@
-var React = require('react');
-var HashHistory = require('react-router').hashHistory;
-var LoginModal = require('./login_modal');
-var Introduction = require('./introduction');
+const React = require('react');
+const hashHistory = require('react-router').hashHistory;
+const LoginModal = require('./splash/login_modal');
+const Introduction = require('./splash/introduction');
+const UserStore = require('../stores/user_store');
 
-var SplashPage = React.createClass({
+let timeLapse = `https://res.cloudinary.com/megapx/video/upload/
+br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4`;
 
-  getInitialState:function() {
+let megaPxIcon = `https://res.cloudinary.com/megapx/image/upload/
+v1461820253/mega-px-logo.png`;
+
+let cloudIcon = `https://image.freepik.com/free-icon/
+upload-to-the-cloud-dark-interface-symbol_318-70389.png`;
+
+let geoIcon = `https://cdn1.iconfinder.com/data/icons/navigation-14/512/
+geo-point-tag-location-man-place-128.png`;
+
+let welcomeMessage = `Time has passed, tech has changed, you are no longer
+limited to 500 pixels`;
+
+const SplashPage = React.createClass({
+
+  getInitialState() {
     return {width: $(document).width(), height: $(document).height()};
   },
 
-  updateDimensions: function() {
+  componentWillMount() {
+    if (UserStore.currentUser()) {
+      hashHistory.push("/home");
+    }
+  },
+
+  updateDimensions() {
     this.setState({width: $(document).width(), height: $(document).height()});
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
-    window.onscroll = function(ev) {
+    window.onscroll = function(e) {
       if (window.pageYOffset > $(window).height()*0.9) {
         $(".nav-bar").css('background-color', 'black');
       } else {
@@ -24,30 +46,29 @@ var SplashPage = React.createClass({
     };
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   },
 
-  clickHandle: function() {
+  clickHandle() {
     $('html,body').animate({scrollTop: $(".introduction").offset().top},'slow');
   },
 
-  redirectToGithub: function() {
+  redirectToGithub() {
     window.location = "https://github.com/calvinfeng";
   },
 
-  redirectToLinkedin: function() {
+  redirectToLinkedin() {
     window.location = "https://www.linkedin.com/in/calvin-feng-a26b9b76";
   },
 
-  render: function() {
+  render() {
     return (
       <div className="splash">
 
         <div className="nav-bar">
           <div id="logo">
-            <img src="https://res.cloudinary.com/megapx/image/upload/v1461820253/mega-px-logo.png"
-              width="100px"/>
+            <img src={megaPxIcon} width="100px"/>
           </div>
           <LoginModal buttonClass="link" buttonText="Sign up" form="signup"/>
           <LoginModal buttonClass="link" buttonText="Log in" form="login"/>
@@ -55,8 +76,7 @@ var SplashPage = React.createClass({
 
         <div className="background-video">
           <video autoPlay loop>
-            <source src="https://res.cloudinary.com/megapx/video/upload/br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4"
-              type="video/mp4"/>
+            <source src={timeLapse} type="video/mp4"/>
           </video>
         </div>
 
@@ -64,7 +84,7 @@ var SplashPage = React.createClass({
           <div className="center-panel">
             <div className="center-text-box">
               <h2>Home to everyone's megapixel photos</h2>
-              <h5>Time has passed, tech has changed, you are no longer limited to 500 pixels</h5>
+              <h5>{welcomeMessage}</h5>
             </div>
             <LoginModal buttonClass="get-started-button"
               buttonText="Get Started"
@@ -74,8 +94,9 @@ var SplashPage = React.createClass({
 
         <div className="bottom-banner">
           <div className="left-box">
-            <img src="https://cdn2.iconfinder.com/data/icons/filled-icons/493/Geotag-256.png"
-              width="50" height="50"/>
+            <img src={geoIcon}
+              width="40"
+              height="40"/>
             <div className="text-box">
               <h1>Location-based Content</h1>
               <p>Discover photography around you</p>
@@ -84,9 +105,9 @@ var SplashPage = React.createClass({
             </div>
           </div>
           <div className="right-box">
-            <img src="http://www.bartosztomas.eu/upload/templates/img/logo.png"
-              width="50"
-              height="50"/>
+            <img src={cloudIcon}
+              width="40"
+              height="40"/>
             <div className="text-box">
               <h1>Photography Enthusiasts</h1>
               <p>Upload and share your megapixel images</p>
