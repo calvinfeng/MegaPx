@@ -69,7 +69,7 @@ const LoginModal = React.createClass({
   animateTyping: function(callback) {
     $(function(){
       $("#username").typed({
-        strings:["guest"],
+        strings:["calvin"],
         typeSpeed: 30,
         backDelay: 500,
         loop: false,
@@ -77,7 +77,7 @@ const LoginModal = React.createClass({
         contentType: 'text',
         callback: function() {
           $("#password").typed({
-            strings:["password"],
+            strings:["123456"],
             typeSpeed: 20,
             backDelay: 500,
             loop: false,

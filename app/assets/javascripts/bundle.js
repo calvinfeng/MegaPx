@@ -27424,10 +27424,11 @@
 	var Store = __webpack_require__(246).Store;
 	var Dispatcher = __webpack_require__(264);
 	var UserConstants = __webpack_require__(267);
-	var UserStore = new Store(Dispatcher);
 	
 	var _currentUser = void 0,
 	    _errors = void 0;
+	
+	var UserStore = new Store(Dispatcher);
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case UserConstants.LOGIN:
@@ -34267,7 +34268,8 @@
 	var UserActions = {
 	
 	  guestLogin: function guestLogin() {
-	    UserActions.login({ username: "guest", password: "password" });
+	    //UserActions.login({username: "guest", password: "password"});
+	    UserActions.login({ username: "calvin", password: "123456" });
 	  },
 	
 	  // ClientActions: API Request ========================================
@@ -34324,11 +34326,9 @@
 
 /***/ },
 /* 269 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	"use strict";
-	
-	var AppDispatcher = __webpack_require__(264);
 	
 	var UserApiUtil = {
 	  post: function post(options) {
@@ -34603,7 +34603,7 @@
 	  animateTyping: function animateTyping(_callback) {
 	    $(function () {
 	      $("#username").typed({
-	        strings: ["guest"],
+	        strings: ["calvin"],
 	        typeSpeed: 30,
 	        backDelay: 500,
 	        loop: false,
@@ -34611,7 +34611,7 @@
 	        contentType: 'text',
 	        callback: function callback() {
 	          $("#password").typed({
-	            strings: ["password"],
+	            strings: ["123456"],
 	            typeSpeed: 20,
 	            backDelay: 500,
 	            loop: false,
@@ -38391,10 +38391,9 @@
 
 	'use strict';
 	
-	var AppDispatcher = __webpack_require__(264);
+	var Dispatcher = __webpack_require__(264);
 	var PhotoStore = __webpack_require__(301);
 	var PhotoApiUtil = __webpack_require__(302);
-	
 	var PhotoConstants = __webpack_require__(303);
 	
 	var PhotoActions = {
@@ -38425,14 +38424,14 @@
 	
 	  // ServerActions: Success Handlers ===================================
 	  receiveOnePhoto: function receiveOnePhoto(photo) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: PhotoConstants.RECEIVE_ONE,
 	      photo: photo
 	    });
 	  },
 	
 	  receivePhotos: function receivePhotos(photos) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: PhotoConstants.RECEIVE,
 	      photos: photos
 	    });
@@ -38440,12 +38439,11 @@
 	
 	  // ServerActions: Error Handler ======================================
 	  handleError: function handleError(response) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: PhotoConstants.ERROR,
 	      errors: response.error()
 	    });
 	  }
-	
 	};
 	
 	module.exports = PhotoActions;
@@ -38457,31 +38455,34 @@
 	'use strict';
 	
 	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var PhotoStore = new Store(AppDispatcher);
+	var Dispatcher = __webpack_require__(264);
+	var PhotoConstants = __webpack_require__(303);
 	
-	var _errors, _photos, _photo;
+	var _errors = void 0,
+	    _photos = void 0,
+	    _photo = void 0;
 	
+	var PhotoStore = new Store(Dispatcher);
 	PhotoStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case "PHOTOS RECEIVED":
+	    case PhotoConstants.RECEIVE:
 	      PhotoStore.setPhotos(payload.photos);
 	      PhotoStore.__emitChange();
 	      break;
 	
-	    case "ONE PHOTO RECEIVED":
+	    case PhotoConstants.RECEIVE_ONE:
 	      PhotoStore.setErrors(null);
 	      PhotoStore.setIndividualPhoto(payload.photo);
 	      PhotoStore.__emitChange();
 	      break;
 	
-	    // case "PHOTO DELETED":
+	    // case PhotoConstants.DELETE:
 	    //   PhotoStore.setErrors(null);
 	    //   PhotoStore.setPhotos(payload.photos);
 	    //   PhotoStore.__emitChange();
 	    // break;
 	
-	    case "PHOTO ERROR":
+	    case PhotoConstants.ERROR:
 	      PhotoStore.setErrors(payload.errors);
 	      PhotoStore.__emitChange();
 	      break;
@@ -38756,19 +38757,20 @@
 
 	'use strict';
 	
-	var AppDispatcher = __webpack_require__(264);
-	/* global google */
+	var Dispatcher = __webpack_require__(264);
 	var Store = __webpack_require__(246).Store;
 	var PhotoStore = __webpack_require__(301);
 	var MarkerActions = __webpack_require__(307);
+	var MarkerConstants = __webpack_require__(308);
 	
 	var _markers = [];
-	var _selectedPhoto;
-	var MarkerStore = new Store(AppDispatcher);
+	var _selectedPhoto = void 0;
 	
+	/* global google */
+	var MarkerStore = new Store(Dispatcher);
 	MarkerStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case "OPEN MODAL TRHOUGH MARKER":
+	    case MarkerConstants.OPEN_MODAL:
 	      var photos = PhotoStore.inventory();
 	      for (var i = 0; i < photos.length; i++) {
 	        if (photos[i].id === payload.photoId) {
@@ -38790,9 +38792,8 @@
 	};
 	
 	MarkerStore.resetMarkers = function (map) {
-	  var photos;
 	  this.deleteMarkers();
-	  photos = PhotoStore.inventory();
+	  var photos = PhotoStore.inventory();
 	  if (photos) {
 	    for (var i = 0; i < photos.length; i++) {
 	      this.addMarker(photos[i], map);
@@ -38844,12 +38845,12 @@
 
 	'use strict';
 	
-	var AppDispatcher = __webpack_require__(264);
+	var Dispatcher = __webpack_require__(264);
 	var MarkerConstants = __webpack_require__(308);
 	
 	var MarkerActions = {
 	  openModalOnPhoto: function openModalOnPhoto(photoId) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: MarkerConstants.OPEN_MODAL,
 	      photoId: photoId
 	    });
@@ -39855,7 +39856,7 @@
 
 	'use strict';
 	
-	var AppDispatcher = __webpack_require__(264);
+	var Dispatcher = __webpack_require__(264);
 	var CommentStore = __webpack_require__(316);
 	var CommentApiUtil = __webpack_require__(317);
 	var CommentConstants = __webpack_require__(318);
@@ -39876,7 +39877,7 @@
 	
 	  // ServerActions: Success Handlers ===================================
 	  receiveComments: function receiveComments(comments) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: CommentConstants.RECEIVE,
 	      comments: comments
 	    });
@@ -39884,7 +39885,7 @@
 	
 	  // ServerActions: Error Handler ======================================
 	  handleError: function handleError(response) {
-	    AppDispatcher.dispatch({
+	    Dispatcher.dispatch({
 	      actionType: CommentConstants.ERROR,
 	      errors: response.error()
 	    });
@@ -39901,29 +39902,30 @@
 	'use strict';
 	
 	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var CommentStore = new Store(AppDispatcher);
+	var Dispatcher = __webpack_require__(264);
+	var CommentConstants = __webpack_require__(318);
+	var _comments = void 0,
+	    _errors = void 0;
 	
-	var _comments, _errors;
-	
+	var CommentStore = new Store(Dispatcher);
 	CommentStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case "COMMENTS RECEIVED":
+	    case CommentConstants.RECEIVE:
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
-	    case "COMMENT DELETED":
+	    case CommentConstants.DELETE:
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
-	    case "COMMENT CREATED":
+	    case CommentConstants.POST:
 	      CommentStore.setComments(payload.comments);
 	      CommentStore.__emitChange();
 	      break;
 	
-	    case "COMMENT ERROR":
+	    case CommentConstants.ERROR:
 	      CommentStore.setErrors(payload.errors);
 	      CommentStore.__emitChange();
 	      break;

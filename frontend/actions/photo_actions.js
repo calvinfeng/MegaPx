@@ -1,10 +1,9 @@
-var AppDispatcher = require('../dispatcher/dispatcher');
-var PhotoStore = require('../stores/photo_store');
-var PhotoApiUtil = require('../util/photo_api_util');
+const Dispatcher = require('../dispatcher/dispatcher');
+const PhotoStore = require('../stores/photo_store');
+const PhotoApiUtil = require('../util/photo_api_util');
+const PhotoConstants = require('../constants/photo_constants.js');
 
-var PhotoConstants = require('../constants/photo_constants.js');
-
-var PhotoActions = {
+const PhotoActions = {
   // ClientActions: API Request ========================================
   fetchSinglePhoto: function(id) {
     PhotoApiUtil.fetchSinglePhoto(id, this.receiveOnePhoto, this.handleError);
@@ -32,14 +31,14 @@ var PhotoActions = {
 
   // ServerActions: Success Handlers ===================================
   receiveOnePhoto: function(photo) {
-    AppDispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: PhotoConstants.RECEIVE_ONE,
       photo: photo
     });
   },
 
   receivePhotos: function(photos) {
-    AppDispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: PhotoConstants.RECEIVE,
       photos: photos
     });
@@ -47,13 +46,11 @@ var PhotoActions = {
 
   // ServerActions: Error Handler ======================================
   handleError: function(response) {
-    AppDispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: PhotoConstants.ERROR,
       errors: response.error()
     });
   },
-
-
 };
 
 module.exports = PhotoActions;

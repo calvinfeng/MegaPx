@@ -1,27 +1,27 @@
-var Store = require('flux/utils').Store;
-var AppDispatcher = require('../dispatcher/dispatcher');
-var CommentStore = new Store(AppDispatcher);
+const Store = require('flux/utils').Store;
+const Dispatcher = require('../dispatcher/dispatcher');
+const CommentConstants = require('../constants/comment_constants');
+let _comments, _errors;
 
-var _comments, _errors;
-
+const CommentStore = new Store(Dispatcher);
 CommentStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
-    case "COMMENTS RECEIVED":
+    case CommentConstants.RECEIVE:
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
-    case "COMMENT DELETED":
+    case CommentConstants.DELETE:
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
-    case "COMMENT CREATED":
+    case CommentConstants.POST:
       CommentStore.setComments(payload.comments);
       CommentStore.__emitChange();
     break;
 
-    case "COMMENT ERROR":
+    case CommentConstants.ERROR:
       CommentStore.setErrors(payload.errors);
       CommentStore.__emitChange();
     break;

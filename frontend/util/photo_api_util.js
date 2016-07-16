@@ -1,4 +1,4 @@
-var PhotoApiUtil = {
+const PhotoApiUtil = {
 
   fetchSinglePhoto: function(id, successCallback, errorCallback) {
     $.ajax({

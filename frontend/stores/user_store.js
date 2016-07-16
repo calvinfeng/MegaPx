@@ -1,9 +1,10 @@
 const Store = require('flux/utils').Store;
 const Dispatcher = require('../dispatcher/dispatcher');
 const UserConstants = require('../constants/user_constants');
-const UserStore = new Store(Dispatcher);
 
 let _currentUser, _errors;
+
+const UserStore = new Store(Dispatcher);
 UserStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case UserConstants.LOGIN:

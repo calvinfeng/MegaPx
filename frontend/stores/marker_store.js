@@ -1,18 +1,19 @@
-var AppDispatcher = require('../dispatcher/dispatcher');
+const Dispatcher = require('../dispatcher/dispatcher');
+const Store = require('flux/utils').Store;
+const PhotoStore = require('./photo_store');
+const MarkerActions = require('../actions/marker_actions');
+const MarkerConstants = require('../constants/marker_constants');
+
+let _markers = [];
+let _selectedPhoto;
+
 /* global google */
-var Store = require('flux/utils').Store;
-var PhotoStore = require('./photo_store');
-var MarkerActions = require('../actions/marker_actions');
-
-var _markers = [];
-var _selectedPhoto;
-var MarkerStore = new Store(AppDispatcher);
-
+const MarkerStore = new Store(Dispatcher);
 MarkerStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
-    case "OPEN MODAL TRHOUGH MARKER":
-      var photos = PhotoStore.inventory();
-      for (var i = 0; i < photos.length; i++) {
+    case MarkerConstants.OPEN_MODAL:
+      let photos = PhotoStore.inventory();
+      for (let i = 0; i < photos.length; i++) {
         if (photos[i].id === payload.photoId) {
           _selectedPhoto = photos[i];
           MarkerStore.__emitChange();
@@ -32,24 +33,23 @@ MarkerStore.selectedPhoto = function() {
 };
 
 MarkerStore.resetMarkers = function(map) {
-  var photos;
   this.deleteMarkers();
-  photos = PhotoStore.inventory();
+  let photos = PhotoStore.inventory();
   if (photos) {
-    for (var i = 0; i < photos.length; i++) {
+    for (let i = 0; i < photos.length; i++) {
       this.addMarker(photos[i], map);
     }
   }
 };
 
 MarkerStore.addMarker = function(photo, map) {
-  var marker = new google.maps.Marker({
+  let marker = new google.maps.Marker({
     position: { lat: photo.lat, lng: photo.lng },
     title: photo.title
   });
   marker.setMap(map);
 
-  var infoWindow = new google.maps.InfoWindow();
+  let infoWindow = new google.maps.InfoWindow();
   infoWindow.setContent('<h3>' + photo.title + '</h3><img height="' +
   $(window).height()*0.20 +  '" src="' + photo.url.slice(0,47) + 'c_scale,h_200' +
   photo.url.slice(46) + '"></img><p>by ' + photo.photographer.first_name +
@@ -76,7 +76,7 @@ MarkerStore.deleteMarkers = function() {
 };
 
 MarkerStore.clearMarkers = function() {
-  for (var i = 0; i < _markers.length; i++) {
+  for (let i = 0; i < _markers.length; i++) {
     _markers[i].setMap(null);
   }
 };

@@ -5,7 +5,8 @@ const UserConstants = require('../constants/user_constants');
 const UserActions = {
 
   guestLogin: function() {
-    UserActions.login({username: "guest", password: "password"});
+    //UserActions.login({username: "guest", password: "password"});
+    UserActions.login({username: "calvin", password: "123456"});
   },
 
   // ClientActions: API Request ========================================
@@ -58,7 +59,7 @@ const UserActions = {
       errors: response.error()
     });
   }
-  
+
 };
 
 module.exports = UserActions;

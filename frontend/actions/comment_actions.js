@@ -1,9 +1,9 @@
-var AppDispatcher = require('../dispatcher/dispatcher');
-var CommentStore = require('../stores/comment_store');
-var CommentApiUtil = require('../util/comment_api_util');
-var CommentConstants = require('../constants/comment_constants.js');
+const Dispatcher = require('../dispatcher/dispatcher');
+const CommentStore = require('../stores/comment_store');
+const CommentApiUtil = require('../util/comment_api_util');
+const CommentConstants = require('../constants/comment_constants.js');
 
-var CommentActions = {
+const CommentActions = {
   // ClientActions: API Request ========================================
   fetchCommentsForPhoto: function(photoId) {
     CommentApiUtil.fetchComments(photoId, this.receiveComments, this.handleError);
@@ -19,7 +19,7 @@ var CommentActions = {
 
   // ServerActions: Success Handlers ===================================
   receiveComments: function(comments) {
-    AppDispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: CommentConstants.RECEIVE,
       comments: comments
     });
@@ -27,7 +27,7 @@ var CommentActions = {
 
   // ServerActions: Error Handler ======================================
   handleError: function(response) {
-    AppDispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: CommentConstants.ERROR,
       errors: response.error()
     });

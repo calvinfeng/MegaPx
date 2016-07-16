@@ -1,4 +1,4 @@
-var CommentApiUtil = {
+const CommentApiUtil = {
 
   fetchComments: function(photoId, successCallback, errorCallback) {
     $.ajax({
@@ -27,7 +27,7 @@ var CommentApiUtil = {
       error: errorCallback
     });
   }
-  
+
 };
 
 module.exports = CommentApiUtil;

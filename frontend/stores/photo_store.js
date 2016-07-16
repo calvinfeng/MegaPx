@@ -1,29 +1,30 @@
-var Store = require('flux/utils').Store;
-var AppDispatcher = require('../dispatcher/dispatcher');
-var PhotoStore = new Store(AppDispatcher);
+const Store = require('flux/utils').Store;
+const Dispatcher = require('../dispatcher/dispatcher');
+const PhotoConstants = require('../constants/photo_constants');
 
-var _errors, _photos, _photo;
+let _errors, _photos, _photo;
 
+const PhotoStore = new Store(Dispatcher);
 PhotoStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
-    case "PHOTOS RECEIVED":
+    case PhotoConstants.RECEIVE:
       PhotoStore.setPhotos(payload.photos);
       PhotoStore.__emitChange();
     break;
 
-    case "ONE PHOTO RECEIVED":
+    case PhotoConstants.RECEIVE_ONE:
       PhotoStore.setErrors(null);
       PhotoStore.setIndividualPhoto(payload.photo);
       PhotoStore.__emitChange();
     break;
 
-    // case "PHOTO DELETED":
+    // case PhotoConstants.DELETE:
     //   PhotoStore.setErrors(null);
     //   PhotoStore.setPhotos(payload.photos);
     //   PhotoStore.__emitChange();
     // break;
 
-    case "PHOTO ERROR":
+    case PhotoConstants.ERROR:
       PhotoStore.setErrors(payload.errors);
       PhotoStore.__emitChange();
     break;
