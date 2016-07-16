@@ -1,28 +1,28 @@
-var React = require('react');
-var Modal = require('boron/OutlineModal');
-var PhotoInfoBox = require('./photo_info_box');
-var PhotoCommentBox = require('./photo_comment_box');
-var CommentStore = require('../../stores/comment_store');
-var CommentActions = require('../../actions/comment_actions');
+const React = require('react');
+const Modal = require('boron/OutlineModal');
+const CommentActions = require('../../actions/comment_actions');
+const CommentStore = require('../../stores/comment_store');
+const PhotoInfoBox = require('./photo_info_box');
+const PhotoCommentBox = require('./photo_comment_box');
 
 //Custom styles for boron modal
-var backdropStyle = {
+const backdropStyle = {
   backgroundColor: 'rgba(0,0,0,0.8)'
 };
 
-var modalStyle = {
+const modalStyle = {
   height: '90%',
   width: '90%',
   top: '50%',
 };
 
-var contentStyle = {
+const contentStyle = {
   height: '100%',
   width: '100%',
   backgroundColor: 'black'
 };
 
-var PhotoModal = React.createClass({
+const PhotoModal = React.createClass({
 
   getInitialState: function() {
     return {url: undefined, id: undefined, aspectRatio: undefined};
@@ -45,26 +45,26 @@ var PhotoModal = React.createClass({
     this.scaleImageToFit();
   },
 
-  scaleImageToFit: function() {
+  scaleImageToFit() {
     $("#image-on-display").width($(".photo-modal-left-box").width());
-    var imageWidth = $("#image-on-display").width();
-    var boxHeight = $(".photo-modal-left-box").height();
-    var imageHeight = imageWidth/(this.state.aspectRatio);
+    let imageWidth = $("#image-on-display").width();
+    let boxHeight = $(".photo-modal-left-box").height();
+    let imageHeight = imageWidth/(this.state.aspectRatio);
     if (imageHeight > boxHeight) {
       $("#image-on-display").height(boxHeight);
       $("#image-on-display").width(boxHeight*this.state.aspectRatio);
     }
   },
 
-  showModal: function(){
+  showModal(){
     this.refs.modal.show();
   },
 
-  hideModal: function(){
+  hideModal(){
     this.refs.modal.hide();
   },
 
-  renderInfoBox: function() {
+  renderInfoBox() {
     if (this.state.id) {
       return <PhotoInfoBox photoId={this.state.id}/>;
     } else {
@@ -72,7 +72,7 @@ var PhotoModal = React.createClass({
     }
   },
 
-  renderCommentBox: function() {
+  renderCommentBox() {
     if (this.state.id) {
       return <PhotoCommentBox photoId={this.state.id}/>;
     } else {
@@ -82,8 +82,7 @@ var PhotoModal = React.createClass({
 
   render: function() {
     return (
-      <Modal ref="modal"
-        className="photo-modal"
+      <Modal className="photo-modal" ref="modal"
         modalStyle={modalStyle}
         backdropStyle={backdropStyle}
         contentStyle={contentStyle}>

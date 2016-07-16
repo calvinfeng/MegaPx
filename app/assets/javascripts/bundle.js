@@ -44,42 +44,39 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const React = __webpack_require__(1);
-	const ReactDOM = __webpack_require__(32);
-	const Modal = __webpack_require__(166);
-	const Router = __webpack_require__(186).Router;
-	const Route = __webpack_require__(186).Route;
-	const IndexRoute = __webpack_require__(186).IndexRoute;
-	const hashHistory = __webpack_require__(186).hashHistory;
+	'use strict';
 	
-	const UserStore = __webpack_require__(245);
-	const UserActions = __webpack_require__(268);
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(32);
+	var Modal = __webpack_require__(166);
+	var Router = __webpack_require__(186).Router;
+	var Route = __webpack_require__(186).Route;
+	var IndexRoute = __webpack_require__(186).IndexRoute;
+	var hashHistory = __webpack_require__(186).hashHistory;
 	
-	const SplashPage = __webpack_require__(270);
-	const HomePage = __webpack_require__(298);
+	var UserStore = __webpack_require__(245);
+	var UserActions = __webpack_require__(268);
 	
-	const MegaPx = React.createClass({
+	var SplashPage = __webpack_require__(270);
+	var HomePage = __webpack_require__(298);
+	
+	var MegaPx = React.createClass({
 	  displayName: 'MegaPx',
-	
-	
-	  componentWillMount() {
+	  componentWillMount: function componentWillMount() {
 	    UserActions.fetchCurrentUser();
 	    this.storeListener = UserStore.addListener(this.__ensureLogin);
 	  },
-	
-	  componentWillUnmount() {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.storeListener.remove();
 	  },
-	
-	  __ensureLogin() {
+	  __ensureLogin: function __ensureLogin() {
 	    if (UserStore.currentUser()) {
 	      hashHistory.push('/home');
 	    } else {
 	      hashHistory.replace('/');
 	    }
 	  },
-	
-	  render() {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
@@ -88,7 +85,7 @@
 	  }
 	});
 	
-	const routes = React.createElement(
+	var routes = React.createElement(
 	  Router,
 	  { history: hashHistory },
 	  React.createElement(
@@ -27422,12 +27419,15 @@
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Store = __webpack_require__(246).Store;
-	const Dispatcher = __webpack_require__(264);
-	const UserConstants = __webpack_require__(267);
-	const UserStore = new Store(Dispatcher);
+	'use strict';
 	
-	let _currentUser, _errors;
+	var Store = __webpack_require__(246).Store;
+	var Dispatcher = __webpack_require__(264);
+	var UserConstants = __webpack_require__(267);
+	var UserStore = new Store(Dispatcher);
+	
+	var _currentUser = void 0,
+	    _errors = void 0;
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case UserConstants.LOGIN:
@@ -33984,7 +33984,9 @@
 /* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Dispatcher = __webpack_require__(265).Dispatcher;
+	'use strict';
+	
+	var Dispatcher = __webpack_require__(265).Dispatcher;
 	module.exports = new Dispatcher();
 
 /***/ },
@@ -34244,6 +34246,8 @@
 /* 267 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 	  LOGIN: "LOGIN",
 	  ERROR: "SESSION ERRORS",
@@ -34254,24 +34258,25 @@
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Dispatcher = __webpack_require__(264);
-	const UserApiUtil = __webpack_require__(269);
-	const UserConstants = __webpack_require__(267);
+	'use strict';
 	
-	const UserActions = {
+	var Dispatcher = __webpack_require__(264);
+	var UserApiUtil = __webpack_require__(269);
+	var UserConstants = __webpack_require__(267);
 	
-	  guestLogin: function () {
+	var UserActions = {
+	
+	  guestLogin: function guestLogin() {
 	    UserActions.login({ username: "guest", password: "password" });
 	  },
 	
 	  // ClientActions: API Request ========================================
-	  fetchCurrentUser() {
+	  fetchCurrentUser: function fetchCurrentUser() {
 	    UserApiUtil.fetchCurrentUser(UserActions.receiveCurrentUser, function () {
 	      console.log("No user is currently signed in");
 	    });
 	  },
-	
-	  signup(user) {
+	  signup: function signup(user) {
 	    UserApiUtil.post({
 	      url: "/api/user",
 	      user: user,
@@ -34279,8 +34284,7 @@
 	      error: UserActions.handleError
 	    });
 	  },
-	
-	  login(user) {
+	  login: function login(user) {
 	    UserApiUtil.post({
 	      url: "/api/session",
 	      user: user,
@@ -34288,26 +34292,26 @@
 	      error: UserActions.handleError
 	    });
 	  },
-	
-	  logout() {
+	  logout: function logout() {
 	    UserApiUtil.logout(UserActions.removeCurrentUser, UserActions.handleError);
 	  },
 	
+	
 	  // ServerActions
-	  receiveCurrentUser: function (user) {
+	  receiveCurrentUser: function receiveCurrentUser(user) {
 	    Dispatcher.dispatch({
 	      actionType: UserConstants.LOGIN,
 	      user: user
 	    });
 	  },
 	
-	  removeCurrentUser: function () {
+	  removeCurrentUser: function removeCurrentUser() {
 	    Dispatcher.dispatch({
 	      actionType: UserConstants.LOGOUT
 	    });
 	  },
 	
-	  handleError: function (response) {
+	  handleError: function handleError(response) {
 	    Dispatcher.dispatch({
 	      actionType: UserConstants.ERROR,
 	      errors: response.error()
@@ -34322,11 +34326,12 @@
 /* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
 	
 	var AppDispatcher = __webpack_require__(264);
 	
 	var UserApiUtil = {
-	  post: function (options) {
+	  post: function post(options) {
 	    $.ajax({
 	      url: options.url,
 	      type: "POST",
@@ -34336,7 +34341,7 @@
 	    });
 	  },
 	
-	  logout: function (success, error) {
+	  logout: function logout(success, error) {
 	    $.ajax({
 	      url: "/api/session",
 	      method: "DELETE",
@@ -34345,12 +34350,12 @@
 	    });
 	  },
 	
-	  fetchCurrentUser: function (success) {
+	  fetchCurrentUser: function fetchCurrentUser(success) {
 	    $.ajax({
 	      url: "/api/session",
 	      method: "GET",
 	      success: success,
-	      error: function () {
+	      error: function error() {
 	        console.log("No user is currently signed in");
 	      }
 	    });
@@ -34363,46 +34368,38 @@
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const React = __webpack_require__(1);
-	const hashHistory = __webpack_require__(186).hashHistory;
-	const LoginModal = __webpack_require__(271);
-	const Introduction = __webpack_require__(281);
-	const UserStore = __webpack_require__(245);
+	'use strict';
 	
-	let timeLapse = `https://res.cloudinary.com/megapx/video/upload/
-	br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4`;
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var LoginModal = __webpack_require__(271);
+	var Introduction = __webpack_require__(281);
+	var UserStore = __webpack_require__(245);
 	
-	let megaPxIcon = `https://res.cloudinary.com/megapx/image/upload/
-	v1461820253/mega-px-logo.png`;
+	var timeLapse = 'https://res.cloudinary.com/megapx/video/upload/\nbr_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4';
 	
-	let cloudIcon = `https://image.freepik.com/free-icon/
-	upload-to-the-cloud-dark-interface-symbol_318-70389.png`;
+	var megaPxIcon = 'https://res.cloudinary.com/megapx/image/upload/\nv1461820253/mega-px-logo.png';
 	
-	let geoIcon = `https://cdn1.iconfinder.com/data/icons/navigation-14/512/
-	geo-point-tag-location-man-place-128.png`;
+	var cloudIcon = 'https://image.freepik.com/free-icon/\nupload-to-the-cloud-dark-interface-symbol_318-70389.png';
 	
-	let welcomeMessage = `Time has passed, tech has changed, you are no longer
-	limited to 500 pixels`;
+	var geoIcon = 'https://cdn1.iconfinder.com/data/icons/navigation-14/512/\ngeo-point-tag-location-man-place-128.png';
 	
-	const SplashPage = React.createClass({
+	var welcomeMessage = 'Time has passed, tech has changed, you are no longer\nlimited to 500 pixels';
+	
+	var SplashPage = React.createClass({
 	  displayName: 'SplashPage',
-	
-	
-	  getInitialState() {
+	  getInitialState: function getInitialState() {
 	    return { width: $(document).width(), height: $(document).height() };
 	  },
-	
-	  componentWillMount() {
+	  componentWillMount: function componentWillMount() {
 	    if (UserStore.currentUser()) {
 	      hashHistory.push("/home");
 	    }
 	  },
-	
-	  updateDimensions() {
+	  updateDimensions: function updateDimensions() {
 	    this.setState({ width: $(document).width(), height: $(document).height() });
 	  },
-	
-	  componentDidMount() {
+	  componentDidMount: function componentDidMount() {
 	    window.addEventListener("resize", this.updateDimensions);
 	    window.onscroll = function (e) {
 	      if (window.pageYOffset > $(window).height() * 0.9) {
@@ -34412,24 +34409,19 @@
 	      }
 	    };
 	  },
-	
-	  componentWillUnmount() {
+	  componentWillUnmount: function componentWillUnmount() {
 	    window.removeEventListener("resize", this.updateDimensions);
 	  },
-	
-	  clickHandle() {
+	  clickHandle: function clickHandle() {
 	    $('html,body').animate({ scrollTop: $(".introduction").offset().top }, 'slow');
 	  },
-	
-	  redirectToGithub() {
+	  redirectToGithub: function redirectToGithub() {
 	    window.location = "https://github.com/calvinfeng";
 	  },
-	
-	  redirectToLinkedin() {
+	  redirectToLinkedin: function redirectToLinkedin() {
 	    window.location = "https://www.linkedin.com/in/calvin-feng-a26b9b76";
 	  },
-	
-	  render() {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'splash' },
@@ -34544,46 +34536,43 @@
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const React = __webpack_require__(1);
-	const Modal = __webpack_require__(272);
-	const UserActions = __webpack_require__(268);
-	const UserStore = __webpack_require__(245);
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var Modal = __webpack_require__(272);
+	var UserActions = __webpack_require__(268);
+	var UserStore = __webpack_require__(245);
 	
 	//Custom styles for boron modal
-	let backdropStyle = {
+	var backdropStyle = {
 	  backgroundColor: 'rgba(0,0,0,0.8)'
 	};
 	
-	let modalStyle = {
+	var modalStyle = {
 	  width: '35%',
 	  top: '55%'
 	};
 	
-	let contentStyle = {
+	var contentStyle = {
 	  backgroundColor: 'transparent'
 	};
 	
-	const LoginModal = React.createClass({
+	var LoginModal = React.createClass({
 	  displayName: 'LoginModal',
-	
-	
-	  getInitialState() {
+	  getInitialState: function getInitialState() {
 	    return {
 	      username: "",
 	      password: "",
 	      modalIsOpen: false
 	    };
 	  },
-	
-	  componentDidMount() {
+	  componentDidMount: function componentDidMount() {
 	    this.storeListener = UserStore.addListener(this.__onChange);
 	  },
-	
-	  componentWillUnmount() {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.storeListener.remove();
 	  },
-	
-	  __onChange() {
+	  __onChange: function __onChange() {
 	    // If log in successfully, close the modal
 	    if (UserStore.currentUser()) {
 	      this.closeModal();
@@ -34592,29 +34581,26 @@
 	      this.setState({ userErrors: UserStore.errors() });
 	    }
 	  },
-	
-	  setUsername(event) {
+	  setUsername: function setUsername(event) {
 	    this.setState({ username: event.target.value });
 	  },
-	
-	  setPassword(event) {
+	  setPassword: function setPassword(event) {
 	    this.setState({ password: event.target.value });
 	  },
-	
-	  handleSubmit(event) {
+	  handleSubmit: function handleSubmit(event) {
 	    event.preventDefault();
 	    UserActions[this.props.form]({
 	      username: this.state.username,
 	      password: this.state.password
 	    });
 	  },
-	
-	  guestLogin(event) {
+	  guestLogin: function guestLogin(event) {
 	    event.preventDefault();
 	    this.animateTyping(UserActions.guestLogin);
 	  },
+	
 	  //ES5 Style of function declaration
-	  animateTyping: function (callback) {
+	  animateTyping: function animateTyping(_callback) {
 	    $(function () {
 	      $("#username").typed({
 	        strings: ["guest"],
@@ -34623,7 +34609,7 @@
 	        loop: false,
 	        loopCount: false,
 	        contentType: 'text',
-	        callback: function () {
+	        callback: function callback() {
 	          $("#password").typed({
 	            strings: ["password"],
 	            typeSpeed: 20,
@@ -34631,13 +34617,13 @@
 	            loop: false,
 	            loopCount: false,
 	            contentType: 'text',
-	            callback: callback });
+	            callback: _callback });
 	        }
 	      });
 	    });
 	  },
 	
-	  errors() {
+	  errors: function errors() {
 	    if (this.state.userErrors) {
 	      return React.createElement(
 	        'ul',
@@ -34654,24 +34640,20 @@
 	      return;
 	    }
 	  },
-	
-	  showModal() {
+	  showModal: function showModal() {
 	    $('.get-started-button').css('visibility', 'hidden');
 	    this.refs.modal.show();
 	  },
-	
-	  hideModal() {
+	  hideModal: function hideModal() {
 	    this.refs.modal.hide();
 	    $('.get-started-button').css('visibility', 'visible');
 	    this.setState({ userErrors: null });
 	  },
-	
-	  toggleGetStartedButton() {
+	  toggleGetStartedButton: function toggleGetStartedButton() {
 	    $('.get-started-button').css('visibility', 'visible');
 	    this.setState({ userErrors: null });
 	  },
-	
-	  submitButtons() {
+	  submitButtons: function submitButtons() {
 	    if (this.props.form === "login") {
 	      return React.createElement('input', { className: 'submit-button', type: 'Submit', value: 'Login' });
 	    } else {
@@ -34679,8 +34661,9 @@
 	    }
 	  },
 	
+	
 	  // Inherit button class and button text from parent
-	  render() {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
@@ -35308,21 +35291,23 @@
 /* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var ReactPlayer = __webpack_require__(282);
 	
 	var Introduction = React.createClass({
 	  displayName: 'Introduction',
 	
-	  redirectToGithub: function () {
+	  redirectToGithub: function redirectToGithub() {
 	    window.location = "https://github.com/calvinfeng";
 	  },
 	
-	  redirectToLinkedin: function () {
+	  redirectToLinkedin: function redirectToLinkedin() {
 	    window.location = "https://www.linkedin.com/in/calvin-feng-a26b9b76";
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'introduction' },
@@ -38083,75 +38068,64 @@
 /* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const React = __webpack_require__(1);
-	const hashHistory = __webpack_require__(186).hashHistory;
-	const Modal = __webpack_require__(299);
+	'use strict';
 	
-	const UserActions = __webpack_require__(268);
-	const UserStore = __webpack_require__(245);
-	const PhotoActions = __webpack_require__(300);
-	const PhotoStore = __webpack_require__(301);
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var Modal = __webpack_require__(299);
 	
-	const DiscoverIndex = __webpack_require__(304);
-	const UserPhotoIndex = __webpack_require__(478);
-	const UploadForm = __webpack_require__(479);
+	var UserActions = __webpack_require__(268);
+	var UserStore = __webpack_require__(245);
+	var PhotoActions = __webpack_require__(300);
+	var PhotoStore = __webpack_require__(301);
 	
-	let modalStyle = { width: '50%' };
+	var DiscoverIndex = __webpack_require__(304);
+	var UserPhotoIndex = __webpack_require__(478);
+	var UploadForm = __webpack_require__(479);
 	
-	let googleMapIcon = `https://icons.iconarchive.com/icons/
-	dakirby309/simply-styled/256/Google-Maps-icon.png`;
+	var modalStyle = { width: '50%' };
 	
-	let megaPxIcon = `https://res.cloudinary.com/megapx/image/
-	upload/v1461820253/mega-px-logo.png`;
+	var googleMapIcon = 'https://icons.iconarchive.com/icons/\ndakirby309/simply-styled/256/Google-Maps-icon.png';
 	
-	const Tab = {
+	var megaPxIcon = 'https://res.cloudinary.com/megapx/image/\nupload/v1461820253/mega-px-logo.png';
+	
+	var Tab = {
 	  discover: "Discover",
 	  myPhotos: "My Photos"
 	};
-	
 	/*
 	  Component has been updated to ES6
 	*/
-	const HomePage = React.createClass({
+	var HomePage = React.createClass({
 	  displayName: 'HomePage',
-	
-	
-	  getInitialState() {
+	  getInitialState: function getInitialState() {
+	    // To prevent people who try to access home page by typing #home in URL
+	    if (!UserStore.currentUser()) {
+	      window.location = "/";
+	    }
 	    return {
 	      selectedTab: Tab.discover,
 	      currentUser: UserStore.currentUser()
 	    };
 	  },
-	
-	  componentWillMount() {
-	    // To prevent people who try to access home page by typing #home in URL
-	    if (!this.state.currentUser) {
-	      window.location = "/";
-	    }
-	  },
-	
-	  componentDidMount() {
+	  componentDidMount: function componentDidMount() {
 	    $('#map-icon').addClass("map-toggled");
 	    this.toggleDiscover();
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	  },
-	
-	  __onChange() {
+	  __onChange: function __onChange() {
 	    // If user has successfully uploaded his/her photo, modal is closed
 	    if (PhotoStore.photo()) {
 	      this.hideModal();
 	    }
 	  },
-	
-	  showModal() {
+	  showModal: function showModal() {
 	    this.refs.modal.show();
 	  },
-	
-	  hideModal() {
+	  hideModal: function hideModal() {
 	    this.refs.modal.hide();
 	  },
-	
-	  toggleMap() {
+	  toggleMap: function toggleMap() {
 	    // DiscoverTab is required for user to interact with map icon
 	    if (this.state.selectedTab === Tab.discover) {
 	      var $mapContainer = $(".discover-map-container");
@@ -38168,33 +38142,30 @@
 	      }
 	    }
 	  },
-	
-	  toggleMyPhotos() {
+	  toggleMyPhotos: function toggleMyPhotos() {
 	    this.setState({ selectedTab: Tab.myPhotos });
 	    $("#my-photos-tab").addClass("tab-highlighted");
 	    $("#discover-tab").removeClass("tab-highlighted");
 	    $('#map-icon').removeClass("map-toggled");
 	    $('.discover-map-container').css('visibility', 'hidden');
 	  },
-	
-	  toggleDiscover() {
+	  toggleDiscover: function toggleDiscover() {
 	    this.setState({ selectedTab: Tab.discover });
 	    $("#discover-tab").addClass("tab-highlighted");
 	    $("#my-photos-tab").removeClass("tab-highlighted");
 	    $('#map-icon').addClass("map-toggled");
 	  },
-	
-	  handleLogout() {
+	  handleLogout: function handleLogout() {
 	    UserActions.logout();
 	  },
-	
-	  scaledAvatarUrl() {
+	  scaledAvatarUrl: function scaledAvatarUrl() {
 	    var url = this.state.currentUser.avatar_url;
 	    return url.slice(0, 47) + "w_100,h_100,c_fill,g_face" + url.slice(46);
 	  },
 	
+	
 	  // Content handlers ==================================================
-	  homeContent() {
+	  homeContent: function homeContent() {
 	    if (this.state.selectedTab === Tab.discover) {
 	      return React.createElement(DiscoverIndex, null);
 	    } else if (this.state.selectedTab === Tab.myPhotos) {
@@ -38212,7 +38183,8 @@
 	    }
 	  },
 	
-	  render: function () {
+	
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { id: 'home-page' },
@@ -38417,6 +38389,8 @@
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var AppDispatcher = __webpack_require__(264);
 	var PhotoStore = __webpack_require__(301);
 	var PhotoApiUtil = __webpack_require__(302);
@@ -38425,39 +38399,39 @@
 	
 	var PhotoActions = {
 	  // ClientActions: API Request ========================================
-	  fetchSinglePhoto: function (id) {
+	  fetchSinglePhoto: function fetchSinglePhoto(id) {
 	    PhotoApiUtil.fetchSinglePhoto(id, this.receiveOnePhoto, this.handleError);
 	  },
 	
-	  fetchPhotosWithinBounds: function (bounds) {
+	  fetchPhotosWithinBounds: function fetchPhotosWithinBounds(bounds) {
 	    PhotoApiUtil.fetchPhotosWithinBounds(bounds, this.receivePhotos, this.handleError);
 	  },
 	
-	  fetchAllPhotos: function () {
+	  fetchAllPhotos: function fetchAllPhotos() {
 	    PhotoApiUtil.fetchAllPhotos(this.receivePhotos, this.handleError);
 	  },
 	
-	  fetchCurrentUserPhotos: function () {
+	  fetchCurrentUserPhotos: function fetchCurrentUserPhotos() {
 	    PhotoApiUtil.fetchCurrentUserPhotos(this.receivePhotos, this.handleError);
 	  },
 	
-	  postPhoto: function (photo) {
+	  postPhoto: function postPhoto(photo) {
 	    PhotoApiUtil.postPhoto(photo, this.receiveOnePhoto, this.handleError);
 	  },
 	
-	  deletePhoto: function (photoId) {
+	  deletePhoto: function deletePhoto(photoId) {
 	    PhotoApiUtil.deletePhoto(photoId, this.receivePhotos, this.handleError);
 	  },
 	
 	  // ServerActions: Success Handlers ===================================
-	  receiveOnePhoto: function (photo) {
+	  receiveOnePhoto: function receiveOnePhoto(photo) {
 	    AppDispatcher.dispatch({
 	      actionType: PhotoConstants.RECEIVE_ONE,
 	      photo: photo
 	    });
 	  },
 	
-	  receivePhotos: function (photos) {
+	  receivePhotos: function receivePhotos(photos) {
 	    AppDispatcher.dispatch({
 	      actionType: PhotoConstants.RECEIVE,
 	      photos: photos
@@ -38465,7 +38439,7 @@
 	  },
 	
 	  // ServerActions: Error Handler ======================================
-	  handleError: function (response) {
+	  handleError: function handleError(response) {
 	    AppDispatcher.dispatch({
 	      actionType: PhotoConstants.ERROR,
 	      errors: response.error()
@@ -38480,6 +38454,8 @@
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Store = __webpack_require__(246).Store;
 	var AppDispatcher = __webpack_require__(264);
 	var PhotoStore = new Store(AppDispatcher);
@@ -38550,9 +38526,11 @@
 /* 302 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	var PhotoApiUtil = {
 	
-	  fetchSinglePhoto: function (id, successCallback, errorCallback) {
+	  fetchSinglePhoto: function fetchSinglePhoto(id, successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/photos/" + id,
 	      method: "GET",
@@ -38561,7 +38539,7 @@
 	    });
 	  },
 	
-	  fetchAllPhotos: function (successCallback, errorCallback) {
+	  fetchAllPhotos: function fetchAllPhotos(successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/photos",
 	      method: "GET",
@@ -38570,7 +38548,7 @@
 	    });
 	  },
 	
-	  fetchCurrentUserPhotos: function (successCallback, errorCallback) {
+	  fetchCurrentUserPhotos: function fetchCurrentUserPhotos(successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/user/photos",
 	      method: "GET",
@@ -38579,7 +38557,7 @@
 	    });
 	  },
 	
-	  fetchPhotosWithinBounds: function (bounds, successCallback, errorCallback) {
+	  fetchPhotosWithinBounds: function fetchPhotosWithinBounds(bounds, successCallback, errorCallback) {
 	    $.ajax({
 	      method: "GET",
 	      url: "api/photos",
@@ -38589,7 +38567,7 @@
 	    });
 	  },
 	
-	  postPhoto: function (photo, successCallback, errorCallback) {
+	  postPhoto: function postPhoto(photo, successCallback, errorCallback) {
 	    $.ajax({
 	      method: "POST",
 	      url: "api/photos",
@@ -38599,7 +38577,7 @@
 	    });
 	  },
 	
-	  deletePhoto: function (photoId, successCallback, errorCallback) {
+	  deletePhoto: function deletePhoto(photoId, successCallback, errorCallback) {
 	    $.ajax({
 	      method: "DELETE",
 	      url: "api/photos/" + photoId,
@@ -38615,6 +38593,8 @@
 /* 303 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 	  RECEIVE_ONE: "ONE PHOTO RECEIVED",
 	  RECEIVE: "PHOTOS RECEIVED",
@@ -38626,6 +38606,8 @@
 /* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var DiscoverMap = __webpack_require__(305);
 	var PhotoGrid = __webpack_require__(310);
@@ -38633,35 +38615,31 @@
 	
 	var DiscoverIndex = React.createClass({
 	  displayName: 'DiscoverIndex',
-	
-	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { selectedSuggestion: undefined, isChangingLocation: false };
 	  },
-	
-	  componentDidMount: function () {
-	    // $('.discover-map-container').css("display","none");
-	    // $('.discover-map').css("visibility","hidden");
-	  },
-	
-	  clickHandler: function (event) {
+	  clickHandler: function clickHandler(event) {
 	    this.setState({ selectedSuggestion: event.currentTarget.value, isChangingLocation: true });
 	  },
+	  generatePopularLocations: function generatePopularLocations() {
+	    var _this = this;
 	
-	  generatePopularLocations: function () {
-	    var self = this;
-	    return Object.keys(LocationConstants).map(function (key) {
-	      return React.createElement(
-	        'div',
-	        { className: 'location-item',
-	          title: 'This is a popular location, click to go',
-	          key: key, value: key, onClick: self.clickHandler },
-	        LocationConstants[key].name
-	      );
-	    });
+	    return(
+	      // ES6 Arrow function
+	      Object.keys(LocationConstants).map(function (key) {
+	        return React.createElement(
+	          'div',
+	          { className: 'location-item',
+	            title: 'This is a popular location, click to go',
+	            key: key, value: key, onClick: _this.clickHandler },
+	          LocationConstants[key].name
+	        );
+	      })
+	    );
 	  },
 	
-	  render: function () {
+	
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
@@ -38682,29 +38660,32 @@
 /* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	'use strict';
 	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var PhotoActions = __webpack_require__(300);
 	var PhotoStore = __webpack_require__(301);
 	var MarkerStore = __webpack_require__(306);
-	var PhotoActions = __webpack_require__(300);
-	
-	var hashHistory = __webpack_require__(186).hashHistory;
 	var LocationConstants = __webpack_require__(309);
 	
+	// Marker is never re-assigned, therefore, it's a const
 	var _markers = [];
 	/* global google */
 	var DiscoverMap = React.createClass({
 	  displayName: 'DiscoverMap',
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { center: { lat: 37.774929, lng: -122.419416 } };
 	  },
 	
-	  __onChange: function () {
+	  __onChange: function __onChange() {
 	    MarkerStore.resetMarkers(this.map);
 	  },
 	
-	  componentDidMount: function () {
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
 	    var mapDOMNode = this.refs.map;
 	    var mapOptions = {
 	      center: this.state.center,
@@ -38715,30 +38696,29 @@
 	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	
-	    var self = this;
 	    navigator.geolocation.getCurrentPosition(function (position) {
 	      var centerLat = position.coords.latitude;
 	      var centerLng = position.coords.longitude;
-	      self.map.panTo({ lat: centerLat, lng: centerLng });
+	      _this.map.panTo({ lat: centerLat, lng: centerLng });
 	    });
 	  },
 	
-	  componentWillUnmount: function () {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.dragListener.remove();
 	    this.storeListener.remove();
 	  },
 	
-	  componentWillReceiveProps: function (nextProps) {
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if (nextProps.suggestedLocation) {
 	      this.mapPanTo(LocationConstants[nextProps.suggestedLocation]);
 	    }
 	  },
 	
-	  mapPanTo: function (location) {
+	  mapPanTo: function mapPanTo(location) {
 	    this.map.panTo({ lat: location.lat, lng: location.lng });
 	  },
 	
-	  refetchWhenDragged: function () {
+	  refetchWhenDragged: function refetchWhenDragged() {
 	    var LatLngBounds = this.map.getBounds();
 	
 	    var northEastBounds = {
@@ -38759,7 +38739,7 @@
 	    PhotoActions.fetchPhotosWithinBounds({ bounds: bounds });
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'discover-map-container' },
@@ -38774,6 +38754,8 @@
 /* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var AppDispatcher = __webpack_require__(264);
 	/* global google */
 	var Store = __webpack_require__(246).Store;
@@ -38860,11 +38842,13 @@
 /* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var AppDispatcher = __webpack_require__(264);
 	var MarkerConstants = __webpack_require__(308);
 	
 	var MarkerActions = {
-	  openModalOnPhoto: function (photoId) {
+	  openModalOnPhoto: function openModalOnPhoto(photoId) {
 	    AppDispatcher.dispatch({
 	      actionType: MarkerConstants.OPEN_MODAL,
 	      photoId: photoId
@@ -38878,6 +38862,8 @@
 /* 308 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 	  OPEN_MODAL: "OPEN MODAL TRHOUGH MARKER"
 	};
@@ -38886,6 +38872,8 @@
 /* 309 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 	  SF: { lat: 37.773972, lng: -122.431297, name: "San Francisco" },
 	  LD: { lat: 51.508530, lng: -0.076132, name: "London" },
@@ -38899,20 +38887,22 @@
 /* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var Loader = __webpack_require__(311);
 	var PhotoStore = __webpack_require__(301);
 	var MarkerStore = __webpack_require__(306);
 	var PhotoModal = __webpack_require__(313);
-	
 	var MAX_PER_ROW = 3;
-	var _idx;
+	
+	var _idx = void 0;
 	
 	var PhotoGrid = React.createClass({
 	  displayName: 'PhotoGrid',
 	
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return {
 	      photos: [],
 	      currentPhotoId: undefined,
@@ -38921,7 +38911,7 @@
 	    };
 	  },
 	
-	  componentWillReceiveProps: function (nextProps) {
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    // If user selects a suggested location, the map will pan and the
 	    // discover index will re-render. If that's the case, make sure to clear
 	    // the modal so it won't pop up on re-render
@@ -38935,23 +38925,22 @@
 	    }
 	  },
 	
-	  componentDidMount: function () {
-	    this.storeListener = PhotoStore.addListener(this.__onChange);
-	    this.markerListener = MarkerStore.addListener(this.__onChangeFromMarkerStore);
+	  componentDidMount: function componentDidMount() {
+	    this.storeListener = PhotoStore.addListener(this.__PhotosOnChange);
+	    this.markerListener = MarkerStore.addListener(this.__MarkersOnChange);
 	    window.addEventListener("resize", this.resizeHandler);
 	  },
 	
-	  componentWillUnmount: function () {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.storeListener.remove();
 	    this.markerListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
 	  },
 	
-	  resizeHandler: function () {
+	  resizeHandler: function resizeHandler() {
 	    this.organizePhotosInGrid();
 	  },
-	
-	  __onChange: function () {
+	  __PhotosOnChange: function __PhotosOnChange() {
 	    this.setState({
 	      photos: PhotoStore.inventory(),
 	      loaded: true,
@@ -38961,8 +38950,7 @@
 	    });
 	    this.organizePhotosInGrid();
 	  },
-	
-	  __onChangeFromMarkerStore: function () {
+	  __MarkersOnChange: function __MarkersOnChange() {
 	    var currentPhoto = MarkerStore.selectedPhoto();
 	    this.setState({
 	      currentPhotoId: currentPhoto.id,
@@ -38970,8 +38958,7 @@
 	      currentPhotoAspectRatio: currentPhoto.width / currentPhoto.height
 	    });
 	  },
-	
-	  openModal: function (event) {
+	  openModal: function openModal(event) {
 	    // setState will pass new props its children
 	    event.preventDefault();
 	    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
@@ -38983,12 +38970,16 @@
 	      currentPhotoAspectRatio: aspectRatio
 	    });
 	  },
-	
-	  organizePhotosInGrid: function () {
+	  organizePhotosInGrid: function organizePhotosInGrid() {
 	    _idx = 0;
 	    $("#index-photo-grid").empty();
 	    if (this.state.photos) {
-	      var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
+	      var $row = void 0,
+	          rowItems = void 0,
+	          numRowItems = void 0,
+	          $img = void 0,
+	          accumWidth = void 0,
+	          photoLimit = void 0;
 	      var $parent = $("#index-photo-grid");
 	      var photos = this.state.photos;
 	
@@ -39000,7 +38991,7 @@
 	        numRowItems = Math.floor(Math.random() * (MAX_PER_ROW - 1)) + 2;
 	
 	        // Insert images to row
-	        for (i = 0; i < numRowItems; i++) {
+	        for (var i = 0; i < numRowItems; i++) {
 	          if (_idx === photos.length) {
 	            break;
 	          }
@@ -39015,13 +39006,13 @@
 	          rowItems.push($img);
 	        }
 	        // Modify dimensions of the images before appending to row
-	        for (i = 0; i < rowItems.length; i++) {
+	        for (var _i = 0; _i < rowItems.length; _i++) {
 	          var scaledHeight = $parent.width() / accumWidth;
-	          var highResUrl = $(rowItems[i]).attr("url");
+	          var highResUrl = $(rowItems[_i]).attr("url");
 	          // fetch scaled images instead of full res for index page
-	          $(rowItems[i]).attr("src", highResUrl.slice(0, 47) + "c_scale,h_" + "500" + highResUrl.slice(46));
-	          $(rowItems[i]).attr('height', scaledHeight);
-	          $row.append(rowItems[i]);
+	          $(rowItems[_i]).attr("src", highResUrl.slice(0, 47) + "c_scale,h_" + "500" + highResUrl.slice(46));
+	          $(rowItems[_i]).attr('height', scaledHeight);
+	          $row.append(rowItems[_i]);
 	        }
 	        // Append row to the grid
 	        $parent.append($row);
@@ -39029,7 +39020,13 @@
 	    }
 	  },
 	
-	  ripplelink: function () {
+	
+	  /*
+	  ======================================================================
+	    This feature is currently removed
+	  ======================================================================
+	  */
+	  ripplelink: function ripplelink() {
 	    $(function () {
 	      var ink, d, x, y;
 	      $(".ripplelink").click(function (e) {
@@ -39052,7 +39049,8 @@
 	    });
 	  },
 	
-	  render: function () {
+	
+	  render: function render() {
 	    return React.createElement(
 	      Loader,
 	      {
@@ -39070,8 +39068,8 @@
 	      )
 	    );
 	  }
-	
 	});
+	
 	module.exports = PhotoGrid;
 
 /***/ },
@@ -39588,12 +39586,14 @@
 /* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var Modal = __webpack_require__(314);
-	var PhotoInfoBox = __webpack_require__(315);
-	var PhotoCommentBox = __webpack_require__(316);
-	var CommentStore = __webpack_require__(318);
-	var CommentActions = __webpack_require__(317);
+	var CommentActions = __webpack_require__(315);
+	var CommentStore = __webpack_require__(316);
+	var PhotoInfoBox = __webpack_require__(319);
+	var PhotoCommentBox = __webpack_require__(320);
 	
 	//Custom styles for boron modal
 	var backdropStyle = {
@@ -39616,11 +39616,11 @@
 	  displayName: 'PhotoModal',
 	
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { url: undefined, id: undefined, aspectRatio: undefined };
 	  },
 	
-	  componentWillReceiveProps: function (nextProps) {
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if (nextProps.photoId) {
 	      this.setState({
 	        id: nextProps.photoId,
@@ -39633,11 +39633,11 @@
 	    }
 	  },
 	
-	  componentDidUpdate: function () {
+	  componentDidUpdate: function componentDidUpdate() {
 	    this.scaleImageToFit();
 	  },
 	
-	  scaleImageToFit: function () {
+	  scaleImageToFit: function scaleImageToFit() {
 	    $("#image-on-display").width($(".photo-modal-left-box").width());
 	    var imageWidth = $("#image-on-display").width();
 	    var boxHeight = $(".photo-modal-left-box").height();
@@ -39647,24 +39647,20 @@
 	      $("#image-on-display").width(boxHeight * this.state.aspectRatio);
 	    }
 	  },
-	
-	  showModal: function () {
+	  showModal: function showModal() {
 	    this.refs.modal.show();
 	  },
-	
-	  hideModal: function () {
+	  hideModal: function hideModal() {
 	    this.refs.modal.hide();
 	  },
-	
-	  renderInfoBox: function () {
+	  renderInfoBox: function renderInfoBox() {
 	    if (this.state.id) {
 	      return React.createElement(PhotoInfoBox, { photoId: this.state.id });
 	    } else {
 	      return;
 	    }
 	  },
-	
-	  renderCommentBox: function () {
+	  renderCommentBox: function renderCommentBox() {
 	    if (this.state.id) {
 	      return React.createElement(PhotoCommentBox, { photoId: this.state.id });
 	    } else {
@@ -39672,11 +39668,11 @@
 	    }
 	  },
 	
-	  render: function () {
+	
+	  render: function render() {
 	    return React.createElement(
 	      Modal,
-	      { ref: 'modal',
-	        className: 'photo-modal',
+	      { className: 'photo-modal', ref: 'modal',
 	        modalStyle: modalStyle,
 	        backdropStyle: backdropStyle,
 	        contentStyle: contentStyle },
@@ -39857,228 +39853,29 @@
 /* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var PhotoStore = __webpack_require__(301);
-	var PhotoActions = __webpack_require__(300);
-	var UserStore = __webpack_require__(245);
+	'use strict';
 	
-	var _currentPhoto;
-	var PhotoInfoBox = React.createClass({
-	  displayName: 'PhotoInfoBox',
-	
-	
-	  componentWillMount: function () {
-	    //Instead of hitting the backend for photographer information,
-	    //When the site is loaded, everything is already packed into PhotoStore
-	    var photos = PhotoStore.inventory();
-	    for (var i = 0; i < photos.length; i++) {
-	      if (photos[i].id === this.props.photoId) {
-	        _currentPhoto = photos[i];
-	        break;
-	      }
-	    }
-	  },
-	
-	  scaledAvatarUrl: function () {
-	    var url = _currentPhoto.photographer.avatar_url;
-	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
-	  },
-	
-	  handleDelete: function (event) {
-	    event.preventDefault();
-	    PhotoActions.deletePhoto(this.props.photoId);
-	  },
-	
-	  deleteButton: function () {
-	    if (UserStore.currentUser().id === _currentPhoto.photographer.id) {
-	      return React.createElement(
-	        'div',
-	        { className: 'photo-delete-button', onClick: this.handleDelete },
-	        'Delete Photo'
-	      );
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  render: function () {
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'photo-info-container' },
-	      React.createElement(
-	        'div',
-	        { className: 'photo-header' },
-	        React.createElement('img', { src: this.scaledAvatarUrl(), className: 'photographer-avatar' }),
-	        React.createElement(
-	          'div',
-	          { className: 'photo-title-container' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            _currentPhoto.title
-	          ),
-	          React.createElement(
-	            'span',
-	            null,
-	            React.createElement(
-	              'h2',
-	              null,
-	              _currentPhoto.photographer.username
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'photo-description' },
-	        React.createElement(
-	          'p',
-	          null,
-	          _currentPhoto.description
-	        )
-	      ),
-	      this.deleteButton()
-	    );
-	  }
-	});
-	
-	module.exports = PhotoInfoBox;
-
-/***/ },
-/* 316 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var UserStore = __webpack_require__(245);
-	var CommentActions = __webpack_require__(317);
-	var CommentStore = __webpack_require__(318);
-	var ScrollArea = __webpack_require__(321);
-	
-	var PhotoCommentBox = React.createClass({
-	  displayName: 'PhotoCommentBox',
-	
-	
-	  getInitialState: function () {
-	    return { comments: [], content: '' };
-	  },
-	
-	  componentDidMount: function () {
-	    CommentActions.fetchCommentsForPhoto(this.props.photoId);
-	    this.storeListener = CommentStore.addListener(this.__onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	  },
-	
-	  __onChange: function () {
-	    this.setState({ comments: CommentStore.inventory() });
-	  },
-	
-	  scaledAvatarUrl: function (url) {
-	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    var comment = {
-	      user_id: UserStore.currentUser().id,
-	      photo_id: this.props.photoId,
-	      content: this.state.content
-	    };
-	    CommentActions.postComment(comment);
-	    this.setState({ content: '' });
-	  },
-	
-	  renderComments: function () {
-	    if (this.state.comments.length > 0) {
-	      var comments = this.state.comments;
-	      var self = this;
-	      return comments.map(function (comment) {
-	        return React.createElement(
-	          'div',
-	          { className: 'comment', key: comment.id },
-	          React.createElement(
-	            'div',
-	            { className: 'comment-author' },
-	            React.createElement('img', { height: '50', src: self.scaledAvatarUrl(comment.author.avatar_url) })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'comment-content' },
-	            React.createElement(
-	              'span',
-	              null,
-	              comment.author.first_name + " " + comment.author.last_name
-	            ),
-	            comment.content
-	          )
-	        );
-	      });
-	    } else {
-	      return;
-	    }
-	  },
-	
-	  setContent: function (event) {
-	    this.setState({ content: event.target.value });
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'comment-box' },
-	      React.createElement(
-	        ScrollArea,
-	        {
-	          speed: 0.8,
-	          className: 'comment-scroll',
-	          horizontal: false },
-	        this.renderComments()
-	      ),
-	      React.createElement(
-	        'form',
-	        { className: 'comment-form', onSubmit: this.handleSubmit },
-	        React.createElement('input', { type: 'text',
-	          id: 'comment-field',
-	          onChange: this.setContent,
-	          value: this.state.content,
-	          placeholder: 'Your comment' }),
-	        React.createElement('input', { type: 'Submit', id: 'comment-submit', value: 'submit' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = PhotoCommentBox;
-
-/***/ },
-/* 317 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var AppDispatcher = __webpack_require__(264);
-	var CommentStore = __webpack_require__(318);
-	var CommentApiUtil = __webpack_require__(319);
-	var CommentConstants = __webpack_require__(320);
+	var CommentStore = __webpack_require__(316);
+	var CommentApiUtil = __webpack_require__(317);
+	var CommentConstants = __webpack_require__(318);
 	
 	var CommentActions = {
 	  // ClientActions: API Request ========================================
-	  fetchCommentsForPhoto: function (photoId) {
+	  fetchCommentsForPhoto: function fetchCommentsForPhoto(photoId) {
 	    CommentApiUtil.fetchComments(photoId, this.receiveComments, this.handleError);
 	  },
 	
-	  postComment: function (comment) {
+	  postComment: function postComment(comment) {
 	    CommentApiUtil.postComment(comment, this.receiveComments, this.handleError);
 	  },
 	
-	  deleteComment: function (commentId) {
+	  deleteComment: function deleteComment(commentId) {
 	    CommentApiUtil.deleteComment(commentId, this.receiveComments, this.handleError);
 	  },
 	
 	  // ServerActions: Success Handlers ===================================
-	  receiveComments: function (comments) {
+	  receiveComments: function receiveComments(comments) {
 	    AppDispatcher.dispatch({
 	      actionType: CommentConstants.RECEIVE,
 	      comments: comments
@@ -40086,7 +39883,7 @@
 	  },
 	
 	  // ServerActions: Error Handler ======================================
-	  handleError: function (response) {
+	  handleError: function handleError(response) {
 	    AppDispatcher.dispatch({
 	      actionType: CommentConstants.ERROR,
 	      errors: response.error()
@@ -40098,9 +39895,11 @@
 	module.exports = CommentActions;
 
 /***/ },
-/* 318 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Store = __webpack_require__(246).Store;
 	var AppDispatcher = __webpack_require__(264);
 	var CommentStore = new Store(AppDispatcher);
@@ -40146,12 +39945,14 @@
 	module.exports = CommentStore;
 
 /***/ },
-/* 319 */
+/* 317 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	var CommentApiUtil = {
 	
-	  fetchComments: function (photoId, successCallback, errorCallback) {
+	  fetchComments: function fetchComments(photoId, successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/photos/" + photoId + "/comments",
 	      method: "GET",
@@ -40160,7 +39961,7 @@
 	    });
 	  },
 	
-	  postComment: function (comment, successCallback, errorCallback) {
+	  postComment: function postComment(comment, successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/comments",
 	      method: "POST",
@@ -40170,7 +39971,7 @@
 	    });
 	  },
 	
-	  deleteComment: function (commentId, successCallback, errorCallback) {
+	  deleteComment: function deleteComment(commentId, successCallback, errorCallback) {
 	    $.ajax({
 	      url: "/api/comments/" + commentId,
 	      method: "DELETE",
@@ -40184,15 +39985,219 @@
 	module.exports = CommentApiUtil;
 
 /***/ },
-/* 320 */
+/* 318 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 	  RECEIVE: "COMMENTS RECEIVED",
 	  ERROR: "COMMENT ERROR",
 	  DELETE: "COMMENT DELETED",
 	  POST: "COMMENT CREATED"
 	};
+
+/***/ },
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var PhotoStore = __webpack_require__(301);
+	var PhotoActions = __webpack_require__(300);
+	var UserStore = __webpack_require__(245);
+	
+	var _currentPhoto = void 0;
+	
+	var PhotoInfoBox = React.createClass({
+	  displayName: 'PhotoInfoBox',
+	
+	
+	  componentWillMount: function componentWillMount() {
+	    //Instead of hitting the backend for photographer information,
+	    //When the site is loaded, everything is already packed into PhotoStore
+	    var photos = PhotoStore.inventory();
+	    for (var i = 0; i < photos.length; i++) {
+	      if (photos[i].id === this.props.photoId) {
+	        _currentPhoto = photos[i];
+	        break;
+	      }
+	    }
+	  },
+	
+	  scaledAvatarUrl: function scaledAvatarUrl() {
+	    var url = _currentPhoto.photographer.avatar_url;
+	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
+	  },
+	  handleDelete: function handleDelete(event) {
+	    event.preventDefault();
+	    PhotoActions.deletePhoto(this.props.photoId);
+	  },
+	  deleteButton: function deleteButton() {
+	    if (UserStore.currentUser().id === _currentPhoto.photographer.id) {
+	      return React.createElement(
+	        'div',
+	        { className: 'photo-delete-button', onClick: this.handleDelete },
+	        'Delete Photo'
+	      );
+	    } else {
+	      return;
+	    }
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'photo-info-container' },
+	      React.createElement(
+	        'div',
+	        { className: 'photo-header' },
+	        React.createElement('img', { src: this.scaledAvatarUrl(), className: 'photographer-avatar' }),
+	        React.createElement(
+	          'div',
+	          { className: 'photo-title-container' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            _currentPhoto.title
+	          ),
+	          React.createElement(
+	            'span',
+	            null,
+	            React.createElement(
+	              'h2',
+	              null,
+	              _currentPhoto.photographer.username
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'photo-description' },
+	        React.createElement(
+	          'p',
+	          null,
+	          _currentPhoto.description
+	        )
+	      ),
+	      this.deleteButton()
+	    );
+	  }
+	});
+	
+	module.exports = PhotoInfoBox;
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var UserStore = __webpack_require__(245);
+	var CommentActions = __webpack_require__(315);
+	var CommentStore = __webpack_require__(316);
+	var ScrollArea = __webpack_require__(321);
+	
+	var PhotoCommentBox = React.createClass({
+	  displayName: 'PhotoCommentBox',
+	
+	
+	  getInitialState: function getInitialState() {
+	    return { comments: [], content: '' };
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    CommentActions.fetchCommentsForPhoto(this.props.photoId);
+	    this.storeListener = CommentStore.addListener(this.__onChange);
+	  },
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.storeListener.remove();
+	  },
+	
+	  __onChange: function __onChange() {
+	    this.setState({ comments: CommentStore.inventory() });
+	  },
+	
+	  scaledAvatarUrl: function scaledAvatarUrl(url) {
+	    return url.slice(0, 47) + "w_60,h_60,c_fill,g_face" + url.slice(46);
+	  },
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	    var comment = {
+	      user_id: UserStore.currentUser().id,
+	      photo_id: this.props.photoId,
+	      content: this.state.content
+	    };
+	    CommentActions.postComment(comment);
+	    this.setState({ content: '' });
+	  },
+	  renderComments: function renderComments() {
+	    var _this = this;
+	
+	    if (this.state.comments.length > 0) {
+	      var comments = this.state.comments;
+	      return comments.map(function (comment) {
+	        return React.createElement(
+	          'div',
+	          { className: 'comment', key: comment.id },
+	          React.createElement(
+	            'div',
+	            { className: 'comment-author' },
+	            React.createElement('img', { height: '50', src: _this.scaledAvatarUrl(comment.author.avatar_url) })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'comment-content' },
+	            React.createElement(
+	              'span',
+	              null,
+	              comment.author.first_name + " " + comment.author.last_name
+	            ),
+	            comment.content
+	          )
+	        );
+	      });
+	    } else {
+	      return;
+	    }
+	  },
+	  setContent: function setContent(event) {
+	    this.setState({ content: event.target.value });
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'comment-box' },
+	      React.createElement(
+	        ScrollArea,
+	        {
+	          speed: 0.8,
+	          className: 'comment-scroll',
+	          horizontal: false },
+	        this.renderComments()
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'comment-form', onSubmit: this.handleSubmit },
+	        React.createElement('input', { type: 'text',
+	          id: 'comment-field',
+	          onChange: this.setContent,
+	          value: this.state.content,
+	          placeholder: 'Your comment' }),
+	        React.createElement('input', { type: 'Submit', id: 'comment-submit', value: 'submit' })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = PhotoCommentBox;
 
 /***/ },
 /* 321 */
@@ -59704,26 +59709,24 @@
 /* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var PhotoGrid = __webpack_require__(310);
 	var PhotoActions = __webpack_require__(300);
 	
 	var UserPhotoIndex = React.createClass({
 	  displayName: 'UserPhotoIndex',
-	
-	
-	  componentWillMount: function () {
+	  componentWillMount: function componentWillMount() {
 	    PhotoActions.fetchCurrentUserPhotos();
 	  },
-	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
 	      React.createElement(PhotoGrid, null)
 	    );
 	  }
-	
 	});
 	
 	module.exports = UserPhotoIndex;
@@ -59732,6 +59735,8 @@
 /* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	
 	// For authentication
@@ -59746,7 +59751,7 @@
 	  displayName: 'UploadForm',
 	
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return {
 	      imgUrl: undefined,
 	      imgLat: undefined,
@@ -59759,7 +59764,7 @@
 	    };
 	  },
 	
-	  componentWillMount: function () {
+	  componentWillMount: function componentWillMount() {
 	    if (!UserStore.currentUser()) {
 	      HashHistory.push({ pathname: "/" });
 	    } else {
@@ -59767,7 +59772,7 @@
 	    }
 	  },
 	
-	  componentDidMount: function () {
+	  componentDidMount: function componentDidMount() {
 	    var mapDOMNode = this.refs.geoTagMap;
 	    var mapOptions = {
 	      center: { lat: 37.774929, lng: -122.419416 },
@@ -59780,27 +59785,27 @@
 	    this.storeListener = PhotoStore.addListener(this.__onChange);
 	  },
 	
-	  __onChange: function () {
+	  __onChange: function __onChange() {
 	    this.setState({
 	      submitErrors: PhotoStore.errors()
 	    });
 	  },
 	
-	  componentWillUnmount: function () {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.clickListener.remove();
 	    this.storeListener.remove();
 	    _isMounted = false;
 	  },
 	
-	  setTitle: function (event) {
+	  setTitle: function setTitle(event) {
 	    this.setState({ imgTitle: event.target.value });
 	  },
 	
-	  setDescription: function (event) {
+	  setDescription: function setDescription(event) {
 	    this.setState({ imgDescription: event.target.value });
 	  },
 	
-	  setCurrentLocation: function (position) {
+	  setCurrentLocation: function setCurrentLocation(position) {
 	    var currentLat = position.coords.latitude;
 	    var currentLng = position.coords.longitude;
 	    // this is to prevent calling setState on unmounted component
@@ -59814,7 +59819,7 @@
 	    }
 	  },
 	
-	  getLat: function () {
+	  getLat: function getLat() {
 	    if (this.state.imgLat) {
 	      return Math.ceil(1000000 * this.state.imgLat) / 1000000;
 	    } else {
@@ -59822,7 +59827,7 @@
 	    }
 	  },
 	
-	  getLng: function () {
+	  getLng: function getLng() {
 	    if (this.state.imgLng) {
 	      return Math.ceil(1000000 * this.state.imgLng) / 1000000;
 	    } else {
@@ -59830,7 +59835,7 @@
 	    }
 	  },
 	
-	  uploadToCloud: function (event) {
+	  uploadToCloud: function uploadToCloud(event) {
 	    event.preventDefault();
 	    // currently, it only allows one image upload at a time
 	    cloudinary.openUploadWidget(window.cloudinary_options, function (errors, images) {
@@ -59843,7 +59848,7 @@
 	    }.bind(this));
 	  },
 	
-	  mapClickHandle: function (event) {
+	  mapClickHandle: function mapClickHandle(event) {
 	    if (this.marker) {
 	      this.marker.setMap(null);
 	    }
@@ -59856,7 +59861,7 @@
 	    this.marker.setMap(this.map);
 	  },
 	
-	  submitHandle: function (event) {
+	  submitHandle: function submitHandle(event) {
 	    event.preventDefault();
 	    var photo = {
 	      title: this.state.imgTitle,
@@ -59872,7 +59877,7 @@
 	    PhotoActions.postPhoto({ photo: photo });
 	  },
 	
-	  errors: function () {
+	  errors: function errors() {
 	    if (!this.state.submitErrors) {
 	      return;
 	    }
@@ -59893,7 +59898,7 @@
 	    );
 	  },
 	
-	  imageLink: function () {
+	  imageLink: function imageLink() {
 	    if (this.state.imgUrl) {
 	      var titleText;
 	      if (this.state.imgTitle) {
@@ -59915,7 +59920,7 @@
 	    }
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,

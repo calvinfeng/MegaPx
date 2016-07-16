@@ -1,15 +1,14 @@
-var React = require('react');
+const React = require('react');
+const hashHistory = require('react-router').hashHistory;
+const PhotoActions = require('../../actions/photo_actions');
+const PhotoStore = require('../../stores/photo_store');
+const MarkerStore = require('../../stores/marker_store');
+const LocationConstants = require('../../constants/location_constants');
 
-var PhotoStore = require('../../stores/photo_store');
-var MarkerStore = require('../../stores/marker_store');
-var PhotoActions = require('../../actions/photo_actions');
-
-var hashHistory = require('react-router').hashHistory;
-var LocationConstants = require('../../constants/location_constants');
-
-var _markers = [];
+// Marker is never re-assigned, therefore, it's a const
+const _markers = [];
 /* global google */
-var DiscoverMap = React.createClass({
+const DiscoverMap = React.createClass({
   getInitialState: function() {
     return {center: {lat: 37.774929, lng: -122.419416}};
   },
@@ -29,11 +28,10 @@ var DiscoverMap = React.createClass({
     this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
     this.storeListener = PhotoStore.addListener(this.__onChange);
 
-    var self = this;
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition((position) => {
       var centerLat = position.coords.latitude;
       var centerLng = position.coords.longitude;
-      self.map.panTo({lat: centerLat, lng: centerLng});
+      this.map.panTo({lat: centerLat, lng: centerLng});
     });
   },
 

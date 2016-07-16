@@ -1,31 +1,26 @@
-var React = require('react');
-var DiscoverMap = require('./discover_map');
-var PhotoGrid = require('./photo_grid');
-var LocationConstants = require('../../constants/location_constants');
+const React = require('react');
+const DiscoverMap = require('./discover_map');
+const PhotoGrid = require('./photo_grid');
+const LocationConstants = require('../../constants/location_constants');
 
-var DiscoverIndex = React.createClass({
+const DiscoverIndex = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return {selectedSuggestion: undefined, isChangingLocation: false};
   },
 
-  componentDidMount: function() {
-    // $('.discover-map-container').css("display","none");
-    // $('.discover-map').css("visibility","hidden");
-  },
-
-  clickHandler: function(event) {
+  clickHandler(event){
     this.setState({selectedSuggestion: event.currentTarget.value, isChangingLocation: true});
   },
 
-  generatePopularLocations: function() {
-    var self = this;
+  generatePopularLocations() {
     return (
-      Object.keys(LocationConstants).map(function(key){
+      // ES6 Arrow function
+      Object.keys(LocationConstants).map((key) => {
         return (
           <div className="location-item"
             title="This is a popular location, click to go"
-            key={key} value={key} onClick={self.clickHandler}>
+            key={key} value={key} onClick={this.clickHandler}>
             {LocationConstants[key].name}
           </div>
         );

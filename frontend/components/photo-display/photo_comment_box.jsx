@@ -1,10 +1,10 @@
-var React = require('react');
-var UserStore = require('../../stores/user_store');
-var CommentActions = require('../../actions/comment_actions');
-var CommentStore = require('../../stores/comment_store');
-var ScrollArea = require('react-scrollbar');
+const React = require('react');
+const UserStore = require('../../stores/user_store');
+const CommentActions = require('../../actions/comment_actions');
+const CommentStore = require('../../stores/comment_store');
+const ScrollArea = require('react-scrollbar');
 
-var PhotoCommentBox = React.createClass({
+const PhotoCommentBox = React.createClass({
 
   getInitialState: function() {
     return {comments: [], content: ''};
@@ -23,13 +23,13 @@ var PhotoCommentBox = React.createClass({
     this.setState({comments: CommentStore.inventory()});
   },
 
-  scaledAvatarUrl: function(url) {
+  scaledAvatarUrl(url) {
     return (url.slice(0,47) + "w_60,h_60,c_fill,g_face" + url.slice(46));
   },
 
-  handleSubmit: function(event) {
+  handleSubmit(event) {
     event.preventDefault();
-    var comment = {
+    let comment = {
       user_id: UserStore.currentUser().id,
       photo_id: this.props.photoId,
       content: this.state.content
@@ -38,15 +38,14 @@ var PhotoCommentBox = React.createClass({
     this.setState({content: ''});
   },
 
-  renderComments: function() {
+  renderComments() {
     if (this.state.comments.length > 0) {
-      var comments = this.state.comments;
-      var self = this;
-      return comments.map(function(comment) {
+      let comments = this.state.comments;
+      return comments.map((comment) => {
         return (
           <div className="comment" key={comment.id}>
             <div className="comment-author">
-              <img height="50" src={self.scaledAvatarUrl(comment.author.avatar_url)}/>
+              <img height="50" src={this.scaledAvatarUrl(comment.author.avatar_url)}/>
             </div>
             <div className="comment-content">
               <span>{comment.author.first_name + " " + comment.author.last_name}</span>
@@ -60,7 +59,7 @@ var PhotoCommentBox = React.createClass({
     }
   },
 
-  setContent: function(event) {
+  setContent(event) {
     this.setState({content: event.target.value});
   },
 
@@ -85,7 +84,6 @@ var PhotoCommentBox = React.createClass({
       </div>
     );
   }
-
 });
 
 module.exports = PhotoCommentBox;

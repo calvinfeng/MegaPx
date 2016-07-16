@@ -11,36 +11,30 @@ const DiscoverIndex = require('./home/discover_index');
 const UserPhotoIndex = require('./home/user_photo_index');
 const UploadForm = require('./upload/upload_form');
 
-let modalStyle = { width: '50%' };
+const modalStyle = { width: '50%' };
 
-let googleMapIcon = `https://icons.iconarchive.com/icons/
+const googleMapIcon = `https://icons.iconarchive.com/icons/
 dakirby309/simply-styled/256/Google-Maps-icon.png`;
 
-let megaPxIcon = `https://res.cloudinary.com/megapx/image/
+const megaPxIcon = `https://res.cloudinary.com/megapx/image/
 upload/v1461820253/mega-px-logo.png`;
 
 const Tab = {
   discover: "Discover",
   myPhotos: "My Photos"
 };
-
 /*
   Component has been updated to ES6
 */
 const HomePage = React.createClass({
 
   getInitialState() {
+    // To prevent people who try to access home page by typing #home in URL
+    if (!UserStore.currentUser()) { window.location = "/"; }
     return {
       selectedTab: Tab.discover,
       currentUser: UserStore.currentUser()
     };
-  },
-
-  componentWillMount() {
-// To prevent people who try to access home page by typing #home in URL
-    if (!this.state.currentUser) {
-      window.location = "/";
-    }
   },
 
   componentDidMount() {

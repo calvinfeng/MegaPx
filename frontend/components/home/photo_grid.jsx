@@ -1,13 +1,13 @@
-var React = require('react');
-var Loader = require('react-loader');
-var PhotoStore = require('../../stores/photo_store');
-var MarkerStore = require('../../stores/marker_store');
-var PhotoModal = require('./photo_modal');
+const React = require('react');
+const Loader = require('react-loader');
+const PhotoStore = require('../../stores/photo_store');
+const MarkerStore = require('../../stores/marker_store');
+const PhotoModal = require('../photo-display/photo_modal');
+const MAX_PER_ROW = 3;
 
-var MAX_PER_ROW = 3;
-var _idx;
+let _idx;
 
-var PhotoGrid = React.createClass({
+const PhotoGrid = React.createClass({
 
   getInitialState: function() {
     return (
@@ -35,8 +35,8 @@ var PhotoGrid = React.createClass({
   },
 
   componentDidMount: function(){
-    this.storeListener = PhotoStore.addListener(this.__onChange);
-    this.markerListener = MarkerStore.addListener(this.__onChangeFromMarkerStore);
+    this.storeListener = PhotoStore.addListener(this.__PhotosOnChange);
+    this.markerListener = MarkerStore.addListener(this.__MarkersOnChange);
     window.addEventListener("resize", this.resizeHandler);
   },
 
@@ -46,11 +46,11 @@ var PhotoGrid = React.createClass({
     window.removeEventListener("resize", this.resizeHandler);
   },
 
-  resizeHandler: function() {
+  resizeHandler() {
     this.organizePhotosInGrid();
   },
 
-  __onChange: function() {
+  __PhotosOnChange() {
     this.setState({
       photos: PhotoStore.inventory(),
       loaded: true,
@@ -61,8 +61,8 @@ var PhotoGrid = React.createClass({
     this.organizePhotosInGrid();
   },
 
-  __onChangeFromMarkerStore: function() {
-    var currentPhoto = MarkerStore.selectedPhoto();
+  __MarkersOnChange() {
+    let currentPhoto = MarkerStore.selectedPhoto();
     this.setState({
       currentPhotoId: currentPhoto.id,
       currentPhotoUrl: currentPhoto.url,
@@ -70,12 +70,12 @@ var PhotoGrid = React.createClass({
     });
   },
 
-  openModal: function(event) {
-    // setState will pass new props its children
+  openModal(event) {
+  // setState will pass new props its children
     event.preventDefault();
-    var photoId = parseInt($(event.currentTarget).attr("photo-id"));
-    var url = $(event.currentTarget).attr("url");
-    var aspectRatio = $(event.currentTarget).attr("aspect-ratio");
+    let photoId = parseInt($(event.currentTarget).attr("photo-id"));
+    let url = $(event.currentTarget).attr("url");
+    let aspectRatio = $(event.currentTarget).attr("aspect-ratio");
     this.setState({
       currentPhotoId: photoId,
       currentPhotoUrl: url,
@@ -83,13 +83,13 @@ var PhotoGrid = React.createClass({
     });
   },
 
-  organizePhotosInGrid: function() {
+  organizePhotosInGrid() {
     _idx = 0;
     $( "#index-photo-grid" ).empty();
     if (this.state.photos) {
-      var $row, rowItems, numRowItems, $img, accumWidth, i, photoLimit;
-      var $parent = $("#index-photo-grid");
-      var photos = this.state.photos;
+      let $row, rowItems, numRowItems, $img, accumWidth, photoLimit;
+      let $parent = $("#index-photo-grid");
+      let photos = this.state.photos;
 
       while(_idx < photos.length) {
         $row = $("<div></div>");
@@ -99,7 +99,7 @@ var PhotoGrid = React.createClass({
         numRowItems = Math.floor(Math.random()*(MAX_PER_ROW - 1)) + 2;
 
         // Insert images to row
-        for (i = 0; i < numRowItems; i++) {
+        for (let i = 0; i < numRowItems; i++) {
           if (_idx === photos.length) {
             break;
           }
@@ -114,9 +114,9 @@ var PhotoGrid = React.createClass({
           rowItems.push($img);
         }
         // Modify dimensions of the images before appending to row
-        for (i = 0; i < rowItems.length; i++) {
-          var scaledHeight = $parent.width()/accumWidth;
-          var highResUrl = $(rowItems[i]).attr("url");
+        for (let i = 0; i < rowItems.length; i++) {
+          let scaledHeight = $parent.width()/accumWidth;
+          let highResUrl = $(rowItems[i]).attr("url");
           // fetch scaled images instead of full res for index page
           ($(rowItems[i])).attr("src", highResUrl.slice(0,47) +
           "c_scale,h_" + "500" + highResUrl.slice(46));
@@ -129,17 +129,22 @@ var PhotoGrid = React.createClass({
     }
   },
 
-  ripplelink: function() {
+  /*
+  ======================================================================
+    This feature is currently removed
+  ======================================================================
+  */
+  ripplelink() {
     $(function(){
       var ink, d, x, y;
       $(".ripplelink").click(function(e){
-        if($(this).find(".ink").length === 0){
+        if ($(this).find(".ink").length === 0) {
           $(this).prepend("<span class='ink'></span>");
         }
         ink = $(this).find(".ink");
         ink.removeClass("animate");
 
-        if(!ink.height() && !ink.width()){
+        if (!ink.height() && !ink.width()) {
           d = Math.max($(this).outerWidth(), $(this).outerHeight());
           ink.css({height: d, width: d});
         }
@@ -168,6 +173,6 @@ var PhotoGrid = React.createClass({
       </Loader>
     );
   }
-
 });
+
 module.exports = PhotoGrid;

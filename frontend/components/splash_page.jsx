@@ -4,19 +4,19 @@ const LoginModal = require('./splash/login_modal');
 const Introduction = require('./splash/introduction');
 const UserStore = require('../stores/user_store');
 
-let timeLapse = `https://res.cloudinary.com/megapx/video/upload/
+const timeLapse = `https://res.cloudinary.com/megapx/video/upload/
 br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4`;
 
-let megaPxIcon = `https://res.cloudinary.com/megapx/image/upload/
+const megaPxIcon = `https://res.cloudinary.com/megapx/image/upload/
 v1461820253/mega-px-logo.png`;
 
-let cloudIcon = `https://image.freepik.com/free-icon/
+const cloudIcon = `https://image.freepik.com/free-icon/
 upload-to-the-cloud-dark-interface-symbol_318-70389.png`;
 
-let geoIcon = `https://cdn1.iconfinder.com/data/icons/navigation-14/512/
+const geoIcon = `https://cdn1.iconfinder.com/data/icons/navigation-14/512/
 geo-point-tag-location-man-place-128.png`;
 
-let welcomeMessage = `Time has passed, tech has changed, you are no longer
+const welcomeMessage = `Time has passed, tech has changed, you are no longer
 limited to 500 pixels`;
 
 const SplashPage = React.createClass({
