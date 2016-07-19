@@ -50,53 +50,6 @@
   border-radius: 2px;
 }
 
-.tab-nav {
-  box-sizing: border-box;
-  background: #f0f0f0;
-  padding-left: 35px;
-  border: #cecece;
-  opacity: 0.8;
-  width: 100%;
-  height: 50px;
-  position: relative;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.tab {
-  margin: 5px 10px 5px 10px;
-  padding: 5px 5px 5px 5px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #676767;
-  border-radius: 3px;
-}
-
-.tab:hover {
-  color: #00abff;
-  cursor: pointer;
-}
-
-.tab-highlighted {
-  color: #00abff;
-  border-bottom: 3px solid #00abff;
-}
-
-#map-icon {
-  margin-top: 8px;
-}
-
-#map-icon:hover {
-  background: #d0d0d0;
-  cursor: pointer;
-}
-
-.map-toggled {
-  opacity: 0.5;
-}
-
 /* Content ===========================================================*/
 .home-content-container {
   position: relative;

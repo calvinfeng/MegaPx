@@ -34375,6 +34375,7 @@
 	var LoginModal = __webpack_require__(271);
 	var Introduction = __webpack_require__(281);
 	var UserStore = __webpack_require__(245);
+	var LocationSearch = __webpack_require__(480);
 	
 	var timeLapse = 'https://res.cloudinary.com/megapx/video/upload/\nbr_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4';
 	
@@ -35489,7 +35490,7 @@
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
 	 * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
 	 * @license   Licensed under MIT license
@@ -38081,6 +38082,8 @@
 	
 	var DiscoverIndex = __webpack_require__(304);
 	var UserPhotoIndex = __webpack_require__(478);
+	var LocationSearch = __webpack_require__(480);
+	
 	var UploadForm = __webpack_require__(479);
 	
 	var modalStyle = { width: '50%' };
@@ -38094,7 +38097,7 @@
 	  myPhotos: "My Photos"
 	};
 	/*
-	  Component has been updated to ES6
+	Component has been updated to ES6
 	*/
 	var HomePage = React.createClass({
 	  displayName: 'HomePage',
@@ -38225,18 +38228,27 @@
 	      React.createElement(
 	        'nav',
 	        { className: 'tab-nav' },
-	        React.createElement('img', { height: '35', id: 'map-icon',
-	          onClick: this.toggleMap,
-	          src: googleMapIcon }),
 	        React.createElement(
-	          'h1',
-	          { className: 'tab', id: 'discover-tab', onClick: this.toggleDiscover },
-	          'Discover'
+	          'div',
+	          { className: 'tab-container' },
+	          React.createElement('img', { height: '35', id: 'map-icon',
+	            onClick: this.toggleMap,
+	            src: googleMapIcon }),
+	          React.createElement(
+	            'h1',
+	            { className: 'tab', id: 'discover-tab', onClick: this.toggleDiscover },
+	            'Discover'
+	          ),
+	          React.createElement(
+	            'h1',
+	            { className: 'tab', id: 'my-photos-tab', onClick: this.toggleMyPhotos },
+	            'My Photos'
+	          )
 	        ),
 	        React.createElement(
-	          'h1',
-	          { className: 'tab', id: 'my-photos-tab', onClick: this.toggleMyPhotos },
-	          'My Photos'
+	          'div',
+	          { className: 'location-search-bar' },
+	          React.createElement(LocationSearch, null)
 	        )
 	      ),
 	      this.homeContent()
@@ -38628,6 +38640,7 @@
 	    return(
 	      // ES6 Arrow function
 	      Object.keys(LocationConstants).map(function (key) {
+	
 	        return React.createElement(
 	          'div',
 	          { className: 'location-item',
@@ -38667,21 +38680,26 @@
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var PhotoActions = __webpack_require__(300);
 	var PhotoStore = __webpack_require__(301);
+	var LocationStore = __webpack_require__(482);
 	var MarkerStore = __webpack_require__(306);
 	var LocationConstants = __webpack_require__(309);
-	
 	// Marker is never re-assigned, therefore, it's a const
 	var _markers = [];
 	/* global google */
 	var DiscoverMap = React.createClass({
 	  displayName: 'DiscoverMap',
 	
+	
 	  getInitialState: function getInitialState() {
 	    return { center: { lat: 37.774929, lng: -122.419416 } };
 	  },
 	
-	  __onChange: function __onChange() {
+	  __onPhotoChange: function __onPhotoChange() {
 	    MarkerStore.resetMarkers(this.map);
+	  },
+	
+	  __onLocationChange: function __onLocationChange() {
+	    this.map.panTo(LocationStore.locationCoor());
 	  },
 	
 	  componentDidMount: function componentDidMount() {
@@ -38695,7 +38713,8 @@
 	
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
 	    this.dragListener = this.map.addListener('idle', this.refetchWhenDragged);
-	    this.storeListener = PhotoStore.addListener(this.__onChange);
+	    this.photoStoreListener = PhotoStore.addListener(this.__onPhotoChange);
+	    this.locationStoreListener = LocationStore.addListener(this.__onLocationChange);
 	
 	    navigator.geolocation.getCurrentPosition(function (position) {
 	      var centerLat = position.coords.latitude;
@@ -38706,7 +38725,8 @@
 	
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.dragListener.remove();
-	    this.storeListener.remove();
+	    this.photoStoreListener.remove();
+	    this.locationStoreListener.remove();
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -38881,7 +38901,8 @@
 	  HK: { lat: 22.284203, lng: 114.164710, name: "Hong Kong" },
 	  NY: { lat: 40.681363, lng: -74.008253, name: "New York" },
 	  YM: { lat: 37.864974, lng: -119.539016, name: "Yosemite" },
-	  GC: { lat: 36.107078, lng: -112.109720, name: "Grand Canyon" }
+	  GC: { lat: 36.107078, lng: -112.109720, name: "Grand Canyon" },
+	  RECEIVE: "Receive Location"
 	};
 
 /***/ },
@@ -60006,6 +60027,121 @@
 	});
 	
 	module.exports = UploadForm;
+
+/***/ },
+/* 480 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var LocationActions = __webpack_require__(481);
+	/* global google */
+	var LocationSearch = React.createClass({
+	  displayName: 'LocationSearch',
+	  getInitialState: function getInitialState() {
+	    return {};
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var DOMNode = this.refs.autocomplete;
+	    this.initAutocomplete(DOMNode);
+	  },
+	  initAutocomplete: function initAutocomplete(node) {
+	    // Create the autocomplete object, restricting the search to geographical
+	    // location types.
+	    this.autocomplete = new google.maps.places.Autocomplete(node, { types: ['geocode'] });
+	    // When the user selects an address from the dropdown, populate the address
+	    // fields in the form.
+	    this.autocomplete.addListener('place_changed', this.fillInAddress);
+	  },
+	  fillInAddress: function fillInAddress() {
+	    // Get the place details from the autocomplete object.
+	    var place = this.autocomplete.getPlace();
+	    var location = place.geometry.location;
+	    LocationActions.submitLocation({ lat: location.lat(), lng: location.lng() });
+	  },
+	  geolocate: function geolocate() {
+	    var _this = this;
+	
+	    if (navigator.geolocation) {
+	      navigator.geolocation.getCurrentPosition(function (position) {
+	        var geolocation = {
+	          lat: position.coords.latitude,
+	          lng: position.coords.longitude
+	        };
+	        var circle = new google.maps.Circle({
+	          center: geolocation,
+	          radius: position.coords.accuracy
+	        });
+	        _this.autocomplete.setBounds(circle.getBounds());
+	      });
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { id: 'locationField' },
+	      React.createElement('input', { id: 'autocomplete',
+	        placeholder: 'Explore photography around the world',
+	        onFocus: this.geolocate, type: 'text',
+	        ref: 'autocomplete' })
+	    );
+	  }
+	});
+	
+	module.exports = LocationSearch;
+
+/***/ },
+/* 481 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Dispatcher = __webpack_require__(264);
+	var LocationConstants = __webpack_require__(309);
+	var LocationStore = __webpack_require__(482);
+	
+	var LocationActions = {
+	  submitLocation: function submitLocation(location) {
+	    Dispatcher.dispatch({
+	      actionType: LocationConstants.RECEIVE,
+	      location: location
+	    });
+	  }
+	};
+	
+	module.exports = LocationActions;
+
+/***/ },
+/* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(246).Store;
+	var Dispatcher = __webpack_require__(264);
+	var LocationConstants = __webpack_require__(309);
+	
+	var _location = void 0;
+	var LocationStore = new Store(Dispatcher);
+	LocationStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case LocationConstants.RECEIVE:
+	      LocationStore.setLocation(payload.location);
+	      LocationStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	LocationStore.setLocation = function (location) {
+	  _location = location;
+	};
+	
+	LocationStore.locationCoor = function () {
+	  return _location;
+	};
+	
+	module.exports = LocationStore;
 
 /***/ }
 /******/ ]);

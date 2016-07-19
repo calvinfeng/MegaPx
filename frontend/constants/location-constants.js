@@ -4,5 +4,6 @@ module.exports = {
   HK: {lat: 22.284203, lng: 114.164710, name: "Hong Kong"},
   NY: {lat: 40.681363, lng: -74.008253, name: "New York"},
   YM: {lat: 37.864974, lng: -119.539016, name: "Yosemite"},
-  GC: {lat: 36.107078, lng: -112.109720, name: "Grand Canyon"}
+  GC: {lat: 36.107078, lng: -112.109720, name: "Grand Canyon"},
+  RECEIVE: "Receive Location"
 };

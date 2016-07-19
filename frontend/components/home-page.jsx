@@ -9,6 +9,8 @@ const PhotoStore = require('../stores/photo-store');
 
 const DiscoverIndex = require('./home/discover-index');
 const UserPhotoIndex = require('./home/user-photo-index');
+const LocationSearch = require('./home/location-search');
+
 const UploadForm = require('./upload/upload-form');
 
 const modalStyle = { width: '50%' };
@@ -24,7 +26,7 @@ const Tab = {
   myPhotos: "My Photos"
 };
 /*
-  Component has been updated to ES6
+Component has been updated to ES6
 */
 const HomePage = React.createClass({
 
@@ -44,7 +46,7 @@ const HomePage = React.createClass({
   },
 
   __onChange() {
-// If user has successfully uploaded his/her photo, modal is closed
+    // If user has successfully uploaded his/her photo, modal is closed
     if (PhotoStore.photo()) {
       this.hideModal();
     }
@@ -59,7 +61,7 @@ const HomePage = React.createClass({
   },
 
   toggleMap() {
-// DiscoverTab is required for user to interact with map icon
+    // DiscoverTab is required for user to interact with map icon
     if (this.state.selectedTab === Tab.discover) {
       var $mapContainer = $(".discover-map-container");
       var $map = $(".discover-map");
@@ -135,15 +137,20 @@ const HomePage = React.createClass({
           </div>
         </nav>
         <nav className="tab-nav">
-          <img height="35" id="map-icon"
-            onClick={this.toggleMap}
-            src={googleMapIcon}/>
-          <h1 className="tab" id="discover-tab" onClick={this.toggleDiscover}>
-            Discover
-          </h1>
-          <h1 className="tab" id="my-photos-tab" onClick={this.toggleMyPhotos}>
-            My Photos
-          </h1>
+          <div className="tab-container">
+            <img height="35" id="map-icon"
+              onClick={this.toggleMap}
+              src={googleMapIcon}/>
+            <h1 className="tab" id="discover-tab" onClick={this.toggleDiscover}>
+              Discover
+            </h1>
+            <h1 className="tab" id="my-photos-tab" onClick={this.toggleMyPhotos}>
+              My Photos
+            </h1>
+          </div>
+          <div className="location-search-bar">
+            <LocationSearch/>
+          </div>
         </nav>
         {this.homeContent()}
       </div>

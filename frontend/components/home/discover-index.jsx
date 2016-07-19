@@ -17,6 +17,7 @@ const DiscoverIndex = React.createClass({
     return (
       // ES6 Arrow function
       Object.keys(LocationConstants).map((key) => {
+
         return (
           <div className="location-item"
             title="This is a popular location, click to go"
@@ -32,9 +33,9 @@ const DiscoverIndex = React.createClass({
     return (
       <div className="home-content-container">
         <DiscoverMap suggestedLocation={this.state.selectedSuggestion}/>
-        <div className="discover-suggestion-bar">
-          {this.generatePopularLocations()}
-        </div>
+          <div className="discover-suggestion-bar">
+            {this.generatePopularLocations()}
+          </div>
         <PhotoGrid isChangingLocation={this.state.isChangingLocation}/>
       </div>
     );
