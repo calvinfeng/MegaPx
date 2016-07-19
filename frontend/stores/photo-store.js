@@ -1,6 +1,6 @@
 const Store = require('flux/utils').Store;
 const Dispatcher = require('../dispatcher/dispatcher');
-const PhotoConstants = require('../constants/photo_constants');
+const PhotoConstants = require('../constants/photo-constants');
 
 let _errors, _photos, _photo;
 

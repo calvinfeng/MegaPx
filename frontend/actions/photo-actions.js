@@ -1,7 +1,7 @@
 const Dispatcher = require('../dispatcher/dispatcher');
-const PhotoStore = require('../stores/photo_store');
-const PhotoApiUtil = require('../util/photo_api_util');
-const PhotoConstants = require('../constants/photo_constants.js');
+const PhotoStore = require('../stores/photo-store');
+const PhotoApiUtil = require('../util/photo-api-util');
+const PhotoConstants = require('../constants/photo-constants.js');
 
 const PhotoActions = {
   // ClientActions: API Request ========================================

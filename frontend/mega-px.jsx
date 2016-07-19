@@ -6,11 +6,11 @@ const Route = require('react-router').Route;
 const IndexRoute = require('react-router').IndexRoute;
 const hashHistory = require('react-router').hashHistory;
 
-const UserStore = require('./stores/user_store');
-const UserActions = require('./actions/user_actions');
+const UserStore = require('./stores/user-store');
+const UserActions = require('./actions/user-actions');
 
-const SplashPage = require('./components/splash_page');
-const HomePage = require('./components/home_page');
+const SplashPage = require('./components/splash-page');
+const HomePage = require('./components/home-page');
 
 const MegaPx = React.createClass({
 

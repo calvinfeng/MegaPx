@@ -1,9 +1,9 @@
 const React = require('react');
 const Modal = require('boron/OutlineModal');
-const CommentActions = require('../../actions/comment_actions');
-const CommentStore = require('../../stores/comment_store');
-const PhotoInfoBox = require('./photo_info_box');
-const PhotoCommentBox = require('./photo_comment_box');
+const CommentActions = require('../../actions/comment-actions');
+const CommentStore = require('../../stores/comment-store');
+const PhotoInfoBox = require('./photo-info-box');
+const PhotoCommentBox = require('./photo-comment-box');
 
 //Custom styles for boron modal
 const backdropStyle = {

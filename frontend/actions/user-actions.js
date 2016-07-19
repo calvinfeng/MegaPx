@@ -1,6 +1,6 @@
 const Dispatcher = require('../dispatcher/dispatcher');
-const UserApiUtil = require('../util/user_api_util');
-const UserConstants = require('../constants/user_constants');
+const UserApiUtil = require('../util/user-api-util');
+const UserConstants = require('../constants/user-constants');
 
 const UserActions = {
 

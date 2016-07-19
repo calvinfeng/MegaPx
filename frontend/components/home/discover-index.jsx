@@ -1,7 +1,7 @@
 const React = require('react');
-const DiscoverMap = require('./discover_map');
-const PhotoGrid = require('./photo_grid');
-const LocationConstants = require('../../constants/location_constants');
+const DiscoverMap = require('./discover-map');
+const PhotoGrid = require('./photo-grid');
+const LocationConstants = require('../../constants/location-constants');
 
 const DiscoverIndex = React.createClass({
 

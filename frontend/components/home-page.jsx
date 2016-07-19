@@ -2,14 +2,14 @@ const React = require('react');
 const hashHistory = require('react-router').hashHistory;
 const Modal = require('boron/DropModal');
 
-const UserActions = require('../actions/user_actions');
-const UserStore = require('../stores/user_store');
-const PhotoActions = require('../actions/photo_actions');
-const PhotoStore = require('../stores/photo_store');
+const UserActions = require('../actions/user-actions');
+const UserStore = require('../stores/user-store');
+const PhotoActions = require('../actions/photo-actions');
+const PhotoStore = require('../stores/photo-store');
 
-const DiscoverIndex = require('./home/discover_index');
-const UserPhotoIndex = require('./home/user_photo_index');
-const UploadForm = require('./upload/upload_form');
+const DiscoverIndex = require('./home/discover-index');
+const UserPhotoIndex = require('./home/user-photo-index');
+const UploadForm = require('./upload/upload-form');
 
 const modalStyle = { width: '50%' };
 

@@ -1,7 +1,7 @@
 const React = require('react');
-const PhotoStore = require('../../stores/photo_store');
-const PhotoActions = require('../../actions/photo_actions');
-const UserStore = require('../../stores/user_store');
+const PhotoStore = require('../../stores/photo-store');
+const PhotoActions = require('../../actions/photo-actions');
+const UserStore = require('../../stores/user-store');
 
 let _currentPhoto;
 

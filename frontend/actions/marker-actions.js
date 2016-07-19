@@ -1,5 +1,5 @@
 const Dispatcher = require('../dispatcher/dispatcher');
-const MarkerConstants = require('../constants/marker_constants');
+const MarkerConstants = require('../constants/marker-constants');
 
 const MarkerActions = {
   openModalOnPhoto: function(photoId) {

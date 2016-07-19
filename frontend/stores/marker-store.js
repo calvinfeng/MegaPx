@@ -1,8 +1,8 @@
 const Dispatcher = require('../dispatcher/dispatcher');
 const Store = require('flux/utils').Store;
-const PhotoStore = require('./photo_store');
-const MarkerActions = require('../actions/marker_actions');
-const MarkerConstants = require('../constants/marker_constants');
+const PhotoStore = require('./photo-store');
+const MarkerActions = require('../actions/marker-actions');
+const MarkerConstants = require('../constants/marker-constants');
 
 let _markers = [];
 let _selectedPhoto;

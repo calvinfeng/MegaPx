@@ -1,9 +1,9 @@
 const React = require('react');
 const hashHistory = require('react-router').hashHistory;
-const PhotoActions = require('../../actions/photo_actions');
-const PhotoStore = require('../../stores/photo_store');
-const MarkerStore = require('../../stores/marker_store');
-const LocationConstants = require('../../constants/location_constants');
+const PhotoActions = require('../../actions/photo-actions');
+const PhotoStore = require('../../stores/photo-store');
+const MarkerStore = require('../../stores/marker-store');
+const LocationConstants = require('../../constants/location-constants');
 
 // Marker is never re-assigned, therefore, it's a const
 const _markers = [];

@@ -38393,8 +38393,8 @@
 	
 	var Dispatcher = __webpack_require__(264);
 	var PhotoStore = __webpack_require__(301);
-	var PhotoApiUtil = __webpack_require__(302);
-	var PhotoConstants = __webpack_require__(303);
+	var PhotoApiUtil = __webpack_require__(303);
+	var PhotoConstants = __webpack_require__(302);
 	
 	var PhotoActions = {
 	  // ClientActions: API Request ========================================
@@ -38456,7 +38456,7 @@
 	
 	var Store = __webpack_require__(246).Store;
 	var Dispatcher = __webpack_require__(264);
-	var PhotoConstants = __webpack_require__(303);
+	var PhotoConstants = __webpack_require__(302);
 	
 	var _errors = void 0,
 	    _photos = void 0,
@@ -38529,6 +38529,19 @@
 
 	"use strict";
 	
+	module.exports = {
+	  RECEIVE_ONE: "ONE PHOTO RECEIVED",
+	  RECEIVE: "PHOTOS RECEIVED",
+	  ERROR: "PHOTO ERROR",
+	  DELETE: "PHOTO DELETED"
+	};
+
+/***/ },
+/* 303 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
 	var PhotoApiUtil = {
 	
 	  fetchSinglePhoto: function fetchSinglePhoto(id, successCallback, errorCallback) {
@@ -38589,19 +38602,6 @@
 	};
 	
 	module.exports = PhotoApiUtil;
-
-/***/ },
-/* 303 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = {
-	  RECEIVE_ONE: "ONE PHOTO RECEIVED",
-	  RECEIVE: "PHOTOS RECEIVED",
-	  ERROR: "PHOTO ERROR",
-	  DELETE: "PHOTO DELETED"
-	};
 
 /***/ },
 /* 304 */
@@ -39858,8 +39858,8 @@
 	
 	var Dispatcher = __webpack_require__(264);
 	var CommentStore = __webpack_require__(316);
-	var CommentApiUtil = __webpack_require__(317);
-	var CommentConstants = __webpack_require__(318);
+	var CommentApiUtil = __webpack_require__(318);
+	var CommentConstants = __webpack_require__(317);
 	
 	var CommentActions = {
 	  // ClientActions: API Request ========================================
@@ -39903,7 +39903,7 @@
 	
 	var Store = __webpack_require__(246).Store;
 	var Dispatcher = __webpack_require__(264);
-	var CommentConstants = __webpack_require__(318);
+	var CommentConstants = __webpack_require__(317);
 	var _comments = void 0,
 	    _errors = void 0;
 	
@@ -39952,6 +39952,19 @@
 
 	"use strict";
 	
+	module.exports = {
+	  RECEIVE: "COMMENTS RECEIVED",
+	  ERROR: "COMMENT ERROR",
+	  DELETE: "COMMENT DELETED",
+	  POST: "COMMENT CREATED"
+	};
+
+/***/ },
+/* 318 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
 	var CommentApiUtil = {
 	
 	  fetchComments: function fetchComments(photoId, successCallback, errorCallback) {
@@ -39985,19 +39998,6 @@
 	};
 	
 	module.exports = CommentApiUtil;
-
-/***/ },
-/* 318 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = {
-	  RECEIVE: "COMMENTS RECEIVED",
-	  ERROR: "COMMENT ERROR",
-	  DELETE: "COMMENT DELETED",
-	  POST: "COMMENT CREATED"
-	};
 
 /***/ },
 /* 319 */

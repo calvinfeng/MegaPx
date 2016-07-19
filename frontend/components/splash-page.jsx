@@ -1,8 +1,8 @@
 const React = require('react');
 const hashHistory = require('react-router').hashHistory;
-const LoginModal = require('./splash/login_modal');
+const LoginModal = require('./splash/login-modal');
 const Introduction = require('./splash/introduction');
-const UserStore = require('../stores/user_store');
+const UserStore = require('../stores/user-store');
 
 const timeLapse = `https://res.cloudinary.com/megapx/video/upload/
 br_50,q_70/v1462251437/mega-px/Natgeo-time-lapse-small-1_obygbn.mp4`;

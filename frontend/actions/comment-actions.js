@@ -1,7 +1,7 @@
 const Dispatcher = require('../dispatcher/dispatcher');
-const CommentStore = require('../stores/comment_store');
-const CommentApiUtil = require('../util/comment_api_util');
-const CommentConstants = require('../constants/comment_constants.js');
+const CommentStore = require('../stores/comment-store');
+const CommentApiUtil = require('../util/comment-api-util');
+const CommentConstants = require('../constants/comment-constants.js');
 
 const CommentActions = {
   // ClientActions: API Request ========================================

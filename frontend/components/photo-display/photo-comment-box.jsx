@@ -1,7 +1,7 @@
 const React = require('react');
-const UserStore = require('../../stores/user_store');
-const CommentActions = require('../../actions/comment_actions');
-const CommentStore = require('../../stores/comment_store');
+const UserStore = require('../../stores/user-store');
+const CommentActions = require('../../actions/comment-actions');
+const CommentStore = require('../../stores/comment-store');
 const ScrollArea = require('react-scrollbar');
 
 const PhotoCommentBox = React.createClass({

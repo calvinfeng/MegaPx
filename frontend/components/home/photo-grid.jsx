@@ -1,8 +1,8 @@
 const React = require('react');
 const Loader = require('react-loader');
-const PhotoStore = require('../../stores/photo_store');
-const MarkerStore = require('../../stores/marker_store');
-const PhotoModal = require('../photo-display/photo_modal');
+const PhotoStore = require('../../stores/photo-store');
+const MarkerStore = require('../../stores/marker-store');
+const PhotoModal = require('../photo-display/photo-modal');
 const MAX_PER_ROW = 3;
 
 let _idx;

@@ -1,7 +1,7 @@
 const React = require('react');
 const Modal = require('boron/ScaleModal');
-const UserActions = require('../../actions/user_actions');
-const UserStore = require('../../stores/user_store');
+const UserActions = require('../../actions/user-actions');
+const UserStore = require('../../stores/user-store');
 
 //Custom styles for boron modal
 let backdropStyle = {

@@ -1,6 +1,6 @@
 const Store = require('flux/utils').Store;
 const Dispatcher = require('../dispatcher/dispatcher');
-const UserConstants = require('../constants/user_constants');
+const UserConstants = require('../constants/user-constants');
 
 let _currentUser, _errors;
 

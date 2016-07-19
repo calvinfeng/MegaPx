@@ -1,6 +1,6 @@
 const Store = require('flux/utils').Store;
 const Dispatcher = require('../dispatcher/dispatcher');
-const CommentConstants = require('../constants/comment_constants');
+const CommentConstants = require('../constants/comment-constants');
 let _comments, _errors;
 
 const CommentStore = new Store(Dispatcher);
