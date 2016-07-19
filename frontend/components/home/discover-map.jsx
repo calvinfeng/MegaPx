@@ -47,30 +47,24 @@ const DiscoverMap = React.createClass({
     this.locationStoreListener.remove();
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (nextProps.suggestedLocation) {
-      this.mapPanTo(LocationConstants[nextProps.suggestedLocation]);
-    }
-  },
-
   mapPanTo: function(location) {
     this.map.panTo({lat: location.lat, lng: location.lng});
   },
 
   refetchWhenDragged: function() {
-    var LatLngBounds = this.map.getBounds();
+    let LatLngBounds = this.map.getBounds();
 
-    var northEastBounds = {
+    let northEastBounds = {
       lat: LatLngBounds.getNorthEast().lat(),
       lng: LatLngBounds.getNorthEast().lng()
     };
 
-    var southWestBounds = {
+    let southWestBounds = {
       lat: LatLngBounds.getSouthWest().lat(),
       lng: LatLngBounds.getSouthWest().lng()
     };
 
-    var bounds = {
+    let bounds = {
       "northEast": northEastBounds,
       "southWest": southWestBounds
     };

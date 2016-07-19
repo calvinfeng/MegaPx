@@ -2,6 +2,7 @@ const React = require('react');
 const Loader = require('react-loader');
 const PhotoStore = require('../../stores/photo-store');
 const MarkerStore = require('../../stores/marker-store');
+const LocationStore = require('../../stores/location-store');
 const PhotoModal = require('../photo-display/photo-modal');
 const MAX_PER_ROW = 3;
 
@@ -15,34 +16,23 @@ const PhotoGrid = React.createClass({
         photos: [],
         currentPhotoId: undefined,
         currentPhotoUrl: undefined,
-        curentPhotoAspectRatio: undefined
+        curentPhotoAspectRatio: undefined,
+        loaded: false
       }
     );
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    // If user selects a suggested location, the map will pan and the
-    // discover index will re-render. If that's the case, make sure to clear
-    // the modal so it won't pop up on re-render
-    if (nextProps.isChangingLocation) {
-      this.setState({
-        currentPhotoId: undefined,
-        currentPhotoUrl: undefined,
-        curentPhotoAspectRatio: undefined,
-        loaded: false
-      });
-    }
-  },
-
   componentDidMount: function(){
-    this.storeListener = PhotoStore.addListener(this.__PhotosOnChange);
-    this.markerListener = MarkerStore.addListener(this.__MarkersOnChange);
+    this.storeListener = PhotoStore.addListener(this.__onPhotosChange);
+    this.markerListener = MarkerStore.addListener(this.__onMarkersChange);
+    this.locationListener = LocationStore.addListener(this.__onLocationsChange);
     window.addEventListener("resize", this.resizeHandler);
   },
 
   componentWillUnmount: function() {
     this.storeListener.remove();
     this.markerListener.remove();
+    this.locationListener.remove();
     window.removeEventListener("resize", this.resizeHandler);
   },
 
@@ -50,7 +40,13 @@ const PhotoGrid = React.createClass({
     this.organizePhotosInGrid();
   },
 
-  __PhotosOnChange() {
+  __onLocationsChange() {
+    this.setState({
+      loaded: false
+    });
+  },
+
+  __onPhotosChange() {
     this.setState({
       photos: PhotoStore.inventory(),
       loaded: true,
@@ -61,7 +57,7 @@ const PhotoGrid = React.createClass({
     this.organizePhotosInGrid();
   },
 
-  __MarkersOnChange() {
+  __onMarkersChange() {
     let currentPhoto = MarkerStore.selectedPhoto();
     this.setState({
       currentPhotoId: currentPhoto.id,

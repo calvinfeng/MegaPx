@@ -38624,46 +38624,19 @@
 	var React = __webpack_require__(1);
 	var DiscoverMap = __webpack_require__(305);
 	var PhotoGrid = __webpack_require__(310);
+	var LocationSuggestion = __webpack_require__(483);
 	var LocationConstants = __webpack_require__(309);
 	
 	var DiscoverIndex = React.createClass({
 	  displayName: 'DiscoverIndex',
-	  getInitialState: function getInitialState() {
-	    return { selectedSuggestion: undefined, isChangingLocation: false };
-	  },
-	  clickHandler: function clickHandler(event) {
-	    this.setState({ selectedSuggestion: event.currentTarget.value, isChangingLocation: true });
-	  },
-	  generatePopularLocations: function generatePopularLocations() {
-	    var _this = this;
-	
-	    return(
-	      // ES6 Arrow function
-	      Object.keys(LocationConstants).map(function (key) {
-	
-	        return React.createElement(
-	          'div',
-	          { className: 'location-item',
-	            title: 'This is a popular location, click to go',
-	            key: key, value: key, onClick: _this.clickHandler },
-	          LocationConstants[key].name
-	        );
-	      })
-	    );
-	  },
-	
 	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { className: 'home-content-container' },
-	      React.createElement(DiscoverMap, { suggestedLocation: this.state.selectedSuggestion }),
-	      React.createElement(
-	        'div',
-	        { className: 'discover-suggestion-bar' },
-	        this.generatePopularLocations()
-	      ),
-	      React.createElement(PhotoGrid, { isChangingLocation: this.state.isChangingLocation })
+	      React.createElement(DiscoverMap, null),
+	      React.createElement(LocationSuggestion, null),
+	      React.createElement(PhotoGrid, null)
 	    );
 	  }
 	});
@@ -38727,12 +38700,6 @@
 	    this.dragListener.remove();
 	    this.photoStoreListener.remove();
 	    this.locationStoreListener.remove();
-	  },
-	
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (nextProps.suggestedLocation) {
-	      this.mapPanTo(LocationConstants[nextProps.suggestedLocation]);
-	    }
 	  },
 	
 	  mapPanTo: function mapPanTo(location) {
@@ -38915,6 +38882,7 @@
 	var Loader = __webpack_require__(311);
 	var PhotoStore = __webpack_require__(301);
 	var MarkerStore = __webpack_require__(306);
+	var LocationStore = __webpack_require__(482);
 	var PhotoModal = __webpack_require__(313);
 	var MAX_PER_ROW = 3;
 	
@@ -38929,40 +38897,34 @@
 	      photos: [],
 	      currentPhotoId: undefined,
 	      currentPhotoUrl: undefined,
-	      curentPhotoAspectRatio: undefined
+	      curentPhotoAspectRatio: undefined,
+	      loaded: false
 	    };
 	  },
 	
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    // If user selects a suggested location, the map will pan and the
-	    // discover index will re-render. If that's the case, make sure to clear
-	    // the modal so it won't pop up on re-render
-	    if (nextProps.isChangingLocation) {
-	      this.setState({
-	        currentPhotoId: undefined,
-	        currentPhotoUrl: undefined,
-	        curentPhotoAspectRatio: undefined,
-	        loaded: false
-	      });
-	    }
-	  },
-	
 	  componentDidMount: function componentDidMount() {
-	    this.storeListener = PhotoStore.addListener(this.__PhotosOnChange);
-	    this.markerListener = MarkerStore.addListener(this.__MarkersOnChange);
+	    this.storeListener = PhotoStore.addListener(this.__onPhotosChange);
+	    this.markerListener = MarkerStore.addListener(this.__onMarkersChange);
+	    this.locationListener = LocationStore.addListener(this.__onLocationsChange);
 	    window.addEventListener("resize", this.resizeHandler);
 	  },
 	
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.storeListener.remove();
 	    this.markerListener.remove();
+	    this.locationListener.remove();
 	    window.removeEventListener("resize", this.resizeHandler);
 	  },
 	
 	  resizeHandler: function resizeHandler() {
 	    this.organizePhotosInGrid();
 	  },
-	  __PhotosOnChange: function __PhotosOnChange() {
+	  __onLocationsChange: function __onLocationsChange() {
+	    this.setState({
+	      loaded: false
+	    });
+	  },
+	  __onPhotosChange: function __onPhotosChange() {
 	    this.setState({
 	      photos: PhotoStore.inventory(),
 	      loaded: true,
@@ -38972,7 +38934,7 @@
 	    });
 	    this.organizePhotosInGrid();
 	  },
-	  __MarkersOnChange: function __MarkersOnChange() {
+	  __onMarkersChange: function __onMarkersChange() {
 	    var currentPhoto = MarkerStore.selectedPhoto();
 	    this.setState({
 	      currentPhotoId: currentPhoto.id,
@@ -60142,6 +60104,55 @@
 	};
 	
 	module.exports = LocationStore;
+
+/***/ },
+/* 483 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var LocationConstants = __webpack_require__(309);
+	var LocationActions = __webpack_require__(481);
+	
+	var LocationSuggestion = React.createClass({
+	  displayName: 'LocationSuggestion',
+	  getInitialState: function getInitialState() {
+	    return { selectedSuggestion: undefined };
+	  },
+	  clickHandler: function clickHandler(event) {
+	    var value = event.currentTarget.value;
+	    LocationActions.submitLocation(LocationConstants[value]);
+	    this.setState({ selectedSuggestion: event.currentTarget.value });
+	  },
+	  generatePopularLocations: function generatePopularLocations() {
+	    var _this = this;
+	
+	    return(
+	      // ES6 Arrow function
+	      Object.keys(LocationConstants).map(function (key) {
+	        return React.createElement(
+	          'div',
+	          { className: 'location-item',
+	            title: 'This is a popular location, click to go',
+	            key: key,
+	            value: key,
+	            onClick: _this.clickHandler },
+	          LocationConstants[key].name
+	        );
+	      })
+	    );
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'discover-suggestion-bar' },
+	      this.generatePopularLocations()
+	    );
+	  }
+	});
+	
+	module.exports = LocationSuggestion;
 
 /***/ }
 /******/ ]);
